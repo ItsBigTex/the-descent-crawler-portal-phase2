@@ -21,6 +21,8 @@
   feed.innerHTML=state.feed.length?state.feed.map(x=>`<div class="feeditem"><div>${esc(x.text)}</div><div class="tag">${esc(x.at)}</div></div>`).join(''):'<p class="muted">No activity yet.</p>';
   document.querySelectorAll('[data-hp]').forEach(b=>b.onclick=()=>{const c=state.crawlers.find(x=>x.id===b.dataset.hp),d=+b.dataset.d;c.hp=Math.max(0,Math.min(c.maxHp,c.hp+d));addFeed(state,`${c.name} ${d>0?'healed':'took damage'} (${d>0?'+':''}${d} HP).`);state=readState();render()})
  }
+ document.querySelector('#partyLevelUp').onclick=async()=>{if(!confirm('Advance the entire party by 1 level and bank 3 stat points for every crawler?'))return;try{for(const c of state.crawlers){c.level=Number(c.level||1)+1;c.pendingStatPoints=Number(c.pendingStatPoints||0)+3;await saveCrawlerNow(c)}addFeed(state,'PARTY ADVANCEMENT: all crawlers gained 1 level and banked 3 stat points.');state=readState();render()}catch(e){alert('Party Level Up failed: '+e.message)}};
+ document.querySelector('#partyFloorUp').onclick=async()=>{if(!confirm('Advance the entire party by 1 floor?'))return;try{for(const c of state.crawlers){c.floor=Math.min(99,Number(c.floor||1)+1);await saveCrawlerNow(c)}const floor=state.crawlers[0]?.floor||'?';addFeed(state,`PARTY ADVANCEMENT: all crawlers advanced to Floor ${floor}.${Number(floor)===3?' Stat allocation is now ONLINE.':''}`);state=readState();render()}catch(e){alert('Party Floor advance failed: '+e.message)}};
  document.querySelector('#award').onclick=async()=>{
   const c=state.crawlers.find(x=>x.id===document.querySelector('#who').value),name=document.querySelector('#awardName').value.trim(),reward=document.querySelector('#awardReward').value.trim();
   if(!name)return alert('Enter an achievement name.');
