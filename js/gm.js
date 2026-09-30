@@ -21,17 +21,19 @@
   feed.innerHTML=state.feed.length?state.feed.map(x=>`<div class="feeditem"><div>${esc(x.text)}</div><div class="tag">${esc(x.at)}</div></div>`).join(''):'<p class="muted">No activity yet.</p>';
   document.querySelectorAll('[data-hp]').forEach(b=>b.onclick=()=>{const c=state.crawlers.find(x=>x.id===b.dataset.hp),d=+b.dataset.d;c.hp=Math.max(0,Math.min(c.maxHp,c.hp+d));addFeed(state,`${c.name} ${d>0?'healed':'took damage'} (${d>0?'+':''}${d} HP).`);state=readState();render()})
  }
- document.querySelector('#award').onclick=()=>{
+ document.querySelector('#award').onclick=async()=>{
   const c=state.crawlers.find(x=>x.id===document.querySelector('#who').value),name=document.querySelector('#awardName').value.trim(),reward=document.querySelector('#awardReward').value.trim();
   if(!name)return alert('Enter an achievement name.');
-  c.achievements.push({name,reward,claimStatus:'UNCLAIMED'});addFeed(state,`${c.name} unlocked achievement: ${name}.`);state=readState();
-  document.querySelector('#awardName').value='';document.querySelector('#awardReward').value='';render()
+  c.achievements=c.achievements||[];c.achievements.push({name,reward,claimStatus:'UNCLAIMED'});
+  try{await saveCrawlerNow(c);addFeed(state,`${c.name} unlocked achievement: ${name}.`);state=readState();document.querySelector('#awardName').value='';document.querySelector('#awardReward').value='';render()}
+  catch(e){alert('Achievement save failed: '+e.message)}
  };
- document.querySelector('#assignQuest').onclick=()=>{
+ document.querySelector('#assignQuest').onclick=async()=>{
   const c=state.crawlers.find(x=>x.id===document.querySelector('#questWho').value),name=document.querySelector('#questName').value.trim(),detail=document.querySelector('#questDetail').value.trim();
   if(!name)return alert('Enter a quest name.');
-  c.quests.push({name,detail,status:'ACTIVE'});addFeed(state,`${c.name} received quest: ${name}.`);state=readState();
-  document.querySelector('#questName').value='';document.querySelector('#questDetail').value='';render()
+  c.quests=c.quests||[];c.quests.push({name,detail,status:'ACTIVE'});
+  try{await saveCrawlerNow(c);addFeed(state,`${c.name} received quest: ${name}.`);state=readState();document.querySelector('#questName').value='';document.querySelector('#questDetail').value='';render()}
+  catch(e){alert('Quest save failed: '+e.message)}
  };
  document.querySelector('#sendMessage').onclick=async()=>{
   const c=state.crawlers.find(x=>x.id===document.querySelector('#messageWho').value),text=document.querySelector('#messageText').value.trim();
@@ -41,7 +43,7 @@
  };
 
  document.querySelector('#loadNotes').onclick=()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);document.querySelector('#noteText').value=c.notes||''};
- document.querySelector('#deployNotes').onclick=()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);c.notes=document.querySelector('#noteText').value;addFeed(state,`GM Notes deployed to ${c.name}.`);state=readState();render()};
+ document.querySelector('#deployNotes').onclick=async()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);c.notes=document.querySelector('#noteText').value;try{await saveCrawlerNow(c);addFeed(state,`GM Notes deployed to ${c.name}.`);state=readState();render()}catch(e){alert('GM Notes save failed: '+e.message)}};
 
  function localLoot(c,tier,request){
    const req=String(request||'').trim(),q=req.toLowerCase(),id=String(c.id||'').toLowerCase();
