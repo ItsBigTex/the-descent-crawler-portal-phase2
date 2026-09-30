@@ -98,5 +98,6 @@
  window.addEventListener('descent-crawler-update',e=>{const i=state.crawlers.findIndex(c=>String(c.id)===String(e.detail.id));if(i>=0)state.crawlers[i]=e.detail.data;else state.crawlers.push(e.detail.data);render()});
  window.addEventListener('descent-feed-update',()=>{const fresh=readState();if(fresh?.feed)state.feed=fresh.feed;render()});
  window.addEventListener('descent-message-update',()=>{const fresh=readState();if(fresh?.crawlers)state.crawlers=fresh.crawlers;render()});
+ window.addEventListener('descent-message-refresh',()=>{const fresh=readState();if(fresh?.crawlers)state.crawlers=fresh.crawlers;render()});
  render()
 })().catch(e=>document.querySelector('#party').innerHTML=`<div class="notice">${esc(e.message)}</div>`);

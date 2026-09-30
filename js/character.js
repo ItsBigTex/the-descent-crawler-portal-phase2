@@ -26,6 +26,7 @@
  const app=document.querySelector('#app');
  window.addEventListener('descent-crawler-update',e=>{if(String(e.detail.id)!==String(c.id))return;const fresh=e.detail.data||{};for(const k of Object.keys(c))delete c[k];Object.assign(c,fresh);render()});
  window.addEventListener('descent-message-update',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render()}});
+ window.addEventListener('descent-message-refresh',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render()}});
 
  function skillBonus(s){const rank=Number(s[1]||0),stat=s[2];return rank+(c.stats[stat]?modFor(c.stats[stat]):0)}
  function persist(){saveState(state)}
@@ -121,7 +122,7 @@
   document.querySelectorAll('[data-spellattack]').forEach(b=>b.onclick=()=>{const s=c.spells[+b.dataset.spellattack],cost=Number(s.manaCost||0);if(c.mana<cost)return alert(`Not enough Mana. ${s.name} costs ${cost}; ${c.mana} available.`);c.mana-=cost;const base=rollDie(20),attr=s.attribute||'INT',bonus=modFor(Number(c.stats[attr]||0)),total=base+bonus;addFeed(state,`${c.name} cast ${s.name} for ${cost} Mana (${c.mana}/${c.maxMana} remaining) — attack: d20 ${base} + ${attr} mod ${bonus} = ${total}.`);persist();render();alert(`${s.name} ATTACK / TO-HIT\nD20 ${base} + ${attr} modifier ${bonus} = ${total}\nMana: ${c.mana}/${c.maxMana}`)});
   document.querySelectorAll('[data-spelldamage]').forEach(b=>b.onclick=()=>{const s=c.spells[+b.dataset.spelldamage],r=rollFormula(s.damage);if(!r)return alert('Damage must look like 1D8, 2D6, or 2D6+3.');addFeed(state,`${c.name} — ${s.name} damage ${s.damage}: [${r.rolls.join(', ')}]${r.flat?` ${r.flat>0?'+':'-'} ${Math.abs(r.flat)}`:''} = ${r.total}.`);alert(`${s.name} DAMAGE\n${s.damage}: [${r.rolls.join(', ')}]${r.flat?` ${r.flat>0?'+':'-'} ${Math.abs(r.flat)}`:''} = ${r.total}`)});
 
-  document.querySelectorAll('[data-read]').forEach(b=>b.onclick=async()=>{const m=c.messages[+b.dataset.read];m.read=true;if(m.dbId)await markPrivateMessageRead(m.dbId);persist();render()});
+  document.querySelectorAll('[data-read]').forEach(b=>b.onclick=async()=>{const m=c.messages[+b.dataset.read],btn=b;btn.disabled=true;btn.textContent='ACKNOWLEDGING...';try{await markPrivateMessageRead(m.dbId);m.read=true;render()}catch(e){btn.disabled=false;btn.textContent='ACKNOWLEDGE';alert('Acknowledgement failed: '+e.message)}});
   document.querySelectorAll('[data-queststatus]').forEach(s=>s.onchange=()=>{const q=c.quests[+s.dataset.queststatus],old=q.status||'ACTIVE';q.status=s.value;addFeed(state,`${c.name} changed quest "${q.name}" from ${old} to ${q.status}.`);persist();render()});
   document.querySelectorAll('[data-claimstatus]').forEach(s=>s.onchange=()=>{const a=c.achievements[+s.dataset.claimstatus],old=a.claimStatus||'UNCLAIMED';a.claimStatus=s.value;addFeed(state,`${c.name} marked achievement reward "${a.name}" ${a.claimStatus}.`);persist();render()});
  }
