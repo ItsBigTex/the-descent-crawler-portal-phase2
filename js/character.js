@@ -16,17 +16,20 @@
 
  if(c.level==null)c.level=1;
  c.messages=c.messages||[];
- const unread=c.messages.find(m=>!m.read);
- if(unread){
+ async function refreshSystemPopup(){
    const pop=document.querySelector('#systemPopup'),txt=document.querySelector('#popupText'),ack=document.querySelector('#popupAck');
-   txt.textContent=unread.text;pop.classList.remove('hidden');
-   ack.onclick=()=>{unread.read=true;saveState(state);pop.classList.add('hidden')};
+   if(!pop||!txt||!ack)return;
+   const unread=(c.messages||[]).find(m=>!m.read);
+   if(!unread){pop.classList.add('hidden');return}
+   txt.textContent=unread.text;pop.classList.remove('hidden');ack.disabled=false;ack.textContent='ACKNOWLEDGE';
+   ack.onclick=async()=>{ack.disabled=true;ack.textContent='ACKNOWLEDGING...';try{await markPrivateMessageRead(unread.dbId);unread.read=true;pop.classList.add('hidden');render()}catch(e){ack.disabled=false;ack.textContent='ACKNOWLEDGE';alert('Acknowledgement failed: '+e.message)}};
  }
+ refreshSystemPopup();
  let tab='character';
  const app=document.querySelector('#app');
  window.addEventListener('descent-crawler-update',e=>{if(String(e.detail.id)!==String(c.id))return;const fresh=e.detail.data||{};for(const k of Object.keys(c))delete c[k];Object.assign(c,fresh);render()});
- window.addEventListener('descent-message-update',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render()}});
- window.addEventListener('descent-message-refresh',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render()}});
+ window.addEventListener('descent-message-update',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render();refreshSystemPopup()}});
+ window.addEventListener('descent-message-refresh',()=>{const fresh=readState(),fc=(fresh?.crawlers||[]).find(x=>String(x.id)===String(c.id));if(fc){c.messages=fc.messages||[];render();refreshSystemPopup()}});
 
  function skillBonus(s){const rank=Number(s[1]||0),stat=s[2];return rank+(c.stats[stat]?modFor(c.stats[stat]):0)}
  function persist(){saveState(state)}
@@ -125,6 +128,7 @@
   document.querySelectorAll('[data-read]').forEach(b=>b.onclick=async()=>{const m=c.messages[+b.dataset.read],btn=b;btn.disabled=true;btn.textContent='ACKNOWLEDGING...';try{await markPrivateMessageRead(m.dbId);m.read=true;render()}catch(e){btn.disabled=false;btn.textContent='ACKNOWLEDGE';alert('Acknowledgement failed: '+e.message)}});
   document.querySelectorAll('[data-queststatus]').forEach(s=>s.onchange=()=>{const q=c.quests[+s.dataset.queststatus],old=q.status||'ACTIVE';q.status=s.value;addFeed(state,`${c.name} changed quest "${q.name}" from ${old} to ${q.status}.`);persist();render()});
   document.querySelectorAll('[data-claimstatus]').forEach(s=>s.onchange=()=>{const a=c.achievements[+s.dataset.claimstatus],old=a.claimStatus||'UNCLAIMED';a.claimStatus=s.value;addFeed(state,`${c.name} marked achievement reward "${a.name}" ${a.claimStatus}.`);persist();render()});
+  refreshSystemPopup();
  }
  render()
 })().catch(e=>document.querySelector('#app').innerHTML=`<div class="notice">${esc(e.message)}</div>`);

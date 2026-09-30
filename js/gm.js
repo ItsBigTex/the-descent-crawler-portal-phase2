@@ -17,7 +17,7 @@
   normalize();
   party.innerHTML=state.crawlers.map(c=>`<div class="panel"><div class="tag">${esc(c.systemTitle)}</div><h2>${esc(c.name)}</h2><div class="row"><b>HP ${c.hp}/${c.maxHp}</b><span class="pill">LV ${c.level}</span></div><div class="row"><span class="muted small">QUESTS ${c.quests.filter(q=>String(q.status).toLowerCase()!=='complete').length}</span><span class="muted small">UNREAD MSG ${(c.messages||[]).filter(m=>!m.read).length}</span></div><div class="controls"><button data-hp="${c.id}" data-d="-1">-1 HP</button><button data-hp="${c.id}" data-d="1">+1 HP</button><a class="btn" href="./character.html?id=${c.id}">OPEN</a></div></div>`).join('');
   const opts=state.crawlers.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  selects.forEach(s=>s.innerHTML=opts);
+  selects.forEach(s=>{const selected=s.value;s.innerHTML=opts;if(selected&&state.crawlers.some(c=>String(c.id)===String(selected)))s.value=selected});
   feed.innerHTML=state.feed.length?state.feed.map(x=>`<div class="feeditem"><div>${esc(x.text)}</div><div class="tag">${esc(x.at)}</div></div>`).join(''):'<p class="muted">No activity yet.</p>';
   document.querySelectorAll('[data-hp]').forEach(b=>b.onclick=()=>{const c=state.crawlers.find(x=>x.id===b.dataset.hp),d=+b.dataset.d;c.hp=Math.max(0,Math.min(c.maxHp,c.hp+d));addFeed(state,`${c.name} ${d>0?'healed':'took damage'} (${d>0?'+':''}${d} HP).`);state=readState();render()})
  }

@@ -1,4 +1,4 @@
-const STORAGE_KEY='descentPortalStateV2_3_1';
+const STORAGE_KEY='descentPortalStateV2_3_2';
 let CLOUD={ready:false,profile:null,client:null,applying:false,channel:null};
 function modFor(stat){if(stat<=2)return 1;if(stat<=5)return 2;if(stat<=9)return 3;if(stat<=19)return 4;if(stat<=49)return 5;if(stat<=99)return 6;if(stat<=149)return 7;if(stat<=199)return 8;if(stat<=299)return 9;return 10}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
@@ -16,9 +16,9 @@ async function refreshPrivateMessages(){
  let q=CLOUD.client.from('private_messages').select('id,crawler_id,text,read,created_at').order('created_at',{ascending:false}).limit(200);
  if(CLOUD.profile.role!=='gm')q=q.eq('crawler_id',CLOUD.profile.crawler_id);
  const {data,error}=await q;if(error){showCloudStatus('MESSAGE SYNC FAILED // '+error.message,true);return}
- const st=readState()||{crawlers:[],feed:[]};
- for(const c of st.crawlers)c.messages=(data||[]).filter(m=>String(m.crawler_id)===String(c.id)).map(m=>({dbId:m.id,text:m.text,at:new Date(m.created_at).toLocaleString(),read:m.read}));
- localSave(st);window.dispatchEvent(new CustomEvent('descent-message-refresh'));
+ const st=readState()||{crawlers:[],feed:[]};let changed=false;
+ for(const c of st.crawlers){const next=(data||[]).filter(m=>String(m.crawler_id)===String(c.id)).map(m=>({dbId:m.id,text:m.text,at:new Date(m.created_at).toLocaleString(),read:m.read}));if(JSON.stringify(c.messages||[])!==JSON.stringify(next)){c.messages=next;changed=true}}
+ if(changed){localSave(st);window.dispatchEvent(new CustomEvent('descent-message-refresh'))}
 }
 function startMessageFallback(){if(window.__messagePoll)return;window.__messagePoll=setInterval(refreshPrivateMessages,2000)}
 function subscribeCloud(){if(CLOUD.channel)return;CLOUD.channel=CLOUD.client.channel('crawler-sync-v2-2')
