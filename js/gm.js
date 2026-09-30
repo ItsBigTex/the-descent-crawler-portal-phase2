@@ -45,6 +45,59 @@
  document.querySelector('#loadNotes').onclick=()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);document.querySelector('#noteText').value=c.notes||''};
  document.querySelector('#deployNotes').onclick=async()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);c.notes=document.querySelector('#noteText').value;try{await saveCrawlerNow(c);addFeed(state,`GM Notes deployed to ${c.name}.`);state=readState();render()}catch(e){alert('GM Notes save failed: '+e.message)}};
 
+ const OLLAMA_DEFAULT_URL='http://localhost:11434';
+ const OLLAMA_DEFAULT_MODEL='llama3.2:3b';
+
+ function ollamaSettings(){
+   return {
+     url:(localStorage.getItem('descentOllamaUrl')||OLLAMA_DEFAULT_URL).replace(/\/+$/,''),
+     model:localStorage.getItem('descentOllamaModel')||OLLAMA_DEFAULT_MODEL
+   };
+ }
+ function lootContext(c,tier,request){
+   const profile=lootProfiles[c.id]||lootProfiles[String(c.name).toLowerCase()]||'Use only the crawler sheet and player-safe information supplied here.';
+   return `You are the Dungeon System loot designer for a Dungeon Crawler Carl-inspired tabletop campaign.
+Return ONLY valid JSON with these keys: title, category, tier, quantity, effect, system_description, gm_approval_required.
+Generate one editable GM loot draft. Keep the reward appropriate to ${tier} tier, Level ${c.level}, Floor ${c.floor}.
+Personalize using ONLY the player-safe profile and crawler sheet below. Never invent or use private fears, trauma, off-limits material, or sensitive personal information.
+If you invent an unverified numeric/rules mechanic, set gm_approval_required to true and label the effect HOMEBREW / GM APPROVAL REQUIRED.
+Use a short sarcastic Dungeon System description. Avoid duplicating existing gear unless an upgrade is useful.
+
+PLAYER-SAFE PROFILE:
+${profile}
+
+CRAWLER:
+Name: ${c.name}
+Stats: ${JSON.stringify(c.stats||{})}
+Skills: ${JSON.stringify(c.skills||[])}
+Equipment: ${JSON.stringify(c.equipment||[])}
+Inventory: ${JSON.stringify(c.inventory||[])}
+
+GM REQUEST:
+${request||'Generate a useful, flavorful reward appropriate to this crawler.'}`;
+ }
+ async function generateWithOllama(c,tier,request){
+   const cfg=ollamaSettings();
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+     const r=await fetch(cfg.url+'/api/generate',{
+       method:'POST',
+       headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({model:cfg.model,prompt:lootContext(c,tier,request),stream:false,format:'json'}),
+       signal:controller.signal
+     });
+     if(!r.ok)throw new Error(`Ollama HTTP ${r.status}`);
+     const data=await r.json();
+     if(!data?.response)throw new Error('Ollama returned no response.');
+     const x=JSON.parse(data.response);
+     if(!x.title||!x.effect||!x.system_description)throw new Error('Ollama response was missing required loot fields.');
+     return x;
+   }finally{clearTimeout(timer)}
+ }
+ function formatAILoot(x,tier){
+   const approval=x.gm_approval_required?' [HOMEBREW / GM APPROVAL REQUIRED]':'';
+   return `${x.title}\nCategory: ${x.category||'Equipment / Utility'}\nTier: ${x.tier||tier}\nQuantity: ${Number(x.quantity)||1}\nEffect: ${x.effect}${approval}\nSystem Description: ${x.system_description}`;
+ }
  function localLoot(c,tier,request){
    const req=String(request||'').trim(),q=req.toLowerCase(),id=String(c.id||'').toLowerCase();
    const pick=a=>a[Math.floor(Math.random()*a.length)], prefixes={phillip:["Appraiser's","Dealer's","Curator's"],philip:["Appraiser's","Dealer's","Curator's"],jarod:["Field Engineer's","Submariner's","Fixer's"],marvin:["Genre Savant's","Horror Nerd's","Miniature General's"],harold:["Handler's","Instigator's","Maker's"],mike:["Anomaly Hunter's","Cryptid Spotter's","Paranormal Investigator's"],brad:["Troubleshooter's","Signal Tech's","Field Technician's"]};
@@ -66,9 +119,21 @@
    const desc=theme==='funny'?pick(funny):theme==='demonic'?pick([`The item is warm before you touch it. Thin symbols crawl across its surface whenever it works. The System insists this is normal. Something behind the symbols disagrees.`,`A faint sulfur smell follows the item despite there being no obvious source. It performs its task eagerly. Perhaps too eagerly.`]):theme==='cursed'?pick([`At first glance it looks ordinary. At second glance, you notice it was already looking back. The System has classified it as “probably fine.”`,`The item works exactly as advertised, which would be reassuring if it did not occasionally whisper the user's name when nobody is touching it.`]):theme==='serious'?pick([`Purpose-built, durable, and stripped of unnecessary ornamentation. The System documentation is unusually concise: maintain it, use it correctly, and it may keep you alive.`,`A practical piece of Dungeon equipment engineered for reliability rather than spectacle. Every component has a job and none of them appear interested in jokes.`]):pick([`The Dungeon System produced this specifically for ${c.name}. That is either flattering or deeply concerning. Possibly both.`,`The item looks almost normal until the System overlay identifies several features that definitely were not there a moment ago.`]);
    return {title:`${tier} ${base} Reward`,contents:`${item}\nCategory: ${kind==='consumable'?'Consumable':'Equipment / '+slot}\nTier: ${tier}\nEffect: ${effect}\nSystem Description: ${desc}`};
  }
- document.querySelector('#generateLoot').onclick=()=>{
+ document.querySelector('#generateLoot').onclick=async()=>{
    const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),tier=document.querySelector('#lootTier').value,req=document.querySelector('#lootPrompt').value.trim();
-   const out=localLoot(c,tier,req);document.querySelector('#lootTitle').value=out.title;document.querySelector('#lootContents').value=out.contents;addFeed(state,`Generated ${tier} reward draft for ${c.name}.`);state=readState();render();
+   const btn=document.querySelector('#generateLoot');btn.disabled=true;const label=btn.textContent;btn.textContent='CONTACTING LOCAL SYSTEM AI...';
+   try{
+     const x=await generateWithOllama(c,tier,req);
+     document.querySelector('#lootTitle').value=x.title||`${tier} Reward`;
+     document.querySelector('#lootContents').value=formatAILoot(x,tier);
+     addFeed(state,`Ollama AI generated ${tier} reward draft for ${c.name}.`);state=readState();render();
+   }catch(e){
+     console.warn('Ollama unavailable; procedural fallback engaged.',e);
+     const out=localLoot(c,tier,req);
+     document.querySelector('#lootTitle').value=out.title;
+     document.querySelector('#lootContents').value=`SYSTEM AI OFFLINE — FALLBACK PERSONALITY SUBROUTINE ENGAGED\n\n${out.contents}`;
+     addFeed(state,`Local System AI unavailable; fallback generated ${tier} reward draft for ${c.name}.`);state=readState();render();
+   }finally{btn.disabled=false;btn.textContent=label}
  };
  document.querySelector('#buildLootPrompt').onclick=()=>{
    const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value);
@@ -82,6 +147,15 @@
  };
  document.querySelector('#copyLootPrompt').onclick=async()=>{const el=document.querySelector('#lootBuiltPrompt');try{await navigator.clipboard.writeText(el.value);document.querySelector('#copyLootPrompt').textContent='COPIED';setTimeout(()=>document.querySelector('#copyLootPrompt').textContent='COPY PROMPT',1200)}catch{el.select();document.execCommand('copy')}};
 
+ const cfg=ollamaSettings();
+ document.querySelector('#ollamaUrl').value=cfg.url;document.querySelector('#ollamaModel').value=cfg.model;
+ document.querySelector('#saveOllama').onclick=()=>{localStorage.setItem('descentOllamaUrl',document.querySelector('#ollamaUrl').value.trim()||OLLAMA_DEFAULT_URL);localStorage.setItem('descentOllamaModel',document.querySelector('#ollamaModel').value.trim()||OLLAMA_DEFAULT_MODEL);document.querySelector('#ollamaStatus').textContent='LOCAL AI SETTINGS // SAVED'};
+ document.querySelector('#testOllama').onclick=async()=>{
+   const status=document.querySelector('#ollamaStatus'),url=(document.querySelector('#ollamaUrl').value.trim()||OLLAMA_DEFAULT_URL).replace(/\/+$/,'');
+   status.textContent='LOCAL AI STATUS // TESTING...';
+   try{const r=await fetch(url+'/api/tags');if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json(),names=(data.models||[]).map(x=>x.name);status.textContent=`LOCAL AI ONLINE // ${names.length} MODEL(S): ${names.slice(0,4).join(', ')||'none installed'}`}
+   catch(e){status.textContent='LOCAL AI OFFLINE // '+(e.message||e)}
+ };
  document.querySelector('#awardLoot').onclick=()=>{
    const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),title=document.querySelector('#lootTitle').value.trim(),contents=document.querySelector('#lootContents').value.trim();
    if(!title||!contents)return alert('Generate or enter a reward title and contents first.');
