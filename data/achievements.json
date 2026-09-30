@@ -1,0 +1,28 @@
+{
+  "templates": [
+    {
+      "name": "FIRST BLOOD",
+      "reward": "Bronze Weapon Box"
+    },
+    {
+      "name": "OH. THAT HURTS.",
+      "reward": "Knowledge is its own reward."
+    },
+    {
+      "name": "LOYALTY PROGRAM",
+      "reward": "Dungeon coupon"
+    },
+    {
+      "name": "PERMANENT RECORD",
+      "reward": "Bronze Information Box"
+    },
+    {
+      "name": "CUSTOMER IS ALWAYS RIGHT",
+      "reward": "Bronze Adventurer Box"
+    },
+    {
+      "name": "HOMETOWN ADVANTAGE",
+      "reward": "Gold Party Box"
+    }
+  ]
+}
