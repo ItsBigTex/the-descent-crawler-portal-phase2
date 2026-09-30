@@ -33,11 +33,11 @@
   c.quests.push({name,detail,status:'ACTIVE'});addFeed(state,`${c.name} received quest: ${name}.`);state=readState();
   document.querySelector('#questName').value='';document.querySelector('#questDetail').value='';render()
  };
- document.querySelector('#sendMessage').onclick=()=>{
+ document.querySelector('#sendMessage').onclick=async()=>{
   const c=state.crawlers.find(x=>x.id===document.querySelector('#messageWho').value),text=document.querySelector('#messageText').value.trim();
   if(!text)return alert('Enter a System message.');
-  c.messages=c.messages||[];c.messages.unshift({text,at:new Date().toLocaleString(),read:false});
-  addFeed(state,`Private System message queued for ${c.name}.`);state=readState();document.querySelector('#messageText').value='';render()
+  try{await sendPrivateSystemMessage(c.id,text);addFeed(state,`Private System message delivered to ${c.name}.`);state=readState();document.querySelector('#messageText').value='';render()}
+  catch(e){alert('Message failed: '+e.message)}
  };
 
  document.querySelector('#loadNotes').onclick=()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);document.querySelector('#noteText').value=c.notes||''};
@@ -97,5 +97,6 @@
  document.querySelector('#reset').onclick=async()=>{if(confirm('Reset local cache on this browser? Cloud data will be loaded again.')){localStorage.removeItem(STORAGE_KEY);state=await getState();render()}};
  window.addEventListener('descent-crawler-update',e=>{const i=state.crawlers.findIndex(c=>String(c.id)===String(e.detail.id));if(i>=0)state.crawlers[i]=e.detail.data;else state.crawlers.push(e.detail.data);render()});
  window.addEventListener('descent-feed-update',()=>{const fresh=readState();if(fresh?.feed)state.feed=fresh.feed;render()});
+ window.addEventListener('descent-message-update',()=>{const fresh=readState();if(fresh?.crawlers)state.crawlers=fresh.crawlers;render()});
  render()
 })().catch(e=>document.querySelector('#party').innerHTML=`<div class="notice">${esc(e.message)}</div>`);
