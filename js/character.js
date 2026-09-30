@@ -7,7 +7,7 @@
  if(!c.startingStats)c.startingStats=JSON.parse(JSON.stringify(c.stats));
  if(c.manaBonus==null)c.manaBonus=0;
  if(c.maxMana==null)c.maxMana=Number(c.stats.INT||0)+Number(c.manaBonus||0);
- if(c.mana==null||Number(c.mana)===0)c.mana=Number(c.maxMana);
+ if(c.mana==null)c.mana=Number(c.maxMana);
  c.inventory=(c.inventory||[]).map(x=>typeof x==='string'?{name:x,type:'Item',qty:1,effect:''}:{...x,effect:x.effect||''});
  c.spells=(c.spells||[]).map(x=>typeof x==='string'?{name:x,distance:'',attribute:'INT',rank:1,effect:'',damage:'',manaCost:0}:{...x,manaCost:Number(x.manaCost||0)});
  if(c.healthFlatBonus==null)c.healthFlatBonus=0;
