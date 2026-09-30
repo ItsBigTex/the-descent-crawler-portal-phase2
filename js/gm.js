@@ -94,6 +94,8 @@
    c.achievements.push({name,reward,claimStatus:'UNCLAIMED'});addFeed(state,`${c.name} received staged loot reward: ${name}.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render();
  };
  
- document.querySelector('#reset').onclick=async()=>{if(confirm('Reset all Phase 1 local changes on this browser?')){localStorage.removeItem(STORAGE_KEY);state=await getState();render()}};
+ document.querySelector('#reset').onclick=async()=>{if(confirm('Reset local cache on this browser? Cloud data will be loaded again.')){localStorage.removeItem(STORAGE_KEY);state=await getState();render()}};
+ window.addEventListener('descent-crawler-update',e=>{const i=state.crawlers.findIndex(c=>String(c.id)===String(e.detail.id));if(i>=0)state.crawlers[i]=e.detail.data;else state.crawlers.push(e.detail.data);render()});
+ window.addEventListener('descent-feed-update',()=>{const fresh=readState();if(fresh?.feed)state.feed=fresh.feed;render()});
  render()
 })().catch(e=>document.querySelector('#party').innerHTML=`<div class="notice">${esc(e.message)}</div>`);

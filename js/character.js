@@ -24,6 +24,7 @@
  }
  let tab='character';
  const app=document.querySelector('#app');
+ window.addEventListener('descent-crawler-update',e=>{if(String(e.detail.id)!==String(c.id))return;const fresh=e.detail.data||{};for(const k of Object.keys(c))delete c[k];Object.assign(c,fresh);render()});
 
  function skillBonus(s){const rank=Number(s[1]||0),stat=s[2];return rank+(c.stats[stat]?modFor(c.stats[stat]):0)}
  function persist(){saveState(state)}
