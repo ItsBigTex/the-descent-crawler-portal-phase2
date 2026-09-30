@@ -158,18 +158,19 @@ ${request||'Generate a useful, flavorful reward appropriate to this crawler.'}`;
    try{const r=await fetch(url+'/api/tags');if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json(),names=(data.models||[]).map(x=>x.name);status.textContent=`LOCAL AI ONLINE // ${names.length} MODEL(S): ${names.slice(0,4).join(', ')||'none installed'}`}
    catch(e){status.textContent='LOCAL AI OFFLINE // '+(e.message||e)}
  };
- document.querySelector('#awardLoot').onclick=()=>{
+ document.querySelector('#awardLoot').onclick=async()=>{
    const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),title=document.querySelector('#lootTitle').value.trim(),contents=document.querySelector('#lootContents').value.trim();
    if(!title||!contents)return alert('Generate or enter a reward title and contents first.');
    c.achievements.push({name:title,reward:contents,claimStatus:'CLAIMED'});
    const blocks=contents.split(/\n\s*\n/).filter(Boolean);
    blocks.forEach(block=>{const lines=block.split('\n'),name=(lines[0]||'').trim();if(!name||/^GM Request Context:/i.test(name))return;const cat=(block.match(/Category:\s*(.+)/i)||[])[1]||'';const effect=(block.match(/Effect:\s*(.+)/i)||[])[1]||'';const qm=name.match(/^(.*?)(?:\s*[×x]\s*(\d+))$/i),base=(qm?qm[1]:name).trim(),qty=qm?+qm[2]:1;if(/equipment|armor|weapon|gear|utility/i.test(cat)&&!/consumable/i.test(cat)){c.equipment.push({name:base,type:cat,effect})}else{const ex=c.inventory.find(x=>String(x.name).toLowerCase()===base.toLowerCase());if(ex)ex.qty=Number(ex.qty||0)+qty;else c.inventory.push({name:base,type:cat||'Reward',qty})}});
-   addFeed(state,`${c.name} claimed ${title}; generated contents were added to Equipment/Inventory.`);saveState(state);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render();
+   try{await saveCrawlerNow(c);addFeed(state,`${c.name} claimed ${title}; generated contents were added directly to Equipment/Inventory.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render()}catch(e){alert('Direct loot award failed: '+e.message)}
  };
- document.querySelector('#stageLoot').onclick=()=>{
-   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),name=document.querySelector('#lootTitle').value.trim(),reward=document.querySelector('#lootContents').value.trim();
+ document.querySelector('#stageLoot').onclick=async()=>{
+   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),name=document.querySelector('#lootTitle').value.trim(),reward=document.querySelector('#lootContents').value.trim(),tier=document.querySelector('#lootTier').value;
    if(!name||!reward)return alert('Enter both a reward title and generated contents.');
-   c.achievements.push({name,reward,claimStatus:'UNCLAIMED'});addFeed(state,`${c.name} received staged loot reward: ${name}.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render();
+   c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:`loot-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,name,tier,contents:reward,opened:false,awardedAt:new Date().toISOString()});
+   try{await saveCrawlerNow(c);addFeed(state,`${c.name} received a sealed ${tier} loot box: ${name}.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render()}catch(e){alert('Loot Box staging failed: '+e.message)}
  };
  
  document.querySelector('#reset').onclick=async()=>{if(confirm('Reset local cache on this browser? Cloud data will be loaded again.')){localStorage.removeItem(STORAGE_KEY);state=await getState();render()}};
