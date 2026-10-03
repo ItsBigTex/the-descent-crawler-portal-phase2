@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/crawler-item-instance-v1.0",
+  "title": "Crawler Owned Item Instance v1.0",
+  "type": "object",
+  "required": [
+    "instance_id",
+    "definition_id",
+    "crawler_id",
+    "quantity",
+    "equipped"
+  ],
+  "properties": {
+    "instance_id": {
+      "type": "string"
+    },
+    "definition_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "crawler_id": {
+      "type": "string"
+    },
+    "snapshot": {
+      "type": "object"
+    },
+    "quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "custom_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "equipped": {
+      "type": "boolean"
+    },
+    "equipped_slot": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "equipped_position": {
+      "type": [
+        "string",
+        "integer",
+        "null"
+      ]
+    },
+    "hotlist_slots": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10
+      },
+      "uniqueItems": true
+    },
+    "charges_current": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "condition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "acquired_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_event_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

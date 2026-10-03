@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/npc-definition-v1.0",
+  "title": "The Descent NPC Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "npc_type",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "npc"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "npc_type": {
+      "enum": [
+        "Game Guide",
+        "Vendor",
+        "Quest NPC",
+        "Public Relations Agent",
+        "Interview/Media",
+        "Civilian",
+        "Authority",
+        "Rival Crawler",
+        "Other"
+      ]
+    },
+    "role": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "floor": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "faction": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "friendly",
+        "neutral",
+        "hostile",
+        "missing",
+        "dead",
+        "inactive"
+      ]
+    },
+    "appearance": {
+      "type": "string"
+    },
+    "personality": {
+      "type": "string"
+    },
+    "motivation": {
+      "type": "string"
+    },
+    "behavior_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "restrictions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dialogue_cues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "secrets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quest_hooks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inventory_definition_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "combat_profile_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional reference to an Adversary Definition when the NPC has a combat stat block."
+    },
+    "source_authority": {
+      "enum": [
+        "RAW_CORE",
+        "RAW_TOOLKIT",
+        "THE_DESCENT",
+        "GM_CREATED",
+        "AI_GENERATED",
+        "HOMEBREW"
+      ]
+    },
+    "source_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

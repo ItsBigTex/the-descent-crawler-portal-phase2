@@ -25,3 +25,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .spellform{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}
 .spellform h3,.spellform .wide{grid-column:1/-1}
 @media(max-width:720px){.spellform{grid-template-columns:1fr}}
+
+@keyframes p321Dice{0%{transform:rotate(-18deg) scale(.75);opacity:.35}60%{transform:rotate(12deg) scale(1.18)}100%{transform:rotate(0) scale(1);opacity:1}} .p3-die.rolling{animation:p321Dice .38s ease-out}
+/* Phase 3.4 live System Event presentation */
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:10020;display:grid;place-items:center;padding:20px}
+.popupbox{width:min(720px,100%);background:linear-gradient(180deg,#17191e,#090a0c);border:2px solid var(--red);border-radius:12px;padding:26px;box-shadow:0 0 60px rgba(227,59,50,.28);animation:systemEventIn .22s ease-out}
+.popup[data-priority="critical"] .popupbox{border-width:3px;box-shadow:0 0 80px rgba(227,59,50,.5)}
+.popup[data-priority="high"] .popupbox{border-color:var(--amber)}
+.popup[data-presentation="banner"]{place-items:start center;background:rgba(0,0,0,.35);padding-top:8vh}.popup[data-presentation="banner"] .popupbox{width:min(900px,94vw);text-align:center}
+@keyframes systemEventIn{from{transform:translateY(-16px) scale(.97);opacity:0}to{transform:none;opacity:1}}

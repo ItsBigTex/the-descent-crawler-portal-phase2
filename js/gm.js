@@ -1,182 +1,466 @@
-
+window.DESCENT_GM_BUILD='4.3';
 (async()=>{
- let state=await getState();
- const party=document.querySelector('#party'),feed=document.querySelector('#feed');
- const selects=['who','questWho','messageWho','lootWho','noteWho'].map(id=>document.querySelector('#'+id));
- const lootProfiles={
-  phillip:'Runs a collectibles/game store; long shifts; teaches card games; strong sales/social skills, number crunching, business, fantasy/game lore, and detail-heavy analysis.',
-  philip:'Runs a collectibles/game store; long shifts; teaches card games; strong sales/social skills, number crunching, business, fantasy/game lore, and detail-heavy analysis.',
-  jarod:'Repair and maintenance technician with nuclear electronics/submarine background; engineering, troubleshooting, woodworking, schematics, shooting, driving, hunting and strategy.',
-  marvin:'Horror and Warhammer fan; painting and war-game strategy; lower physical confidence but useful tactical/genre instincts.',
-  harold:'Animal handling and mechanical knowledge; corrections/self-defense experience; hobbies include card games, knife making and video games.',
-  mike:'Paranormal/cryptid/alien/ghost enthusiast; strong agility/reflexes and problem solving; conspiracy and ghost-hunting interests.',
-  brad:'Hands-on communications/electronics/computers/security-tech troubleshooter; gaming, hunting, camping, radios and tabletop RPGs; calm under pressure and resourceful.'
- };
- function normalize(){state.crawlers.forEach(c=>{if(!Array.isArray(c.messages))c.messages=[];if(!Array.isArray(c.quests))c.quests=[];if(c.pendingStatPoints==null)c.pendingStatPoints=0})}
- function render(){
-  normalize();
-  party.innerHTML=state.crawlers.map(c=>`<div class="panel"><div class="tag">${esc(c.systemTitle)}</div><h2>${esc(c.name)}</h2><div class="row"><b>HP ${c.hp}/${c.maxHp}</b><span class="pill">LV ${c.level}</span></div><div class="row"><span class="muted small">QUESTS ${c.quests.filter(q=>String(q.status).toLowerCase()!=='complete').length}</span><span class="muted small">UNREAD MSG ${(c.messages||[]).filter(m=>!m.read).length}</span></div><div class="controls"><button data-hp="${c.id}" data-d="-1">-1 HP</button><button data-hp="${c.id}" data-d="1">+1 HP</button><a class="btn" href="./character.html?id=${c.id}">OPEN</a></div></div>`).join('');
-  const opts=state.crawlers.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  selects.forEach(s=>{const selected=s.value;s.innerHTML=opts;if(selected&&state.crawlers.some(c=>String(c.id)===String(selected)))s.value=selected});
-  feed.innerHTML=state.feed.length?state.feed.map(x=>`<div class="feeditem"><div>${esc(x.text)}</div><div class="tag">${esc(x.at)}</div></div>`).join(''):'<p class="muted">No activity yet.</p>';
-  document.querySelectorAll('[data-hp]').forEach(b=>b.onclick=()=>{const c=state.crawlers.find(x=>x.id===b.dataset.hp),d=+b.dataset.d;c.hp=Math.max(0,Math.min(c.maxHp,c.hp+d));addFeed(state,`${c.name} ${d>0?'healed':'took damage'} (${d>0?'+':''}${d} HP).`);state=readState();render()})
+let state=await getState(),workspace='dashboard';
+let aiDraft=null;
+const AI_CFG_KEY='descentAIContentV3_6';
+function aiCfg(){try{return {...{url:'http://localhost:11434',model:'llama3.2:3b'},...JSON.parse(localStorage.getItem(AI_CFG_KEY)||'{}')}}catch{return {url:'http://localhost:11434',model:'llama3.2:3b'}}}
+function saveAiCfg(x){localStorage.setItem(AI_CFG_KEY,JSON.stringify(x))}
+
+const LIB_KEY='descentContentLibraryV3_2',ACTIVE_KEY='descentActiveEncounterV3_2';
+let cloudContentReady=false,cloudLibrary=[],cloudActive=null,cloudStatus='LOCAL FALLBACK';
+const CONTENT_TABLE={item:'content_items',npc:'content_npcs',adversary:'content_adversaries',encounter:'content_encounters',quest:'content_quests',achievement:'content_achievements',loot_box:'content_loot_boxes',system_event:'system_events'};
+const RAW_SLOTS=['Head','Torso','Arms','Hands/Holding','Legs','Feet','Accessories'];
+const TIERS=['mundane','bronze','silver','gold','platinum','legendary','celestial'];
+const POWER={2:{Weak:1,Moderate:2,Strong:3,Overwhelming:'4+'},3:{Weak:2,Moderate:3,Strong:5,Overwhelming:'6+'},4:{Weak:2,Moderate:4,Strong:6,Overwhelming:'8+'},5:{Weak:3,Moderate:5,Strong:8,Overwhelming:'10+'},6:{Weak:3,Moderate:6,Strong:9,Overwhelming:'12+'},7:{Weak:4,Moderate:7,Strong:11,Overwhelming:'14+'}};
+const escA=esc;
+function localLibrary(){try{return JSON.parse(localStorage.getItem(LIB_KEY)||'[]')}catch{return[]}}
+function library(){return cloudContentReady?cloudLibrary:localLibrary()}
+async function cloudUpsertContent(x){
+ if(!cloudContentReady||!DSCloud.client)return;const table=CONTENT_TABLE[x.content_type];if(!table)return;
+ const row={id:x.id,name:x.name||x.title||x.event_type||x.id,data:x,source_authority:x.source_authority||'THE_DESCENT'};
+ if(x.content_type==='item')Object.assign(row,{category:x.category||'misc',gear_slot:x.gear_slot||null,tier:x.loot_tier||null,floor_min:x.floor_min||null});
+ if(x.content_type==='npc')Object.assign(row,{npc_type:x.npc_type||null,floor_min:x.floor||null});
+ if(x.content_type==='adversary')Object.assign(row,{classification:x.classification||null,floor_min:x.floor_min||null});
+ if(x.content_type==='encounter')Object.assign(row,{floor_min:x.floor||null});
+ if(x.content_type==='quest')Object.assign(row,{scope:x.scope||'Individual'});
+ if(x.content_type==='achievement')Object.assign(row,{reward_tier:x.reward?.tier||null});
+ if(x.content_type==='loot_box')Object.assign(row,{tier:x.tier||'bronze',box_type:x.box_type||null});
+ if(x.content_type==='system_event')Object.assign(row,{event_type:x.event_type,status:x.status||'delivered',recipient_id:x.recipient_id||null,priority:x.priority||'normal',presentation:x.presentation||'popup',related_object_type:x.related_object_type||null,related_object_id:x.related_object_id||null});
+ const {error}=await DSCloud.client.from(table).upsert(row);if(error)throw error;
+}
+function saveLibrary(x){
+ localStorage.setItem(LIB_KEY,JSON.stringify(x));if(!cloudContentReady){cloudLibrary=x;return}
+ const previous=library._last||[];cloudLibrary=x;const prevIds=new Set(previous.map(z=>z.id)),nowIds=new Set(x.map(z=>z.id));
+ x.filter(z=>!prevIds.has(z.id)||JSON.stringify(previous.find(q=>q.id===z.id))!==JSON.stringify(z)).forEach(z=>cloudUpsertContent(z).catch(e=>console.error('Content upsert failed',e)));
+ previous.filter(z=>!nowIds.has(z.id)).forEach(z=>{const t=CONTENT_TABLE[z.content_type];if(t)DSCloud.client.from(t).delete().eq('id',z.id).then(({error})=>{if(error)console.error(error)})});
+ library._last=JSON.parse(JSON.stringify(x));
+}
+function active(){if(cloudContentReady)return cloudActive;try{return JSON.parse(localStorage.getItem(ACTIVE_KEY)||'null')}catch{return null}}
+function saveActive(x){x?localStorage.setItem(ACTIVE_KEY,JSON.stringify(x)):localStorage.removeItem(ACTIVE_KEY);cloudActive=x;if(cloudContentReady&&DSCloud.client){if(x)DSCloud.client.from('active_encounters').upsert({id:x.instance_id,definition_id:x.definition_id||null,name:x.name,status:x.status||'active',round:x.round||1,phase:x.phase||'mobs',floor:x.floor||1,data:x}).then(({error})=>{if(error)console.error(error)});else DSCloud.client.from('active_encounters').delete().eq('status','active').then(({error})=>{if(error)console.error(error)})}}
+async function initContentCloud(){
+ if(!DSCloud.configured()||!DSCloud.client){cloudStatus='LOCAL FALLBACK';return}
+ try{const all=[];for(const [type,table] of Object.entries(CONTENT_TABLE)){const {data,error}=await DSCloud.client.from(table).select('*').order('created_at',{ascending:true});if(error)throw error;(data||[]).forEach(r=>all.push(r.data||{...r,content_type:type}))}
+ cloudLibrary=all;library._last=JSON.parse(JSON.stringify(all));const {data:a,error:ae}=await DSCloud.client.from('active_encounters').select('*').eq('status','active').order('created_at',{ascending:false}).limit(1);if(ae)throw ae;cloudActive=a?.[0]?.data||null;cloudContentReady=true;cloudStatus='SUPABASE CONTENT ENGINE';
+ const local=localLibrary();if(!all.length&&local.length){for(const x of local)await cloudUpsertContent(x);cloudLibrary=local;library._last=JSON.parse(JSON.stringify(local))}localStorage.setItem(LIB_KEY,JSON.stringify(cloudLibrary));
+ }catch(e){console.error('Content Engine cloud init failed',e);cloudContentReady=false;cloudStatus='LOCAL FALLBACK // RUN 3.3 MIGRATION'}}
+
+async function loadHomecomingPack(){
+ try{
+  const res=await fetch('./data/homecoming-content-pack.json?v=4.0');if(!res.ok)throw new Error('HTTP '+res.status);
+  const pack=await res.json(),records=pack.records||[],lib=library(),byId=new Map(lib.map(x=>[x.id,x]));
+  let added=0,updated=0;
+  for(const x of records){if(byId.has(x.id))updated++;else added++;byId.set(x.id,x)}
+  const merged=[...byId.values()];
+  if(cloudContentReady){for(const x of records)await cloudUpsertContent(x);cloudLibrary=merged;library._last=JSON.parse(JSON.stringify(merged))}
+  localStorage.setItem(LIB_KEY,JSON.stringify(merged));
+  feed(`Floor One content pack loaded: ${pack.name} // ${records.length} records // ${added} new // ${updated} updated.`);
+  alert(`${pack.name} loaded.\n${records.length} records\n${added} new // ${updated} updated`);
+  render();
+ }catch(e){alert('Homecoming content pack failed to load: '+e.message)}
+}
+
+const HOME_DYNAMIC_KEY='descentHomecomingDynamicV4_1';
+function dynamicState(){try{return {...{escalation:0,pack:null},...JSON.parse(localStorage.getItem(HOME_DYNAMIC_KEY)||'{}')}}catch{return {escalation:0,pack:null}}}
+function saveDynamicState(x){localStorage.setItem(HOME_DYNAMIC_KEY,JSON.stringify(x))}
+async function loadDynamicHomecoming(){
+ try{
+  const res=await fetch('./data/dynamic-homecoming-4.1.json?v=4.1');if(!res.ok)throw new Error('HTTP '+res.status);
+  const pack=await res.json(),lib=library(),byId=new Map(lib.map(x=>[x.id,x]));let added=0,updated=0;
+  for(const x of (pack.records||[])){if(byId.has(x.id))updated++;else added++;byId.set(x.id,x)}
+  const merged=[...byId.values()];
+  if(cloudContentReady){for(const x of (pack.records||[]))await cloudUpsertContent(x);cloudLibrary=merged;library._last=JSON.parse(JSON.stringify(merged))}
+  localStorage.setItem(LIB_KEY,JSON.stringify(merged));saveDynamicState({escalation:dynamicState().escalation||0,pack});
+  feed(`Dynamic Homecoming loaded: ${pack.tables.length} tables // ${pack.records.length} achievements // ${pack.escalation_states.length} escalation states.`);
+  alert(`Dynamic Homecoming 4.1 loaded.\n${pack.tables.length} reaction tables\n${pack.records.length} achievements\n${pack.escalation_states.length} escalation states`);
+  workspace='tables';render();
+ }catch(e){alert('Dynamic Homecoming failed to load: '+e.message)}
+}
+
+const DIRECTOR_KEY='descentDungeonDirectorV4_2';
+function directorState(){try{return {...{pulse:0,last:null},...JSON.parse(localStorage.getItem(DIRECTOR_KEY)||'{}')}}catch{return {pulse:0,last:null}}}
+function saveDirectorState(x){localStorage.setItem(DIRECTOR_KEY,JSON.stringify(x))}
+const DIRECTOR_STATES={
+ 0:{tables:['Street Encounters','NPC Reactions','Rumors & Clues','Loot Discovery'],encounters:['f1_e_dogs','f1_e_porches','f1_e_carts'],quests:['f1_q_town','f1_q_pump7','f1_q_school'],achievements:['f1_dyn_a_04','f1_dyn_a_09','f1_dyn_a_16','f1_dyn_a_54'],tone:'Subtle. Let Brownwood almost pass for normal.'},
+ 1:{tables:['Environmental Weirdness','Memory Bleed','Rumors & Clues','Failure Consequences'],encounters:['f1_e_halls','f1_e_receipts','f1_e_lanes'],quests:['f1_q_town','f1_q_receipt','f1_q_bowling'],achievements:['f1_dyn_a_15','f1_dyn_a_18','f1_dyn_a_49','f1_dyn_a_58'],tone:'Contradictions should accumulate faster than explanations.'},
+ 2:{tables:['System Interruptions','Mob Complications','Environmental Weirdness','NPC Reactions'],encounters:['f1_e_pumpboss','f1_e_booking','f1_e_range'],quests:['f1_q_blackdoor','f1_q_jail','f1_q_gunstore'],achievements:['f1_dyn_a_27','f1_dyn_a_50','f1_dyn_a_57','f1_dyn_a_59'],tone:'The System has noticed the investigation. Make its attention personal, not omniscient.'},
+ 3:{tables:['Mob Complications','Rest Complications','System Interruptions','Failure Consequences'],encounters:['f1_e_lockdown','f1_e_warden','f1_e_arena2'],quests:['f1_q_blackdoor','f1_q_nadia','f1_q_coliseum'],achievements:['f1_dyn_a_42','f1_dyn_a_48','f1_dyn_a_51','f1_dyn_a_60'],tone:'Pressure rises. Telegraph closures and keep at least one actionable route open.'},
+ 4:{tables:['System Interruptions','Mob Complications','Memory Bleed','Rumors & Clues'],encounters:['f1_e_bleachers','f1_e_caesar','f1_e_cerberuff','f1_e_finalframe'],quests:['f1_q_stadium','f1_q_home'],achievements:['f1_dyn_a_21','f1_dyn_a_44','f1_dyn_a_53','f1_dyn_a_56'],tone:'Payoff mode. Reuse clues, jokes, and consequences the party already created.'}
+};
+function directorPick(arr,seed,count=2){if(!arr?.length)return[];const out=[];for(let i=0;i<Math.min(count,arr.length);i++)out.push(arr[(seed+i)%arr.length]);return out}
+function directorPulse(){
+ const ds=dynamicState(),pack=ds.pack,st=Math.max(0,Math.min(4,Number(ds.escalation||0))),cfg=DIRECTOR_STATES[st],d=directorState(),pulse=Number(d.pulse||0)+1,lib=library();
+ const tableNames=directorPick(cfg.tables,pulse,2),tables=tableNames.map(n=>pack?.tables?.find(t=>t.name===n)).filter(Boolean);
+ const encounterIds=directorPick(cfg.encounters,pulse,2),questIds=directorPick(cfg.quests,pulse+1,2),achievementIds=directorPick(cfg.achievements,pulse+2,2);
+ const byId=id=>lib.find(x=>x.id===id);
+ const avgHealth=state.crawlers.length?state.crawlers.reduce((a,c)=>a+Number(c.healthSlotsRemaining||0),0)/state.crawlers.length:10;
+ const activeQs=state.crawlers.reduce((n,c)=>n+(c.quests||[]).filter(q=>String(q.status||'ACTIVE').toUpperCase()==='ACTIVE').length,0);
+ const notes=[];
+ if(active())notes.push('An encounter is already active. Favor complications, System commentary, or aftermath instead of staging another fight.');
+ if(avgHealth<=5)notes.push('Party average health is at or below half. Prefer clues, social pressure, or a Weak complication over stacking combat.');
+ if(activeQs>=state.crawlers.length)notes.push('The party already has many active quest assignments. Surface clues toward existing work before adding another quest.');
+ if(!notes.length)notes.push('No immediate pressure flags detected. Use pacing and player choices to decide whether to escalate.');
+ const result={pulse,state:st,tone:cfg.tone,tables,encounters:encounterIds.map(byId).filter(Boolean),quests:questIds.map(byId).filter(Boolean),achievements:achievementIds.map(byId).filter(Boolean),notes,avgHealth,activeQs,generated_at:new Date().toISOString()};
+ saveDirectorState({pulse,last:result});return result
+}
+function director(){
+ const dyn=dynamicState(),pack=dyn.pack,states=pack?.escalation_states||[],cur=states[Math.max(0,Math.min(Number(dyn.escalation||0),states.length-1))],d=directorState(),p=d.last;
+ if(!pack)return `<section class="panel"><span class="tag">DUNGEON DIRECTOR</span><h2>4.1 Dynamic Pack Required</h2><p class="muted">Load Dynamic Homecoming 4.1 from the Dashboard first. The Director reads those tables and escalation states.</p><button data-jump="dashboard" class="primary">OPEN DASHBOARD</button></section>`;
+ const card=(label,x,kind)=>`<div class="gm-library-row"><div><span class="tag">${label}</span><h3>${escA(x.name||x.title)}</h3><div class="muted">${escA(x.description||x.system_description||x.gm_end_goal||'Existing Content Engine record.')}</div></div><div class="controls"><button data-director-open="${kind}|${x.id}">OPEN</button></div></div>`;
+ return `<section class="gm-two"><div class="panel"><span class="tag">DUNGEON DIRECTOR // ADVISORY</span><h2>${cur?`STATE ${cur.state} // ${escA(cur.name)}`:'HOMECOMING'}</h2><p>${escA(cur?.summary||'')}</p><div class="notice"><b>DIRECTOR TONE</b> — ${escA(DIRECTOR_STATES[Number(dyn.escalation||0)]?.tone||'React to player choices.')}</div><p class="muted small">The Director never deploys encounters, awards achievements, sends messages, or advances escalation by itself. You remain the GM.</p><button id="directorPulse" class="primary">RUN DIRECTOR PULSE</button></div>
+ <div class="panel"><span class="tag">PARTY PRESSURE</span><h2>Live Read</h2><div class="gm-cardstats"><span>AVG HEALTH ${p?Number(p.avgHealth).toFixed(1):'—'}/10 SLOTS</span><span>ACTIVE QUESTS ${p?.activeQs??'—'}</span><span>ENCOUNTER ${active()?'ACTIVE':'NONE'}</span></div>${p?`<div class="notice small">${p.notes.map(n=>`• ${escA(n)}`).join('<br>')}</div>`:'<p class="muted">Run a pulse to analyze the current party state.</p>'}</div></section>
+ ${p?`<section class="panel"><span class="tag">DIRECTOR PULSE ${p.pulse}</span><h2>What the Dungeon could surface next</h2><div class="notice"><b>PACING</b> — ${escA(p.tone)}</div></section>
+ <section class="gm-two"><div class="panel"><span class="tag">REACTIONS</span><h2>Context Tables</h2>${p.tables.map(t=>`<div class="gm-library-row"><div><b>${escA(t.name)}</b><div class="muted small">d${t.die} // ${t.results.length} results</div></div><button data-director-table="${t.id}">ROLL</button></div>`).join('')||'<p class="muted">No table suggestions loaded.</p>'}<div id="directorRoll" class="gm-roll">Roll a suggested table when you want an interruption.</div></div>
+ <div class="panel"><span class="tag">ENCOUNTERS</span><h2>Available Pressure</h2>${p.encounters.map(x=>card('ENCOUNTER',x,'encounters')).join('')||'<p class="muted">No matching encounter records. Load the Homecoming content pack.</p>'}</div></section>
+ <section class="gm-two"><div class="panel"><span class="tag">QUEST THREADS</span><h2>Existing Threads to Surface</h2>${p.quests.map(x=>card('QUEST',x,'rewards')).join('')||'<p class="muted">No matching quest records.</p>'}</div>
+ <div class="panel"><span class="tag">ACHIEVEMENT WATCH</span><h2>Conditions Worth Watching</h2>${p.achievements.map(x=>card('ACHIEVEMENT',x,'rewards')).join('')||'<p class="muted">No matching achievement records.</p>'}</div></section>`:`<section class="panel"><span class="tag">READY</span><h2>Run a Director Pulse</h2><p class="muted">A pulse reads escalation, party health, active quests, active combat, and the existing Homecoming library, then surfaces options without changing player state.</p></section>`}`;
+}
+
+function id(prefix){return prefix+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)}
+function crawler(cid){return state.crawlers.find(c=>String(c.id)===String(cid))}
+function opts(selected=''){return state.crawlers.map(c=>`<option value="${escA(c.id)}" ${String(c.id)===String(selected)?'selected':''}>${escA(c.name)}</option>`).join('')}
+function feed(text){addFeed(state,text);state=readState()||state}
+function normalize(){for(const c of state.crawlers){c.quests=c.quests||[];c.achievements=c.achievements||[];c.lootBoxes=c.lootBoxes||[];c.messages=c.messages||[];if(c.pendingStatPoints==null)c.pendingStatPoints=0;if(c.healthSlotsRemaining==null)c.healthSlotsRemaining=10}}
+function header(){
+ normalize();const a=active(),lib=library();
+ const levels=[...new Set(state.crawlers.map(c=>c.level))],floors=[...new Set(state.crawlers.map(c=>c.floor))];
+ document.querySelector('#partySummary').textContent=`${state.crawlers.length} CRAWLERS // LV ${levels.join('/')} // FLOOR ${floors.join('/')}`;
+ document.querySelector('#encounterSummary').textContent=a?`${a.name} // ROUND ${a.round} // ${a.phase.toUpperCase()}`:'NONE';
+ document.querySelector('#librarySummary').textContent=`${lib.length} RECORD${lib.length===1?'':'S'}`;
+ document.querySelector('#gmClock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' // '+cloudStatus;
+}
+function card(c){const cm=modFor(Number(c.stats?.CON||1));return `<article class="gm-crawler-card"><div><span class="tag">${escA(c.systemTitle||'CRAWLER')}</span><h3>${escA(c.name)}</h3></div><div class="gm-minihealth">${Array.from({length:10},(_,i)=>`<i class="${i<Number(c.healthSlotsRemaining||0)?'on':''}"></i>`).join('')}</div><div class="gm-cardstats"><span>HP ${Number(c.healthSlotsRemaining||0)*cm}/${cm*10}</span><span>LV ${c.level}</span><span>F${c.floor}</span><span>${c.pendingStatPoints||0} BANKED</span></div><div class="controls"><button data-hslot="${c.id}" data-d="-1">− SLOT</button><button data-hslot="${c.id}" data-d="1">+ SLOT</button><a class="btn" href="./character.html?id=${encodeURIComponent(c.id)}">OPEN HUD</a></div></article>`}
+function dashboard(){
+ const a=active();
+ return `<section class="gm-dashboard"><div class="gm-party">${state.crawlers.map(card).join('')}</div>
+ <aside class="gm-side"><div class="panel"><div class="tag">CONTENT ENGINE</div><h2>${escA(cloudStatus)}</h2><div class="muted small">${cloudContentReady?'Shared Supabase library is authoritative. Local storage is retained as a browser cache.':'Run the Phase 3.3 SQL migration, then reload. Existing local content remains available.'}</div>${cloudContentReady?'<button id="syncContentCloud">SYNC CONTENT NOW</button>':''}<button id="loadHomecomingPack" class="primary">LOAD HOMECOMING PACK</button><div class="muted small">Phase 4.0 curated Floor One content // safe to re-run; matching IDs update in place.</div><button id="loadDynamicHomecoming" class="primary">LOAD DYNAMIC HOMECOMING 4.1</button><div class="muted small">Reaction tables + 60 achievements + escalation states + safe crawler hooks. Safe to re-run.</div></div><div class="panel"><div class="tag">DUNGEON FEED</div><div class="feed">${(state.feed||[]).slice(0,18).map(x=>`<div class="feeditem"><b>${escA(x.at||'')}</b><br>${escA(x.text)}</div>`).join('')}</div></div>
+ <div class="panel"><div class="tag">ENCOUNTER CONTROL</div>${a?`<h2>${escA(a.name)}</h2><div class="gm-encounter-readout"><b>ROUND ${a.round}</b><span>${escA(a.phase.toUpperCase())}</span></div>
+ <div class="gm-combatants">${(a.participants||[]).filter(p=>p.kind==='adversary').map(p=>`<div class="gm-combatant"><div><b>${escA(p.name)}</b><span class="pill">DR ${p.dr||0}</span><span class="pill">EVADE ${escA(p.evade||'—')}</span></div><div class="gm-minihealth">${Array.from({length:p.health.slots_max},(_,i)=>`<i class="${i<p.health.slots_current?'on':''}"></i>`).join('')}</div><div class="small muted">${p.health.slots_current}/${p.health.slots_max} HEALTH SLOTS${(p.conditions||[]).length?' // '+escA(p.conditions.join(', ')):''}</div><div class="controls"><button data-mobslot="${p.participant_id}" data-d="-1">− SLOT</button><button data-mobslot="${p.participant_id}" data-d="1">+ SLOT</button><select data-atkselect="${p.participant_id}">${(p.attacks||[]).map((a,i)=>`<option value="${i}">${escA(a.name)}</option>`).join('')}</select><button data-mobattack="${p.participant_id}">ATTACK</button><button data-condition="${p.participant_id}">CONDITION</button></div></div>`).join('')||'<p class="muted">No adversaries instantiated.</p>'}</div>
+ ${a.phase==='crawlers'?`<div class="gm-actions-board">${state.crawlers.map(c=>`<div><b>${escA(c.name)}</b><span>${Number(a.actions_remaining?.[c.id]??2)} ACTIONS</span><button data-spendaction="${c.id}">SPEND</button><button data-resetaction="${c.id}">RESET</button></div>`).join('')}</div>`:''}
+ <div class="controls"><button id="nextPhase" class="primary">NEXT PHASE</button><button id="resetRoundActions">RESET ACTIONS</button><button id="endEncounter" class="danger">RESOLVE</button></div>`:`<h2>NO ACTIVE ENCOUNTER</h2><p class="muted">Stage an encounter from the Encounter workspace.</p><button data-jump="encounters" class="primary">OPEN ENCOUNTERS</button>`}</div></aside></section>`;
+}
+function session(){
+ const lib=library(),a=active(),quests=lib.filter(x=>x.content_type==='quest'),achs=lib.filter(x=>x.content_type==='achievement'),boxes=lib.filter(x=>x.content_type==='loot_box');
+ const activeQs=state.crawlers.flatMap(c=>(c.quests||[]).filter(q=>String(q.status||'ACTIVE').toUpperCase()==='ACTIVE').map(q=>({c,q})));
+ return `<section class="gm-session">
+ <div class="gm-session-grid">
+  <div class="panel"><span class="tag">LIVE PARTY CONTROL</span><h2>${state.crawlers.length} Crawlers</h2><div class="gm-live-party">${state.crawlers.map(c=>`<div class="gm-live-row"><div><b>${escA(c.name)}</b><div class="muted small">LV ${c.level} // FLOOR ${c.floor} // MANA ${Number(c.mana??0)}/${Number(c.stats?.INT||0)}</div></div><div class="gm-minihealth">${Array.from({length:10},(_,i)=>`<i class="${i<Number(c.healthSlotsRemaining||0)?'on':''}"></i>`).join('')}</div><div class="controls"><button data-hslot="${c.id}" data-d="-1">− HP SLOT</button><button data-hslot="${c.id}" data-d="1">+ HP SLOT</button>${a&&a.phase==='crawlers'?`<button data-spendaction="${c.id}">SPEND ACTION</button>`:''}<a class="btn" href="./character.html?id=${encodeURIComponent(c.id)}">HUD</a></div></div>`).join('')}</div></div>
+  <div class="panel"><span class="tag">SYSTEM EVENT COMPOSER</span><h2>Push to HUD</h2><div class="field"><label>Recipients</label><select id="liveRecipients"><option value="PARTY">PARTY</option>${opts()}</select></div><div class="gm-formgrid"><div class="field"><label>Event</label><select id="liveEventType"><option value="system_announcement">System Announcement</option><option value="notification">Notification</option><option value="private_message">System Message</option><option value="health_warning">Health Warning</option><option value="mana_warning">Mana Warning</option></select></div><div class="field"><label>Presentation</label><select id="livePresentation"><option value="popup">Popup</option><option value="banner">Banner</option></select></div><div class="field"><label>Priority</label><select id="livePriority"><option>normal</option><option>high</option><option>critical</option><option>low</option></select></div></div><div class="field"><label>Title</label><input id="liveTitle" value="SYSTEM ANNOUNCEMENT"></div><div class="field"><label>Message</label><textarea id="liveBody" rows="5"></textarea></div><button id="liveSend" class="primary">SEND LIVE EVENT</button></div>
+ </div>
+ <div class="gm-session-grid">
+  <div class="panel"><span class="tag">ACTIVE QUEST CONTROL</span><h2>${activeQs.length} Active Assignments</h2>${activeQs.length?activeQs.map(({c,q})=>`<div class="gm-quest-live"><div><b>${escA(q.name)}</b><span class="pill">${escA(c.name)}</span></div>${(q.objectives||[]).length?(q.objectives||[]).map((o,i)=>`<label class="gm-objective"><input type="checkbox" data-qobj="${c.id}|${q.id||q.definition_id||q.name}|${i}" ${String(o.status).toUpperCase()==='COMPLETE'?'checked':''}> ${escA(o.text||o.name||'Objective')}</label>`).join(''):'<div class="muted small">No structured objectives on this quest instance.</div>'}<div class="controls"><button data-qcomplete="${c.id}|${q.id||q.definition_id||q.name}" class="primary">COMPLETE</button><button data-qfail="${c.id}|${q.id||q.definition_id||q.name}" class="danger">FAIL</button></div></div>`).join(''):'<p class="muted">No active crawler quests.</p>'}</div>
+  <div class="panel"><span class="tag">QUICK REWARD</span><h2>Library Deployment</h2><div class="field"><label>Recipient</label><select id="quickRecipient"><option value="PARTY">PARTY</option>${opts()}</select></div><div class="field"><label>Definition</label><select id="quickReward"><option value="">Select Achievement / Loot Box / Quest</option>${[...achs,...boxes,...quests].map(x=>`<option value="${x.id}">${escA(x.content_type.toUpperCase().replace('_',' '))} // ${escA(x.name)}</option>`).join('')}</select></div><button id="quickDeploy" class="primary">DEPLOY NOW</button><hr><span class="tag">ENCOUNTER RESOLUTION</span>${a?`<h3>${escA(a.name)}</h3><div class="field"><label>Quest to complete (optional)</label><select id="resolveQuest"><option value="">None</option>${quests.map(x=>`<option value="${x.id}">${escA(x.name)}</option>`).join('')}</select></div><div class="field"><label>Achievement to award (optional)</label><select id="resolveAch"><option value="">None</option>${achs.map(x=>`<option value="${x.id}">${escA(x.name)}</option>`).join('')}</select></div><button id="resolveWorkflow" class="primary">REVIEW + RESOLVE ENCOUNTER</button>`:'<p class="muted">No active encounter.</p>'}</div>
+ </div>
+ <div class="panel"><span class="tag">SESSION LOG</span><h2>Chronological Activity</h2><div class="gm-session-log">${(state.feed||[]).slice(0,60).map(x=>`<div class="feeditem"><b>${escA(x.at||'')}</b> ${escA(x.text||'')}</div>`).join('')||'<p class="muted">No activity yet.</p>'}</div></div>
+ </section>`;
+}
+function findQuestInstance(c,key){return (c.quests||[]).find(q=>String(q.id||q.definition_id||q.name)===String(key))}
+async function deployRewardToTargets(x,targets){
+ for(const c of targets){
+  if(x.content_type==='quest'){c.quests=c.quests||[];c.quests.push({id:id('questinst'),definition_id:x.id,name:x.name,detail:x.description,status:'ACTIVE',objectives:(x.objectives||[]).map(o=>({...o,status:'ACTIVE'})),reward:x.reward_notes||''});await saveCrawlerNow(c);queueEvent({event_type:'quest_received',title:x.name,body:x.description,recipient_id:c.id,recipient_name:c.name,related_object_type:'quest',related_object_id:x.id});}
+  if(x.content_type==='achievement'){c.achievements=c.achievements||[];c.achievements.push({id:id('achinst'),definition_id:x.id,name:x.name,reward:x.reward?.box_name||x.reward?.tier||'No tangible reward',description:x.description,claimStatus:'UNCLAIMED'});if(x.reward?.tier){c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:id('loot'),definition_id:x.reward.loot_box_definition_id||null,name:x.reward.box_name||`${x.reward.tier} Loot Box`,tier:x.reward.tier,contents:x.contents||'',opened:false,awardedAt:new Date().toISOString()});}await saveCrawlerNow(c);queueEvent({event_type:'achievement',title:x.name,body:x.description,recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'achievement',related_object_id:x.id});if(x.reward?.tier)queueEvent({event_type:'loot_box_received',title:x.reward.box_name||`${x.reward.tier} Loot Box`,body:`${x.reward.tier.toUpperCase()} LOOT BOX`,recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'achievement',related_object_id:x.id});}
+  if(x.content_type==='loot_box'){c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:id('loot'),definition_id:x.id,name:x.name,tier:x.tier,contents:x.contents||'',opened:false,awardedAt:new Date().toISOString()});await saveCrawlerNow(c);queueEvent({event_type:'loot_box_received',title:x.name,body:`${String(x.tier||'').toUpperCase()} ${x.box_type||'LOOT BOX'}`,recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'loot_box',related_object_id:x.id});}
  }
- document.querySelector('#partyLevelUp').onclick=async()=>{if(!confirm('Advance the entire party by 1 level and bank 3 stat points for every crawler?'))return;try{for(const c of state.crawlers){c.level=Number(c.level||1)+1;c.pendingStatPoints=Number(c.pendingStatPoints||0)+3;await saveCrawlerNow(c)}addFeed(state,'PARTY ADVANCEMENT: all crawlers gained 1 level and banked 3 stat points.');state=readState();render()}catch(e){alert('Party Level Up failed: '+e.message)}};
- document.querySelector('#partyFloorUp').onclick=async()=>{if(!confirm('Advance the entire party by 1 floor?'))return;try{for(const c of state.crawlers){c.floor=Math.min(99,Number(c.floor||1)+1);await saveCrawlerNow(c)}const floor=state.crawlers[0]?.floor||'?';addFeed(state,`PARTY ADVANCEMENT: all crawlers advanced to Floor ${floor}.${Number(floor)===3?' Stat allocation is now ONLINE.':''}`);state=readState();render()}catch(e){alert('Party Floor advance failed: '+e.message)}};
- document.querySelector('#award').onclick=async()=>{
-  const c=state.crawlers.find(x=>x.id===document.querySelector('#who').value),name=document.querySelector('#awardName').value.trim(),reward=document.querySelector('#awardReward').value.trim();
-  if(!name)return alert('Enter an achievement name.');
-  c.achievements=c.achievements||[];c.achievements.push({name,reward,claimStatus:'UNCLAIMED'});
-  try{await saveCrawlerNow(c);addFeed(state,`${c.name} unlocked achievement: ${name}.`);state=readState();document.querySelector('#awardName').value='';document.querySelector('#awardReward').value='';render()}
-  catch(e){alert('Achievement save failed: '+e.message)}
- };
- document.querySelector('#assignQuest').onclick=async()=>{
-  const c=state.crawlers.find(x=>x.id===document.querySelector('#questWho').value),name=document.querySelector('#questName').value.trim(),detail=document.querySelector('#questDetail').value.trim();
-  if(!name)return alert('Enter a quest name.');
-  c.quests=c.quests||[];c.quests.push({name,detail,status:'ACTIVE'});
-  try{await saveCrawlerNow(c);addFeed(state,`${c.name} received quest: ${name}.`);state=readState();document.querySelector('#questName').value='';document.querySelector('#questDetail').value='';render()}
-  catch(e){alert('Quest save failed: '+e.message)}
- };
- document.querySelector('#sendMessage').onclick=async()=>{
-  const c=state.crawlers.find(x=>x.id===document.querySelector('#messageWho').value),text=document.querySelector('#messageText').value.trim();
-  if(!text)return alert('Enter a System message.');
-  try{await sendPrivateSystemMessage(c.id,text);addFeed(state,`Private System message delivered to ${c.name}.`);state=readState();document.querySelector('#messageText').value='';render()}
-  catch(e){alert('Message failed: '+e.message)}
- };
-
- document.querySelector('#loadNotes').onclick=()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);document.querySelector('#noteText').value=c.notes||''};
- document.querySelector('#deployNotes').onclick=async()=>{const c=state.crawlers.find(x=>x.id===document.querySelector('#noteWho').value);c.notes=document.querySelector('#noteText').value;try{await saveCrawlerNow(c);addFeed(state,`GM Notes deployed to ${c.name}.`);state=readState();render()}catch(e){alert('GM Notes save failed: '+e.message)}};
-
- const OLLAMA_DEFAULT_URL='http://localhost:11434';
- const OLLAMA_DEFAULT_MODEL='llama3.2:3b';
-
- function ollamaSettings(){
-   return {
-     url:(localStorage.getItem('descentOllamaUrl')||OLLAMA_DEFAULT_URL).replace(/\/+$/,''),
-     model:localStorage.getItem('descentOllamaModel')||OLLAMA_DEFAULT_MODEL
-   };
+ feed(`${x.name} deployed to ${targets.length===state.crawlers.length?'PARTY':targets.map(c=>c.name).join(', ')} from Live Session Control.`);state=readState()||state;
+}
+function actions(){
+ return `<section class="gm-two">
+ <div class="panel"><div class="tag">SYSTEM EVENT</div><h2>GM Actions</h2><div class="field"><label>Crawler</label><select id="actionWho">${opts()}</select></div><div class="field"><label>Event Type</label><select id="actionType"><option>Private System Message</option><option>Achievement</option><option>Quest</option><option>GM Notes</option><option>System Announcement</option></select></div><div class="field"><label>Title / Name</label><input id="actionTitle"></div><div class="field"><label>Message / Details</label><textarea id="actionBody" rows="7"></textarea></div><button id="deployAction" class="primary">DEPLOY EVENT</button></div>
+ <div class="panel"><div class="tag">PARTY PROGRESSION</div><h2>RAW Tutorial Controls</h2><div class="notice">Level gain banks 3 Stat Points per crawler. Tutorial Floor points remain banked until Floor 3.</div><div class="row"><div><b>Party Level</b><div class="muted small">+1 Level // +3 banked Stat Points</div></div><button id="partyLevelUp" class="primary">PARTY +1 LEVEL</button></div><div class="row"><div><b>Party Floor</b><div class="muted small">Advance all crawlers one Floor.</div></div><button id="partyFloorUp" class="primary">PARTY +1 FLOOR</button></div><hr><div class="tag">QUICK LOOT BOX</div><div class="field"><label>Crawler</label><select id="lootWho">${opts()}</select></div><div class="field"><label>Tier</label><select id="lootTier">${TIERS.slice(1).map(t=>`<option>${t}</option>`).join('')}</select></div><div class="field"><label>Name</label><input id="lootName" placeholder="Bronze Adventurer Box"></div><div class="field"><label>Contents / GM notes</label><textarea id="lootContents" rows="4"></textarea></div><button id="stageLoot">STAGE SEALED BOX</button></div></section>`;
+}
+function gmEffectSummary(x){
+ const m=x?.mechanics||{},parts=[];
+ const mods=m.stat_modifiers||m.stats||{};
+ for(const [k,v] of Object.entries(mods))if(Number(v))parts.push(`${k} ${Number(v)>0?'+':''}${v}`);
+ if(Number(m.dr||0))parts.push(`DR +${m.dr}`);
+ if(Number(m.evade||0))parts.push(`EVADE +${m.evade}`);
+ if(Number(m.health_bar_slots||m.health_slots||0))parts.push(`HEALTH SLOTS +${m.health_bar_slots||m.health_slots}`);
+ if(Array.isArray(m.granted_skills)&&m.granted_skills.length)parts.push(`SKILLS: ${m.granted_skills.join(', ')}`);
+ if(Array.isArray(m.granted_spells)&&m.granted_spells.length)parts.push(`SPELLS: ${m.granted_spells.join(', ')}`);
+ if(m.consumable?.effect)parts.push(String(m.consumable.effect));
+ if(m.notes)parts.push(String(m.notes));
+ return parts.join(' // ')||x?.mechanical_effect||x?.effect||'No mechanical effect recorded.';
+}
+function gmQuestPlan(x){
+ const parts=[];
+ if(x.gm_end_goal)parts.push(`<div><b>END GOAL</b> — ${escA(x.gm_end_goal)}</div>`);
+ if(x.retrieval_target)parts.push(`<div><b>RETRIEVAL TARGET</b> — ${escA(x.retrieval_target)}</div>`);
+ const trig=x.triggered_encounter||x.encounter_id||x.encounter_name;
+ if(trig)parts.push(`<div><b>TRIGGERED ENCOUNTER</b> — ${escA(typeof trig==='string'?trig:JSON.stringify(trig))}</div>`);
+ const boss=x.boss_id||x.boss_name;
+ if(boss)parts.push(`<div><b>BOSS</b> — ${escA(boss)}</div>`);
+ if(x.gm_notes)parts.push(`<div><b>GM NOTES</b> — ${escA(x.gm_notes)}</div>`);
+ return parts.length?`<div class="notice small">${parts.join('')}</div>`:'';
+}
+function rewards(){
+ const lib=library(),qs=lib.filter(x=>x.content_type==='quest'),as=lib.filter(x=>x.content_type==='achievement'),ls=lib.filter(x=>x.content_type==='loot_box'),events=lib.filter(x=>x.content_type==='system_event');
+ return `<section class="gm-rewards">
+ <div class="gm-rewardtabs">
+ <div class="panel"><span class="tag">QUEST WORKSHOP</span><h2>Quest Definition</h2><div class="field"><label>Name</label><input id="rwQuestName"></div><div class="field"><label>Scope</label><select id="rwQuestScope"><option>Individual</option><option>Group</option></select></div><div class="field"><label>Description</label><textarea id="rwQuestDesc" rows="3"></textarea></div><div class="field"><label>Objectives — one per line</label><textarea id="rwQuestObj" rows="4"></textarea></div><div class="field"><label>Completion / Reward Notes</label><textarea id="rwQuestReward" rows="3"></textarea></div><div class="field"><label>GM End Goal</label><textarea id="rwQuestEndGoal" rows="3" placeholder="What is this quest actually trying to make happen?"></textarea></div><div class="field"><label>Retrieval Target (if any)</label><input id="rwQuestTarget" placeholder="Exact object/person/evidence the party must find"></div><div class="field"><label>Triggered Encounter / Boss (if any)</label><input id="rwQuestEncounter" placeholder="Encounter or boss definition ID / exact name"></div><button id="saveQuestDef" class="primary">SAVE QUEST</button></div>
+ <div class="panel"><span class="tag">ACHIEVEMENT WORKSHOP</span><h2>Achievement Definition</h2><div class="field"><label>Name</label><input id="rwAchName"></div><div class="field"><label>Description / System Quip</label><textarea id="rwAchDesc" rows="4"></textarea></div><div class="field"><label>Reward Box</label><select id="rwAchBox"><option value="">No tangible reward</option>${TIERS.slice(1).map(t=>`<option>${t}</option>`).join('')}</select></div><div class="field"><label>Box Name</label><input id="rwAchBoxName" placeholder="Adventurer's Box"></div><div class="field"><label>GM-only Contents</label><textarea id="rwAchContents" rows="3"></textarea></div><button id="saveAchievementDef" class="primary">SAVE ACHIEVEMENT</button></div>
+ <div class="panel"><span class="tag">LOOT BOX WORKSHOP</span><h2>Loot Box Definition</h2><div class="field"><label>Name</label><input id="rwBoxName"></div><div class="field"><label>Tier</label><select id="rwBoxTier">${TIERS.slice(1).map(t=>`<option>${t}</option>`).join('')}</select></div><div class="field"><label>Box Type</label><input id="rwBoxType" value="Adventurer"></div><div class="field"><label>Contents / GM Notes</label><textarea id="rwBoxContents" rows="4"></textarea></div><button id="saveBoxDef" class="primary">SAVE LOOT BOX</button></div>
+ </div>
+ <div class="panel"><div class="gm-library-head"><div><span class="tag">QUEST / REWARD LIBRARY</span><h2>${qs.length+as.length+ls.length} Definitions</h2></div><select id="rewardFilter"><option value="all">ALL</option><option value="quest">QUESTS</option><option value="achievement">ACHIEVEMENTS</option><option value="loot_box">LOOT BOXES</option></select></div>
+ <div id="rewardList">${[...qs,...as,...ls].map(x=>`<div class="gm-library-row" data-rwtype="${x.content_type}"><div><b>${escA(x.name)}</b><div class="muted small">${escA(x.content_type.toUpperCase().replace('_',' '))} // ${escA(x.source_authority||'THE_DESCENT')}</div><div class="muted">${escA(x.description||x.contents||'')}</div>${x.content_type==='quest'?`<div class="muted small"><b>OBJECTIVES</b> // ${(x.objectives||[]).map(o=>escA(o.text||o)).join(' → ')||'None recorded'}</div>${gmQuestPlan(x)}<div class="muted small"><b>REWARD</b> // ${escA(x.reward_notes||'None recorded')}</div>`:''}</div><div class="controls"><button data-deployreward="${x.id}" class="primary">DEPLOY</button><button data-deletecontent="${x.id}" class="danger">DELETE</button></div></div>`).join('')||'<p class="muted">No Quest/Reward definitions yet.</p>'}</div></div>
+ <div class="panel"><span class="tag">SYSTEM EVENT QUEUE</span><h2>${events.length} Recorded Events</h2><div class="gm-eventqueue">${events.slice().reverse().slice(0,25).map(e=>`<div class="feeditem"><b>${escA(e.event_type)} // ${escA(e.status)}</b><br>${escA(e.title||'')}${e.recipient_name?' → '+escA(e.recipient_name):''}<div class="muted small">${escA(e.created_at||'')}</div></div>`).join('')||'<p class="muted">No structured System events yet.</p>'}</div></div>
+ </section>`;
+}
+function queueEvent(evt){
+ const lib=library();const e={schema_version:'1.0',content_type:'system_event',id:id('event'),event_type:evt.event_type||'notification',title:evt.title||'',body:evt.body||'',recipient_id:evt.recipient_id||null,recipient_name:evt.recipient_name||null,priority:evt.priority||'normal',presentation:evt.presentation||'popup',acknowledgement_required:evt.acknowledgement_required!==false,status:evt.status||'queued',related_object_type:evt.related_object_type||null,related_object_id:evt.related_object_id||null,created_at:new Date().toISOString(),source_authority:evt.source_authority||'THE_DESCENT'};lib.push(e);saveLibrary(lib);return e;
+}
+async function deployRewardDefinition(x){
+ const who=prompt('Deploy to crawler ID, exact crawler name, or PARTY:',state.crawlers[0]?.name||'');if(who===null)return;
+ const targets=String(who).trim().toUpperCase()==='PARTY'?state.crawlers:state.crawlers.filter(z=>String(z.id).toLowerCase()===String(who).toLowerCase()||String(z.name).toLowerCase()===String(who).toLowerCase());
+ if(!targets.length)return alert('Crawler not found.');
+ for(const c of targets){
+  if(x.content_type==='quest'){c.quests=c.quests||[];c.quests.push({id:id('questinst'),definition_id:x.id,name:x.name,detail:x.description,status:'ACTIVE',objectives:(x.objectives||[]).map(o=>({...o,status:'ACTIVE'})),reward:x.reward_notes||''});await saveCrawlerNow(c);queueEvent({event_type:'quest_received',title:x.name,body:x.description,recipient_id:c.id,recipient_name:c.name,related_object_type:'quest',related_object_id:x.id});}
+  if(x.content_type==='achievement'){c.achievements=c.achievements||[];c.achievements.push({id:id('achinst'),definition_id:x.id,name:x.name,reward:x.reward?.box_name||x.reward?.tier||'No tangible reward',description:x.description,claimStatus:'UNCLAIMED'});if(x.reward?.tier){c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:id('loot'),definition_id:x.reward.loot_box_definition_id||null,name:x.reward.box_name||`${x.reward.tier} Loot Box`,tier:x.reward.tier,contents:x.contents||'',opened:false,awardedAt:new Date().toISOString()});}await saveCrawlerNow(c);queueEvent({event_type:'achievement',title:x.name,body:x.description,recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'achievement',related_object_id:x.id});}
+  if(x.content_type==='loot_box'){c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:id('loot'),definition_id:x.id,name:x.name,tier:x.tier,contents:x.contents||'',opened:false,awardedAt:new Date().toISOString()});await saveCrawlerNow(c);queueEvent({event_type:'loot_box_received',title:x.name,recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'loot_box',related_object_id:x.id});}
  }
- function lootContext(c,tier,request){
-   const profile=lootProfiles[c.id]||lootProfiles[String(c.name).toLowerCase()]||'Use only the crawler sheet and player-safe information supplied here.';
-   return `You are the Dungeon System loot designer for a Dungeon Crawler Carl-inspired tabletop campaign.
-Return ONLY valid JSON with these keys: title, category, tier, quantity, effect, system_description, gm_approval_required.
-Generate one editable GM loot draft. Keep the reward appropriate to ${tier} tier, Level ${c.level}, Floor ${c.floor}.
-Personalize using ONLY the player-safe profile and crawler sheet below. Never invent or use private fears, trauma, off-limits material, or sensitive personal information.
-If you invent an unverified numeric/rules mechanic, set gm_approval_required to true and label the effect HOMEBREW / GM APPROVAL REQUIRED.
-Use a short sarcastic Dungeon System description. Avoid duplicating existing gear unless an upgrade is useful.
+ feed(`${x.name} deployed to ${targets.length===state.crawlers.length?'the party':targets.map(c=>c.name).join(', ')}.`);state=readState()||state;render();
+}
 
-PLAYER-SAFE PROFILE:
-${profile}
+const AI_TYPES=['adversary','encounter','npc','item','quest','achievement','loot_box'];
+function aiReference(type){
+ const party=state.crawlers.length, floor=Math.max(1,...state.crawlers.map(c=>Number(c.floor||1)));
+ const power=POWER[party]||null;
+ return {party_size:party,floor,adversary_power:power,
+ rules:[
+  'RAW is authoritative. Never silently invent a rule. Any uncertain or invented mechanic must be listed in review_flags.',
+  'Adversary stat blocks use name/type/size, Health Bar slots, Level, Surprise, Evade, Move, DR, STR/INT/CON/DEX/CHA, attacks, notes.',
+  'Values containing +F add current Floor Number. Preserve formulas such as +F and +S; do not resolve or guess +S.',
+  'Encounter power bands use the supplied Adversary Power reference as a starting point, not a guarantee.',
+  'Achievement structure: Name, Description, Reward, and GM-only Contents. Reward may be null.',
+  'Loot Boxes use bronze/silver/gold/platinum/legendary/celestial tiers.',
+  'Quest content should distinguish Individual or Group scope and structured objectives. Every generated quest must also include gm_end_goal, retrieval_target when applicable, and triggered_encounter / boss reference when applicable.'
+ ]};
+}
+function aiSchemaHint(type){
+ const base={schema_version:'1.0',content_type:type,id:'DRAFT_ONLY',name:'string',source_authority:'AI_GENERATED',gm_approval_required:true,review_flags:['string']};
+ const hints={
+ adversary:{...base,species_type:'string',classification:'Mob',size:{name:'Medium',value:1},health_bar:{slots:3},level:1,surprise:'11+F',evade:'11+F',move:'20+S',dr:0,stats:{STR:1,INT:1,CON:1,DEX:1,CHA:1},attacks:[{name:'Attack',to_hit:'11+F',damage:'1d6',damage_type:'Physical',range:'5ft',other_effects:[]}],special_rules:[],notes:[],ai_announcement:'string'},
+ encounter:{...base,encounter_type:'combat',floor:1,power_band:'Moderate',party_size_reference:6,participants:[{kind:'adversary',definition_id:null,count:6,role:'adversaries',template:{name:'string',health_slots:3,evade:'11+F',dr:0,attacks:[]}}],system_announcement:'string',objectives:[{id:'obj_1',text:'string',required:true,hidden:false}],environment:{special_rules:[]}},
+ npc:{...base,npc_type:'Quest NPC',floor:1,status:'Active',location:'string',faction:'string',personality:'string',motivation:'string',behavior_rules:[],restrictions:[],dialogue_cues:[],secrets:[],quest_hooks:[]},
+ item:{...base,category:'weapon',description:'player-facing physical description',system_description:'fully written System AI item description, not writing instructions',gear_slot:null,loot_tier:'bronze',floor_min:1,mechanics:{stat_modifiers:{},skill_modifiers:{},dr:0,evade:0,health_bar_slots:0,mana:0,weapon:{weapon_type:'string or null',attack_skill:'string or null',damage:'1D8',damage_type:'Piercing',range:'Melee',ammo_required:false,ammo_type:null,capacity:null,reload:null},passive_effects:[],activated_effects:[],trigger_conditions:[],duration:null,cooldown:null,charges:null,limitations:[],campaign_rules:[],notes:'GM-facing adjudication and balance notes'},tags:[]},
+ quest:{...base,scope:'Individual',description:'string',objectives:[{id:'obj_1',text:'string',required:true}],reward_notes:'string'},
+ achievement:{...base,description:'string',reward:null,contents:'string'},
+ loot_box:{...base,tier:'bronze',box_type:'Adventurer',contents:'string'}
+ };return hints[type];
+}
+function aiRequestedConstraints(type,request){
+ const c={};
+ const pick=(label)=>{const m=request.match(new RegExp('(?:^|\\n)\\s*'+label+'\\s*:\\s*([^\\n]+)','i'));return m?m[1].trim():null};
+ c.name=pick('Name');c.tier=pick('(?:Tier|Rarity(?:\\/Tier)?)');c.category=pick('Category');c.damage_type=pick('Damage Type');c.damage=pick('Damage Dice');c.floor=pick('Floor');
+ const delegated=v=>v&&/^(?:ai\s*(?:decide|chooses?|generate)|generate|decide|you\s+decide|appropriate)(?:\b|\s|[.,:;!?-]).*$/i.test(v.trim());
+ for(const k of Object.keys(c))if(delegated(c[k]))c[k]='__AI_DECIDE__';
+ return c;
+}
+function aiValidate(x,type,request=''){
+ const errors=[],flags=[...(Array.isArray(x?.review_flags)?x.review_flags:[])],c=aiRequestedConstraints(type,request);
+ if(!x||typeof x!=='object')errors.push('Generator did not return a JSON object.');
+ if(x?.content_type!==type)errors.push(`content_type must be ${type}.`);
+ if(!String(x?.name||'').trim())errors.push('name is required.');
+ if(/ai\s*(decide|choose|generate)/i.test(String(x?.name||'')))errors.push('AI-delegated name was not actually generated.');
+ if(type==='adversary'){for(const k of ['health_bar','stats','attacks','surprise','evade','move'])if(x?.[k]==null)errors.push(`adversary.${k} is required.`);if(!Array.isArray(x?.attacks)||!x.attacks.length)errors.push('At least one attack is required.')}
+ if(type==='encounter'){if(!Array.isArray(x?.participants))errors.push('participants array required.');if(!['Weak','Moderate','Strong','Overwhelming'].includes(x?.power_band))flags.push('Power band is missing or non-standard; GM must review encounter scaling.')}
+ if(type==='quest'&&!Array.isArray(x?.objectives))errors.push('Quest objectives array required.');
+ if(type==='loot_box'&&!['bronze','silver','gold','platinum','legendary','celestial'].includes(String(x?.tier||'').toLowerCase()))errors.push('Loot Box tier must be Bronze–Celestial.');
+ if(type==='item'){
+   const tiers=['mundane','bronze','silver','gold','platinum','legendary','celestial'];
+   if(!tiers.includes(String(x?.loot_tier||'').toLowerCase()))errors.push('Item loot_tier is missing or invalid.');
+   if(c.tier&&c.tier!=='__AI_DECIDE__'&&String(x?.loot_tier||'').toLowerCase()!==c.tier.toLowerCase())errors.push(`Requested tier ${c.tier}; generated ${x?.loot_tier||'missing'}.`);
+   if(c.category&&c.category!=='__AI_DECIDE__'&&String(x?.category||'').toLowerCase()!==c.category.toLowerCase())errors.push(`Requested category ${c.category}; generated ${x?.category||'missing'}.`);
+   if(c.floor&&c.floor!=='__AI_DECIDE__'&&Number(x?.floor_min)!==Number(c.floor))errors.push(`Requested Floor ${c.floor}; generated floor_min ${x?.floor_min??'missing'}.`);
+   if(c.name==='__AI_DECIDE__'&&(!x?.name||/ai decide/i.test(String(x.name))))errors.push('GM delegated naming to AI but no authored name was generated.');
+   if(!String(x?.description||'').trim())errors.push('Item player-facing description is required.');
+   if(!String(x?.system_description||'').trim())errors.push('Item System description is required.');
+   if(/aggressive|sarcastic|texas-themed|system description tone|slightly insulting/i.test(String(x?.system_description||''))&&String(x.system_description).length<180)errors.push('system_description appears to repeat writing instructions instead of containing authored System copy.');
+   if(!x?.mechanics||typeof x.mechanics!=='object')errors.push('Structured item mechanics are required.');
+   const w=x?.mechanics?.weapon;
+   if(String(x?.category||'').toLowerCase()==='weapon'){
+     if(!w||typeof w!=='object')errors.push('Weapon item requires mechanics.weapon.');
+     if(!String(w?.damage||'').trim())errors.push('Weapon damage dice are required.');
+     if(!String(w?.damage_type||'').trim())errors.push('Weapon damage type is required.');
+     if(!String(w?.range||'').trim())errors.push('Weapon range is required.');
+     if(c.damage_type&&c.damage_type!=='__AI_DECIDE__'&&String(w?.damage_type||'').toLowerCase()!==c.damage_type.toLowerCase())errors.push(`Requested damage type ${c.damage_type}; generated ${w?.damage_type||'missing'}.`);
+     if(c.damage&&c.damage!=='__AI_DECIDE__'&&String(w?.damage||'').toLowerCase()!==c.damage.toLowerCase())errors.push(`Requested damage ${c.damage}; generated ${w?.damage||'missing'}.`);
+   }
+   if(!String(x?.mechanics?.notes||'').trim())flags.push('GM mechanics notes are empty.');
+ }
+ x.source_authority='AI_GENERATED';x.gm_approval_required=true;x.review_flags=[...new Set(flags)];
+ return {errors,flags:x.review_flags,constraints:c};
+}
+function extractJson(s){const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a<0||b<a)throw new Error('Ollama returned no JSON object.');return JSON.parse(s.slice(a,b+1))}
+async function ollamaCall(cfg,prompt,temp=0.72){
+ const res=await fetch(cfg.url.replace(/\/$/,'')+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:cfg.model,prompt,stream:false,format:'json',options:{temperature:temp}})});
+ if(!res.ok)throw new Error(`Ollama HTTP ${res.status}`);
+ const data=await res.json();return extractJson(data.response||'');
+}
+async function ollamaGenerate(type,request){
+ const cfg=aiCfg(),ref=aiReference(type),schema=aiSchemaHint(type),constraints=aiRequestedConstraints(type,request);
+ const contract=`You are the CREATIVE DESIGNER, not a form parser. Author a complete new RPG content definition from the GM's concept.
 
-CRAWLER:
-Name: ${c.name}
-Stats: ${JSON.stringify(c.stats||{})}
-Skills: ${JSON.stringify(c.skills||[])}
-Equipment: ${JSON.stringify(c.equipment||[])}
-Inventory: ${JSON.stringify(c.inventory||[])}
+INPUT SEMANTICS:
+1. Explicit GM values are HARD CONSTRAINTS. Never downgrade, replace, or ignore them. If the GM says Tier: Gold, output gold.
+2. "AI Decide", "AI decides", "AI can expound", blank creative fields, and similar phrases are DELEGATION. You MUST invent an appropriate finished value. NEVER output the words "AI Decide" and do not merely rename the concept.
+3. Tone instructions describe HOW TO WRITE. They are not output text. If told "sarcastic, Texas-themed", write an actual sarcastic Texas-themed System description.
+4. Expand short appearance/concept notes into polished player-facing prose.
+5. Mechanics must be STRUCTURED in the provided schema. Do not hide damage, stat bonuses, passive effects, drawbacks, triggers, duration, ammunition, or limitations only inside mechanics.notes.
+6. For weapons, mechanics.weapon.damage, damage_type, and range are mandatory. If the GM delegates damage dice, design appropriate dice and explain the balance in mechanics.notes.
+7. Invented campaign mechanics are allowed only when clearly placed in mechanics.campaign_rules and review_flags. Do not claim they are RAW.
+8. Make the item's benefit AND drawback mechanically usable at the table. Avoid unsupported D&D-style DC checks unless the supplied campaign reference supports them.
+9. Return ONE JSON object only. No markdown.
 
-GM REQUEST:
-${request||'Generate a useful, flavorful reward appropriate to this crawler.'}`;
+The schema's example values are SHAPE EXAMPLES, NOT DEFAULTS. Do not copy bronze, 1D8, or placeholder strings unless they are actually appropriate.`;
+ const prompt=`${contract}\n\nGM REQUEST:\n${request}\n\nPARSED GM CONSTRAINTS:\n${JSON.stringify(constraints,null,2)}\n\nCAMPAIGN/RULE REFERENCE:\n${JSON.stringify(ref,null,2)}\n\nREQUIRED OUTPUT SHAPE:\n${JSON.stringify(schema,null,2)}\n\nExisting library names for context only: ${library().filter(x=>x.content_type===type||type==='encounter'&&x.content_type==='adversary').slice(0,30).map(x=>x.name).join(', ')||'none'}`;
+ let x=await ollamaCall(cfg,prompt,0.78);
+ let v=aiValidate(x,type,request);
+ if(v.errors.length){
+   const repair=`${contract}\n\nYour previous draft FAILED validation. Repair it rather than defending it.\n\nORIGINAL GM REQUEST:\n${request}\n\nHARD/DELEGATED CONSTRAINTS:\n${JSON.stringify(constraints,null,2)}\n\nVALIDATION FAILURES:\n${v.errors.join('\n')}\n\nPREVIOUS JSON:\n${JSON.stringify(x,null,2)}\n\nREQUIRED OUTPUT SHAPE:\n${JSON.stringify(schema,null,2)}\n\nReturn a corrected, fully authored JSON object only.`;
+   x=await ollamaCall(cfg,repair,0.68);
+   v=aiValidate(x,type,request);
+   if(v.errors.length)throw new Error('AI draft failed validation after automatic repair:\\n- '+v.errors.join('\\n- '));
  }
- async function generateWithOllama(c,tier,request){
-   const cfg=ollamaSettings();
-   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
-   try{
-     const r=await fetch(cfg.url+'/api/generate',{
-       method:'POST',
-       headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({model:cfg.model,prompt:lootContext(c,tier,request),stream:false,format:'json'}),
-       signal:controller.signal
-     });
-     if(!r.ok)throw new Error(`Ollama HTTP ${r.status}`);
-     const data=await r.json();
-     if(!data?.response)throw new Error('Ollama returned no response.');
-     const x=JSON.parse(data.response);
-     if(!x.title||!x.effect||!x.system_description)throw new Error('Ollama response was missing required loot fields.');
-     return x;
-   }finally{clearTimeout(timer)}
- }
- function formatAILoot(x,tier){
-   const approval=x.gm_approval_required?' [HOMEBREW / GM APPROVAL REQUIRED]':'';
-   return `${x.title}\nCategory: ${x.category||'Equipment / Utility'}\nTier: ${x.tier||tier}\nQuantity: ${Number(x.quantity)||1}\nEffect: ${x.effect}${approval}\nSystem Description: ${x.system_description}`;
- }
- function localLoot(c,tier,request){
-   const req=String(request||'').trim(),q=req.toLowerCase(),id=String(c.id||'').toLowerCase();
-   const pick=a=>a[Math.floor(Math.random()*a.length)], prefixes={phillip:["Appraiser's","Dealer's","Curator's"],philip:["Appraiser's","Dealer's","Curator's"],jarod:["Field Engineer's","Submariner's","Fixer's"],marvin:["Genre Savant's","Horror Nerd's","Miniature General's"],harold:["Handler's","Instigator's","Maker's"],mike:["Anomaly Hunter's","Cryptid Spotter's","Paranormal Investigator's"],brad:["Troubleshooter's","Signal Tech's","Field Technician's"]};
-   const prefix=pick(prefixes[id]||["Crawler's","Dungeon-Issue","Questionably Certified"]);
-   const theme=/demonic|hell|infernal/.test(q)?'demonic':/cursed|curse|haunted/.test(q)?'cursed':/serious|grim|military/.test(q)?'serious':/silly|funny|comedic|ridiculous|absurd/.test(q)?'funny':'system';
-   let kind='utility',slot='Utility',bases=['Multitool','Field Device','Utility Rig'];
-   const patterns=[[/monocle|eyepiece|lens/,['utility','Face / Accessory',['Monocle','Inspection Lens','Appraisal Eyepiece']]],[/cloak|cape|mantle/,['gear','Back / Clothing',['Cloak','Mantle','Cape']]],[/armor|chest|vest|jacket/,['armor','Torso / Armor',['Reinforced Vest','Crawler Jacket','Protective Harness']]],[/boot|shoe/,['gear','Feet',['Dungeon Boots','Crawler Boots','Hazard Stompers']]],[/glove|gauntlet/,['gear','Hands',['Specialist Gloves','Utility Gauntlets','Work Gloves']]],[/weapon|sword|axe|hammer|gun|rifle|bow|blade/,['weapon','Hands / Weapon',['Signature Weapon','Crawler Weapon','Problem Solver']]],[/potion|healing|heal/,['consumable','Consumable',['Healing Potion','Recovery Tonic','Emergency Health Draught']]],[/mana/,['consumable','Consumable',['Mana Potion','Arcane Refill','Mana Tonic']]],[/ring/,['accessory','Accessory',['Ring','Signet','Band']]],[/amulet|necklace/,['accessory','Accessory',['Amulet','Pendant','Charm']]],[/tool|kit|repair/,['utility','Utility / Tool',['Multitool','Repair Kit','Diagnostic Tool']]]];
-   for(const [rx,v] of patterns)if(rx.test(q)){kind=v[0];slot=v[1];bases=v[2];break}
-   const base=pick(bases), adjs={Bronze:['Serviceable','Slightly Improved','Budget'],Silver:['Enhanced','Polished','Upgraded'],Gold:['Premium','Golden','Superior'],Platinum:['Elite','Exceptional','Overqualified'],Legendary:['Legendary','Ridiculously Capable','Audience-Approved'],Celestial:['Celestial','Impossible','System-Blessed'],Custom:['Custom','Bespoke','Suspiciously Specific']};
-   const adj=pick(adjs[tier]||adjs.Custom), item=`${adj} ${prefix} ${base}`;
-   let effect;
-   if(/apprais|value|worth|inspect|identify/.test(q)) effect=pick([`Inspecting an item provides a mostly-accurate estimate of its usefulness, rarity, and approximate value. Hidden properties and exact market prices are not guaranteed.`,`When ${c.name} deliberately examines an object, the item supplies an appraisal that is usually useful and occasionally sourced from expertise of deeply questionable quality.`,`Grants improved item inspection and approximate valuation. The System may identify obvious rarity and utility while leaving particularly sneaky properties undisclosed.`]);
-   else if(/stealth|hide|sneak|invis/.test(q)) effect=pick([`Provides a modest situational benefit to hiding and moving unnoticed; exact bonus is GM-approved.`,`Helps ${c.name} avoid casual observation when deliberately sneaking or concealing themselves.`,`Improves stealth in favorable conditions, but does not make the crawler invisible.`]);
-   else if(/repair|fix|engineer|technical|electronic/.test(q)) effect=pick([`Provides a modest benefit when diagnosing or repairing appropriate technical systems.`,`Assists with field repairs, diagnostics, and improvised technical work; exact bonus is GM-approved.`,`Highlights obvious faults and useful components in mechanical or electronic systems.`]);
-   else if(/protect|armor|defen|resist/.test(q)) effect=pick([`Provides modest ${tier}-appropriate protection; exact DR or resistance is set by the GM.`,`Reduces a narrow category of incoming harm appropriate to the item's design; GM sets the final numeric benefit.`,`Offers practical defensive assistance without replacing proper armor.`]);
-   else if(/damage|attack|weapon|hit/.test(q)) effect=pick([`Provides a modest offensive benefit appropriate to ${tier} tier; final attack or damage bonus requires GM approval.`,`Improves one narrow aspect of ${c.name}'s attacks without replacing their normal combat Skill.`,`Adds a small situational combat advantage chosen by the GM when awarded.`]);
-   else effect=pick([`Provides a modest ${tier}-tier utility benefit related to the requested ${base.toLowerCase()}.`,`Offers a useful situational advantage consistent with ${c.name}'s role and the GM's request.`,`Performs the requested utility function with a small crawler-specific benefit; exact numeric bonus is GM-approved.`]);
-   const funny=[`It looks like someone gave a product designer unlimited caffeine and exactly twelve minutes of supervision. The System claims it passed quality assurance. The quality assurance department was unavailable for comment.`,`The device activates with the smug little click of something that knows it has a warranty you will never successfully redeem. Somewhere inside, a tiny mechanism applauds itself.`,`The System calls this professional equipment. The System also considers televised mortal peril a sustainable business model, so calibrate your expectations accordingly.`];
-   const desc=theme==='funny'?pick(funny):theme==='demonic'?pick([`The item is warm before you touch it. Thin symbols crawl across its surface whenever it works. The System insists this is normal. Something behind the symbols disagrees.`,`A faint sulfur smell follows the item despite there being no obvious source. It performs its task eagerly. Perhaps too eagerly.`]):theme==='cursed'?pick([`At first glance it looks ordinary. At second glance, you notice it was already looking back. The System has classified it as “probably fine.”`,`The item works exactly as advertised, which would be reassuring if it did not occasionally whisper the user's name when nobody is touching it.`]):theme==='serious'?pick([`Purpose-built, durable, and stripped of unnecessary ornamentation. The System documentation is unusually concise: maintain it, use it correctly, and it may keep you alive.`,`A practical piece of Dungeon equipment engineered for reliability rather than spectacle. Every component has a job and none of them appear interested in jokes.`]):pick([`The Dungeon System produced this specifically for ${c.name}. That is either flattering or deeply concerning. Possibly both.`,`The item looks almost normal until the System overlay identifies several features that definitely were not there a moment ago.`]);
-   return {title:`${tier} ${base} Reward`,contents:`${item}\nCategory: ${kind==='consumable'?'Consumable':'Equipment / '+slot}\nTier: ${tier}\nEffect: ${effect}\nSystem Description: ${desc}`};
- }
- document.querySelector('#generateLoot').onclick=async()=>{
-   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),tier=document.querySelector('#lootTier').value,req=document.querySelector('#lootPrompt').value.trim();
-   const btn=document.querySelector('#generateLoot');btn.disabled=true;const label=btn.textContent;btn.textContent='CONTACTING LOCAL SYSTEM AI...';
-   try{
-     const x=await generateWithOllama(c,tier,req);
-     document.querySelector('#lootTitle').value=x.title||`${tier} Reward`;
-     document.querySelector('#lootContents').value=formatAILoot(x,tier);
-     addFeed(state,`Ollama AI generated ${tier} reward draft for ${c.name}.`);state=readState();render();
-   }catch(e){
-     console.warn('Ollama unavailable; procedural fallback engaged.',e);
-     const out=localLoot(c,tier,req);
-     document.querySelector('#lootTitle').value=out.title;
-     document.querySelector('#lootContents').value=`SYSTEM AI OFFLINE — FALLBACK PERSONALITY SUBROUTINE ENGAGED\n\n${out.contents}`;
-     addFeed(state,`Local System AI unavailable; fallback generated ${tier} reward draft for ${c.name}.`);state=readState();render();
-   }finally{btn.disabled=false;btn.textContent=label}
- };
- document.querySelector('#buildLootPrompt').onclick=()=>{
-   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value);
-   const tier=document.querySelector('#lootTier').value,request=document.querySelector('#lootPrompt').value.trim()||'Generate a useful, flavorful reward appropriate to this crawler.';
-   const profile=lootProfiles[c.id]||lootProfiles[String(c.name).toLowerCase()]||'Use the crawler sheet, current skills, equipment and play style as context.';
-   const skills=(c.skills||[]).map(s=>`${s[0]} Rank ${s[1]}`).join(', ');
-   const equipment=(c.equipment||[]).map(x=>x.name||x).join(', ')||'none recorded';
-   const inventory=(c.inventory||[]).map(x=>`${x.name} x${x.qty}`).join(', ')||'empty';
-   const prompt=`You are the Dungeon System loot designer for a Dungeon Crawler Carl-inspired tabletop campaign. Generate a ${tier} loot box/reward for ${c.name} (Level ${c.level}, Floor ${c.floor}).\n\nPLAYER-SAFE REAL-WORLD PROFILE:\n${profile}\n\nCURRENT SHEET:\nStats: ${Object.entries(c.stats).map(([k,v])=>`${k} ${v}`).join(', ')}\nSkills: ${skills}\nEquipment: ${equipment}\nInventory: ${inventory}\n\nGM REQUEST:\n${request}\n\nDESIGN RULES:\n- Keep the reward appropriate to a ${tier} tier and the crawler's current floor/level.\n- Personalize usefulness around their job, practical skills, hobbies, and current build without using private fears, trauma, off-limits material, or sensitive personal information.\n- Reward categories may include consumables, healing/mana resources, permanent or temporary upgrades, armor, gear, weapons, utility items, scrolls/tomes, currency, crafting materials, or intentionally strange Dungeon items.\n- Avoid simply duplicating gear already listed unless an upgrade is the point.\n- Give each item: NAME, CATEGORY, RARITY/TIER, MECHANICAL EFFECT, QUANTITY, and a short sarcastic SYSTEM DESCRIPTION.\n- Finish with a compact LOOT BOX CONTENTS list suitable for pasting into the GM console.\n- Do not invent a rules mechanic without labeling it HOMEBREW/GM APPROVAL REQUIRED.`;
-   document.querySelector('#lootBuiltPrompt').value=prompt;document.querySelector('#lootPromptResult').classList.remove('hidden');
- };
- document.querySelector('#copyLootPrompt').onclick=async()=>{const el=document.querySelector('#lootBuiltPrompt');try{await navigator.clipboard.writeText(el.value);document.querySelector('#copyLootPrompt').textContent='COPIED';setTimeout(()=>document.querySelector('#copyLootPrompt').textContent='COPY PROMPT',1200)}catch{el.select();document.execCommand('copy')}};
+ return x;
+}
+function aiStudio(){
+ const cfg=aiCfg(),d=aiDraft,v=d?aiValidate(d,d.content_type,d._generation_request||''):{errors:[],flags:[]};
+ return `<section class="gm-ai"><div class="gm-grid2">
+ <div class="panel"><span class="tag">LOCAL AI // OLLAMA</span><h2>AI CONTENT STUDIO</h2><p class="muted">AI creates <b>drafts only</b>. Nothing enters the Content Engine until you review and approve it. RAW remains authoritative.</p>
+ <div class="field"><label>Content Type</label><select id="aiType">${AI_TYPES.map(x=>`<option value="${x}">${x.replace('_',' ').toUpperCase()}</option>`).join('')}</select></div>
+ <div class="field"><label>GM Request</label><textarea id="aiRequest" rows="8" placeholder="Example: Moderate Floor 1 combat encounter for six crawlers in an abandoned Texas supermarket. Use an existing adversary if appropriate; otherwise draft one and flag invented mechanics."></textarea></div>
+ <div class="controls"><button id="aiGenerate" class="primary">GENERATE DRAFT</button><button id="aiClear">CLEAR DRAFT</button></div>
+ <hr><span class="tag">OLLAMA CONNECTION</span><div class="field"><label>Endpoint</label><input id="aiUrl" value="${escA(cfg.url)}"></div><div class="field"><label>Model</label><input id="aiModel" value="${escA(cfg.model)}"></div><button id="aiSaveCfg">SAVE LOCAL AI SETTINGS</button>
+ </div>
+ <div class="panel"><span class="tag">RAW GUARDRAILS</span><h2>Generation Contract</h2><div class="muted">• AI_GENERATED provenance is forced.<br>• GM approval is forced.<br>• Uncertain/invented mechanics must be flagged.<br>• +F / +S formulas are preserved.<br>• Encounter scaling uses the RAW Adversary Power table only as a starting point.<br>• Drafts cannot auto-deploy.</div>
+ <h3>Current Party Context</h3><div class="gm-cardstats"><span>${state.crawlers.length} CRAWLERS</span><span>FLOOR ${Math.max(1,...state.crawlers.map(c=>Number(c.floor||1)))}</span></div>
+ </div></div>
+ <div class="panel"><div class="gm-library-head"><div><span class="tag">GM REVIEW REQUIRED</span><h2>${d?escA(d.name||'UNNAMED DRAFT'):'NO ACTIVE DRAFT'}</h2></div>${d?'<span class="pill">AI_GENERATED</span>':''}</div>
+ ${d?`${v.errors.length?`<div class="notice"><b>VALIDATION ERRORS</b><br>${v.errors.map(escA).join('<br>')}</div>`:''}${v.flags.length?`<div class="notice"><b>REVIEW FLAGS</b><br>${v.flags.map(escA).join('<br>')}</div>`:'<div class="notice">No generator flags were returned. GM review is still mandatory.</div>'}
+ <div class="field"><label>Editable Draft JSON</label><textarea id="aiDraftJson" rows="24">${escA(JSON.stringify(d,null,2))}</textarea></div><div class="controls"><button id="aiRevalidate">REVALIDATE</button><button id="aiApprove" class="primary" ${v.errors.length?'disabled':''}>APPROVE → CONTENT ENGINE</button></div>`:'<p class="muted">Generate a draft to begin review.</p>'}</div></section>`;
+}
+function items(){
+ const lib=library(),items=lib.filter(x=>x.content_type==='item');
+ return `<section class="gm-library-layout"><div class="panel"><div class="tag">CONTENT WORKSHOP</div><h2>Item Definition</h2><div class="gm-formgrid">
+ <div class="field"><label>Name</label><input id="itemName"></div><div class="field"><label>Category</label><select id="itemCategory">${['gear','weapon','consumable','scroll','spellbook','quest_item','crafting','container','tool','misc'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+ <div class="field"><label>Gear Slot</label><select id="itemSlot"><option value="">None</option>${RAW_SLOTS.map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field"><label>Loot Tier</label><select id="itemTier">${TIERS.map(x=>`<option>${x}</option>`).join('')}</select></div>
+ <div class="field"><label>Source Authority</label><select id="itemSource"><option>THE_DESCENT</option><option>RAW_CORE</option><option>RAW_TOOLKIT</option><option>GM_CREATED</option><option>AI_GENERATED</option><option>HOMEBREW</option></select></div><div class="field"><label>Floor Minimum</label><input id="itemFloor" type="number" min="1" value="1"></div>
+ <div class="field wide"><label>System Description</label><textarea id="itemDesc" rows="3"></textarea></div><div class="field wide"><label>Mechanical Effect</label><textarea id="itemEffect" rows="3" placeholder="Structured automation comes next; record the verified effect here."></textarea></div></div>
+ <div class="controls"><button id="saveItem" class="primary">SAVE TO LIBRARY</button><button id="clearItem">CLEAR</button></div></div>
+ <div class="panel"><div class="gm-library-head"><div><span class="tag">ITEM LIBRARY</span><h2>${items.length} Definitions</h2></div><input id="itemSearch" placeholder="Search items..."></div><div id="itemList">${renderItemList(items)}</div></div></section>`;
+}
+function renderItemList(items){return items.length?items.map(x=>`<div class="gm-library-row" data-search="${escA((x.name+' '+x.category+' '+(x.gear_slot||'')+' '+x.loot_tier+' '+gmEffectSummary(x)).toLowerCase())}"><div><b>${escA(x.name)}</b><div class="muted small">${escA(x.category.toUpperCase())} // ${escA(x.gear_slot||'NOT EQUIPPABLE')} // ${escA((x.loot_tier||'mundane').toUpperCase())}</div><div class="muted">${escA(x.system_description||'')}</div><div class="notice small"><b>EFFECT</b> — ${escA(gmEffectSummary(x))}</div></div><div class="controls"><span class="pill">${escA(x.source_authority)}</span><button data-awarditem="${x.id}">AWARD</button><button data-deletecontent="${x.id}" class="danger">DELETE</button></div></div>`).join(''):'<p class="muted">No item definitions yet.</p>'}
+function npcs(){
+ const lib=library(),npcs=lib.filter(x=>x.content_type==='npc');
+ return `<section class="gm-library-layout"><div class="panel"><div class="tag">NPC WORKSHOP</div><h2>NPC Definition</h2><div class="gm-formgrid"><div class="field"><label>Name</label><input id="npcName"></div><div class="field"><label>Type</label><select id="npcType">${['Game Guide','Vendor','Quest NPC','Public Relations Agent','Interview/Media','Civilian','Authority','Rival Crawler','Other'].map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field"><label>Floor</label><input id="npcFloor" type="number" min="1" value="1"></div><div class="field"><label>Status</label><select id="npcStatus"><option>active</option><option>friendly</option><option>neutral</option><option>hostile</option><option>missing</option><option>dead</option><option>inactive</option></select></div><div class="field"><label>Location</label><input id="npcLocation"></div><div class="field"><label>Faction</label><input id="npcFaction"></div><div class="field wide"><label>Personality / Behavior</label><textarea id="npcPersonality" rows="4"></textarea></div><div class="field wide"><label>GM Secrets / Restrictions</label><textarea id="npcSecrets" rows="4"></textarea></div></div><button id="saveNpc" class="primary">SAVE NPC</button></div>
+ <div class="panel"><span class="tag">NPC DIRECTORY</span><h2>${npcs.length} Records</h2>${npcs.length?npcs.map(x=>`<div class="gm-library-row"><div><b>${escA(x.name)}</b><div class="muted small">${escA(x.npc_type)} // FLOOR ${x.floor||'—'} // ${escA(x.status)}</div><div class="muted">${escA(x.location||'Location not set')}</div></div><div class="controls"><span class="pill">${escA(x.source_authority)}</span><button data-deletecontent="${x.id}" class="danger">DELETE</button></div></div>`).join(''):'<p class="muted">No NPC records yet.</p>'}</div></section>`;
+}
+function adversaries(){
+ const lib=library(),ads=lib.filter(x=>x.content_type==='adversary');
+ return `<section class="gm-library-layout"><div class="panel"><div class="tag">ADVERSARY WORKSHOP</div><h2>RAW Combat Profile</h2>
+ <div class="gm-formgrid">
+ <div class="field"><label>Name</label><input id="advName"></div><div class="field"><label>Classification</label><select id="advClass">${['Mob','Neighborhood Boss','Borough Boss','City Boss','Crawler','NPC','Other'].map(x=>`<option>${x}</option>`).join('')}</select></div>
+ <div class="field"><label>Species / Type</label><input id="advSpecies"></div><div class="field"><label>Size</label><input id="advSize" value="Medium"></div>
+ <div class="field"><label>Level</label><input id="advLevel" type="number" min="1" value="1"></div><div class="field"><label>Health Slots</label><input id="advHealth" type="number" min="1" value="10"></div>
+ <div class="field"><label>Surprise</label><input id="advSurprise" value="11+F"></div><div class="field"><label>Evade</label><input id="advEvade" value="11+F"></div>
+ <div class="field"><label>Move</label><input id="advMove" value="20+S"></div><div class="field"><label>DR</label><input id="advDR" type="number" min="0" value="1"></div>
+ ${['STR','INT','CON','DEX','CHA'].map(s=>`<div class="field"><label>${s}</label><input id="adv${s}" type="number" min="1" value="3"></div>`).join('')}
+ <div class="field"><label>Source Authority</label><select id="advSource"><option>THE_DESCENT</option><option>RAW_CORE</option><option>RAW_TOOLKIT</option><option>GM_CREATED</option><option>AI_GENERATED</option><option>HOMEBREW</option></select></div>
+ </div><hr><div class="tag">PRIMARY ATTACK</div><div class="gm-formgrid">
+ <div class="field"><label>Attack Name</label><input id="advAtkName" value="Attack"></div><div class="field"><label>To-Hit Difficulty</label><input id="advAtkHit" value="11+F"></div>
+ <div class="field"><label>Damage</label><input id="advAtkDamage" value="1D6"></div><div class="field"><label>Damage Type</label><input id="advAtkType" value="Physical"></div>
+ <div class="field"><label>Range</label><input id="advAtkRange" value="Melee"></div><div class="field"><label>On Hit / Fail Effect</label><input id="advAtkEffect"></div>
+ <div class="field wide"><label>Special Rules / Notes</label><textarea id="advNotes" rows="5"></textarea></div><div class="field wide"><label>System / AI Announcement</label><textarea id="advAnnouncement" rows="3"></textarea></div>
+ </div><button id="saveAdversary" class="primary">SAVE ADVERSARY</button></div>
+ <div class="panel"><div class="gm-library-head"><div><span class="tag">ADVERSARY LIBRARY</span><h2>${ads.length} Profiles</h2></div><input id="advSearch" placeholder="Search adversaries..."></div><div id="advList">${renderAdversaries(ads)}</div></div></section>`;
+}
+function renderAdversaries(ads){return ads.length?ads.map(x=>`<div class="gm-library-row" data-search="${escA((x.name+' '+x.classification+' '+(x.species_type||'')).toLowerCase())}"><div><b>${escA(x.name)}</b><div class="muted small">${escA(x.classification.toUpperCase())} // LV ${x.level} // ${escA(x.size?.name||'—')} // DR ${x.dr} // EVADE ${escA(x.evade)}</div><div class="muted">${escA(x.attacks?.[0]?.name||'No attack')} // ${escA(x.attacks?.[0]?.damage||'—')} ${escA(x.attacks?.[0]?.damage_type||'')}</div></div><div class="controls"><span class="pill">${escA(x.source_authority)}</span><button data-addadv="${x.id}">ADD TO ENCOUNTER</button><button data-deletecontent="${x.id}" class="danger">DELETE</button></div></div>`).join(''):'<p class="muted">No adversary profiles yet.</p>'}
+function encounters(){
+ const lib=library(),encs=lib.filter(x=>x.content_type==='encounter'),a=active();
+ return `<section class="gm-library-layout"><div class="panel"><div class="tag">ENCOUNTER WORKSHOP</div><h2>Encounter Definition</h2><div class="gm-formgrid"><div class="field"><label>Name</label><input id="encName"></div><div class="field"><label>Type</label><select id="encType">${['combat','boss','trap','social','exploration','chase','mixed'].map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field"><label>Floor</label><input id="encFloor" type="number" min="1" value="${state.crawlers[0]?.floor||1}"></div><div class="field"><label>Power Band</label><select id="encPower"><option>Weak</option><option selected>Moderate</option><option>Strong</option><option>Overwhelming</option></select></div><div class="field"><label>Party Size</label><input id="encParty" type="number" min="2" max="7" value="${Math.min(7,Math.max(2,state.crawlers.length))}"></div><div class="field"><label>Adversary Count</label><input id="encCount" type="number" min="0" value="${Math.min(7,Math.max(2,state.crawlers.length))}"></div>
+ <div class="field wide"><label>Saved Adversary</label><select id="encSavedAdv"><option value="">— Use inline template below —</option>${library().filter(x=>x.content_type==='adversary').map(x=>`<option value="${x.id}">${escA(x.name)} // ${escA(x.classification)}</option>`).join('')}</select></div>
+ <div class="field"><label>Adversary Name</label><input id="encMobName" value="Dungeon Mob"></div><div class="field"><label>Health Bar Slots</label><input id="encMobHealth" type="number" min="1" value="10"></div>
+ <div class="field"><label>Evade</label><input id="encMobEvade" value="11+F"></div><div class="field"><label>DR</label><input id="encMobDr" type="number" min="0" value="1"></div>
+ <div class="field"><label>Attack</label><input id="encMobAttack" value="Attack"></div><div class="field"><label>Damage</label><input id="encMobDamage" value="1D6"></div>
+ <div class="field wide"><label>System Announcement</label><textarea id="encAnnouncement" rows="3"></textarea></div><div class="field wide"><label>Objectives</label><textarea id="encObjectives" rows="3" placeholder="One objective per line"></textarea></div><div class="field wide"><label>GM Notes / Special Rules</label><textarea id="encNotes" rows="4"></textarea></div></div><div id="powerHint" class="notice"></div><button id="saveEncounter" class="primary">SAVE ENCOUNTER</button></div>
+ <div class="panel"><span class="tag">ENCOUNTER LIBRARY</span><h2>${encs.length} Definitions</h2>${a?`<div class="notice"><b>ACTIVE:</b> ${escA(a.name)} // ROUND ${a.round} // ${escA(a.phase.toUpperCase())}</div>`:''}${encs.length?encs.map(x=>`<div class="gm-library-row"><div><b>${escA(x.name)}</b><div class="muted small">${escA(x.encounter_type.toUpperCase())} // FLOOR ${x.floor} // ${escA(x.power_band||'')}</div><div class="muted">${escA(x.system_announcement||'')}</div></div><div class="controls"><button data-deployenc="${x.id}" class="primary">DEPLOY</button><button data-deletecontent="${x.id}" class="danger">DELETE</button></div></div>`).join(''):'<p class="muted">No encounter definitions yet.</p>'}</div></section>`;
+}
+function tables(){
+ const ds=dynamicState(),pack=ds.pack,states=pack?.escalation_states||[],cur=states[Math.max(0,Math.min(Number(ds.escalation||0),states.length-1))];
+ return `<section class="gm-two"><div class="panel"><span class="tag">RAW REFERENCE</span><h2>Adversary Power</h2><div class="gm-tablewrap"><table><thead><tr><th>Party</th><th>Weak</th><th>Moderate</th><th>Strong</th><th>Overwhelming</th></tr></thead><tbody>${Object.entries(POWER).map(([p,v])=>`<tr><td>${p}</td><td>${v.Weak}</td><td>${v.Moderate}</td><td>${v.Strong}</td><td>${v.Overwhelming}</td></tr>`).join('')}</tbody></table></div><p class="muted small">RAW starting point only. For six crawlers: Weak 3, Moderate 6, Strong 9, Overwhelming 12+. GM adjustment remains authoritative.</p></div>
+ <div class="panel"><span class="tag">HOMECOMING ESCALATION</span><h2>${cur?`STATE ${cur.state} // ${escA(cur.name)}`:'DYNAMIC PACK NOT LOADED'}</h2>${cur?`<p>${escA(cur.summary)}</p><div class="notice"><b>UNLOCK</b> — ${escA(cur.unlock)}</div><p class="muted small">${escA(cur.gm)}</p><div class="controls"><button id="escDown" ${cur.state<=0?'disabled':''}>− STATE</button><button id="escUp" class="primary" ${cur.state>=states.length-1?'disabled':''}>+ STATE</button></div>`:`<p class="muted">Use LOAD DYNAMIC HOMECOMING 4.1 on the Dashboard.</p>`}</div></section>
+ ${pack?`<section class="panel"><span class="tag">SYSTEM REACTION TABLES</span><h2>Dynamic Homecoming</h2><div class="gm-formgrid"><div class="field"><label>Table</label><select id="dynamicTable">${pack.tables.map(t=>`<option value="${t.id}">${escA(t.name)} // d${t.die}</option>`).join('')}</select></div></div><div class="controls"><button id="dynamicRoll" class="primary">ROLL REACTION</button><button id="dynamicBrowse">BROWSE TABLE</button></div><div id="dynamicResult" class="gm-roll">Choose a table and roll.</div></section>
+ <section class="panel"><span class="tag">SAFE CRAWLER HOOKS</span><h2>Public GM Seeds</h2><p class="muted small">These hooks intentionally contain no private intake. Sensitive/off-limits material must remain outside the public repository.</p><div class="gm-library">${pack.crawler_seeds.map(x=>`<div class="gm-library-row"><div><b>${escA(x.crawler)}</b><div class="muted small">${escA(x.archetype)}</div>${x.hooks.map(h=>`<div>• ${escA(h)}</div>`).join('')}<div class="notice small"><b>RUNNING JOKE</b> — ${escA(x.running_joke)}</div>${x.safety?`<div class="notice small"><b>SAFETY</b> — ${escA(x.safety)}</div>`:''}</div></div>`).join('')}</div></section>`:`<section class="panel"><span class="tag">DYNAMIC CONTENT</span><h2>Not loaded</h2><p class="muted">Load Dynamic Homecoming 4.1 from the Dashboard to activate reaction tables and escalation states.</p></section>`}`;
+}
+function render(){
+ header();document.querySelectorAll('[data-workspace]').forEach(b=>b.classList.toggle('active',b.dataset.workspace===workspace));
+ const w=document.querySelector('#workspace');w.innerHTML=workspace==='dashboard'?dashboard():workspace==='session'?session():workspace==='ai'?aiStudio():workspace==='actions'?actions():workspace==='rewards'?rewards():workspace==='items'?items():workspace==='npcs'?npcs():workspace==='adversaries'?adversaries():workspace==='encounters'?encounters():workspace==='director'?director():tables();
+ bind();
+}
+async function saveC(c,msg){await saveCrawlerNow(c);if(msg)feed(msg);state=readState()||state;render()}
+function bind(){
+ document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{workspace=b.dataset.jump;render()});
 
- const cfg=ollamaSettings();
- document.querySelector('#ollamaUrl').value=cfg.url;document.querySelector('#ollamaModel').value=cfg.model;
- document.querySelector('#saveOllama').onclick=()=>{localStorage.setItem('descentOllamaUrl',document.querySelector('#ollamaUrl').value.trim()||OLLAMA_DEFAULT_URL);localStorage.setItem('descentOllamaModel',document.querySelector('#ollamaModel').value.trim()||OLLAMA_DEFAULT_MODEL);document.querySelector('#ollamaStatus').textContent='LOCAL AI SETTINGS // SAVED'};
- document.querySelector('#testOllama').onclick=async()=>{
-   const status=document.querySelector('#ollamaStatus'),url=(document.querySelector('#ollamaUrl').value.trim()||OLLAMA_DEFAULT_URL).replace(/\/+$/,'');
-   status.textContent='LOCAL AI STATUS // TESTING...';
-   try{const r=await fetch(url+'/api/tags');if(!r.ok)throw new Error(`HTTP ${r.status}`);const data=await r.json(),names=(data.models||[]).map(x=>x.name);status.textContent=`LOCAL AI ONLINE // ${names.length} MODEL(S): ${names.slice(0,4).join(', ')||'none installed'}`}
-   catch(e){status.textContent='LOCAL AI OFFLINE // '+(e.message||e)}
- };
- document.querySelector('#awardLoot').onclick=async()=>{
-   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),title=document.querySelector('#lootTitle').value.trim(),contents=document.querySelector('#lootContents').value.trim();
-   if(!title||!contents)return alert('Generate or enter a reward title and contents first.');
-   c.achievements.push({name:title,reward:contents,claimStatus:'CLAIMED'});
-   const blocks=contents.split(/\n\s*\n/).filter(Boolean);
-   blocks.forEach(block=>{const lines=block.split('\n'),name=(lines[0]||'').trim();if(!name||/^GM Request Context:/i.test(name))return;const cat=(block.match(/Category:\s*(.+)/i)||[])[1]||'';const effect=(block.match(/Effect:\s*(.+)/i)||[])[1]||'';const qm=name.match(/^(.*?)(?:\s*[×x]\s*(\d+))$/i),base=(qm?qm[1]:name).trim(),qty=qm?+qm[2]:1;if(/equipment|armor|weapon|gear|utility/i.test(cat)&&!/consumable/i.test(cat)){c.equipment.push({name:base,type:cat,effect})}else{const ex=c.inventory.find(x=>String(x.name).toLowerCase()===base.toLowerCase());if(ex)ex.qty=Number(ex.qty||0)+qty;else c.inventory.push({name:base,type:cat||'Reward',qty})}});
-   try{await saveCrawlerNow(c);addFeed(state,`${c.name} claimed ${title}; generated contents were added directly to Equipment/Inventory.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render()}catch(e){alert('Direct loot award failed: '+e.message)}
- };
- document.querySelector('#stageLoot').onclick=async()=>{
-   const c=state.crawlers.find(x=>x.id===document.querySelector('#lootWho').value),name=document.querySelector('#lootTitle').value.trim(),reward=document.querySelector('#lootContents').value.trim(),tier=document.querySelector('#lootTier').value;
-   if(!name||!reward)return alert('Enter both a reward title and generated contents.');
-   c.lootBoxes=c.lootBoxes||[];c.lootBoxes.push({id:`loot-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,name,tier,contents:reward,opened:false,awardedAt:new Date().toISOString()});
-   try{await saveCrawlerNow(c);addFeed(state,`${c.name} received a sealed ${tier} loot box: ${name}.`);state=readState();document.querySelector('#lootTitle').value='';document.querySelector('#lootContents').value='';render()}catch(e){alert('Loot Box staging failed: '+e.message)}
- };
- 
- document.querySelector('#reset').onclick=async()=>{if(confirm('Reset local cache on this browser? Cloud data will be loaded again.')){localStorage.removeItem(STORAGE_KEY);state=await getState();render()}};
- window.addEventListener('descent-crawler-update',e=>{const i=state.crawlers.findIndex(c=>String(c.id)===String(e.detail.id));if(i>=0)state.crawlers[i]=e.detail.data;else state.crawlers.push(e.detail.data);render()});
- window.addEventListener('descent-feed-update',()=>{const fresh=readState();if(fresh?.feed)state.feed=fresh.feed;render()});
- window.addEventListener('descent-message-update',()=>{const fresh=readState();if(fresh?.crawlers)state.crawlers=fresh.crawlers;render()});
- window.addEventListener('descent-message-refresh',()=>{const fresh=readState();if(fresh?.crawlers)state.crawlers=fresh.crawlers;render()});
- render()
-})().catch(e=>document.querySelector('#party').innerHTML=`<div class="notice">${esc(e.message)}</div>`);
+ document.querySelector('#aiSaveCfg')?.addEventListener('click',()=>{saveAiCfg({url:document.querySelector('#aiUrl').value.trim()||'http://localhost:11434',model:document.querySelector('#aiModel').value.trim()||'llama3.2:3b'});alert('Local AI settings saved in this browser.')});
+ document.querySelector('#aiGenerate')?.addEventListener('click',async()=>{const b=document.querySelector('#aiGenerate'),type=document.querySelector('#aiType').value,request=document.querySelector('#aiRequest').value.trim();if(!request)return alert('Describe what you want the AI to draft.');b.disabled=true;b.textContent='GENERATING…';try{const x=await ollamaGenerate(type,request);x.content_type=type;x.schema_version='1.0';x.id='draft_'+Date.now();x.source_authority='AI_GENERATED';x.gm_approval_required=true;x._generation_request=request;aiValidate(x,type,request);aiDraft=x;render()}catch(e){const validation=/failed validation/i.test(e.message);alert((validation?'AI DRAFT FAILED VALIDATION':'LOCAL AI OFFLINE OR INVALID RESPONSE')+'\n\n'+e.message+'\n\n'+(validation?'Ollama responded, but the draft still violated one or more GM constraints after automatic repair. Review the validation failures above.':'Start Ollama with the included launcher and confirm the selected model is installed.'))}finally{if(document.querySelector('#aiGenerate')){b.disabled=false;b.textContent='GENERATE DRAFT'}}});
+ document.querySelector('#aiClear')?.addEventListener('click',()=>{aiDraft=null;render()});
+ document.querySelector('#aiRevalidate')?.addEventListener('click',()=>{try{aiDraft=JSON.parse(document.querySelector('#aiDraftJson').value);aiValidate(aiDraft,aiDraft.content_type,aiDraft._generation_request||'');render()}catch(e){alert('Draft JSON is invalid: '+e.message)}});
+ document.querySelector('#aiApprove')?.addEventListener('click',()=>{try{const x=JSON.parse(document.querySelector('#aiDraftJson').value),v=aiValidate(x,x.content_type,x._generation_request||'');if(v.errors.length)return alert('Fix validation errors first:\\n'+v.errors.join('\\n'));delete x._generation_request;x.id=id(x.content_type==='loot_box'?'lootboxdef':x.content_type);x.schema_version='1.0';x.source_authority='AI_GENERATED';x.gm_approval_required=false;x.gm_approved_at=new Date().toISOString();x.gm_approved=true;const lib=library();lib.push(x);saveLibrary(lib);feed(`GM approved AI draft into Content Engine: ${x.name}.`);queueEvent({event_type:'content_created',title:x.name,body:'AI-generated draft approved by GM.',related_object_type:x.content_type,related_object_id:x.id,status:'recorded',source_authority:'AI_GENERATED'});aiDraft=null;alert('Approved and saved to the Content Engine.');render()}catch(e){alert('Cannot approve draft: '+e.message)}});
+
+ document.querySelector('#liveSend')?.addEventListener('click',async()=>{const who=document.querySelector('#liveRecipients').value,type=document.querySelector('#liveEventType').value,title=document.querySelector('#liveTitle').value.trim(),body=document.querySelector('#liveBody').value.trim(),presentation=document.querySelector('#livePresentation').value,priority=document.querySelector('#livePriority').value;if(!title&&!body)return alert('Enter a title or message.');const targets=who==='PARTY'?state.crawlers:[crawler(who)].filter(Boolean);for(const c of targets){queueEvent({event_type:type,title:title||'SYSTEM MESSAGE',body,recipient_id:c.id,recipient_name:c.name,priority,presentation});}feed(`Live ${type.replaceAll('_',' ')} sent to ${who==='PARTY'?'PARTY':targets[0]?.name}.`);render()});
+ document.querySelectorAll('[data-qobj]').forEach(el=>el.onchange=async()=>{const [cid,key,idx]=el.dataset.qobj.split('|'),c=crawler(cid),q=findQuestInstance(c,key);if(!q||!q.objectives?.[Number(idx)])return;q.objectives[Number(idx)].status=el.checked?'COMPLETE':'ACTIVE';await saveCrawlerNow(c);queueEvent({event_type:'quest_updated',title:q.name,body:`Objective ${Number(idx)+1}: ${el.checked?'COMPLETE':'ACTIVE'}`,recipient_id:c.id,recipient_name:c.name,related_object_type:'quest',related_object_id:q.definition_id||q.id});feed(`${c.name} quest updated: ${q.name}.`);state=readState()||state;render()});
+ document.querySelectorAll('[data-qcomplete]').forEach(b=>b.onclick=async()=>{const [cid,key]=b.dataset.qcomplete.split('|'),c=crawler(cid),q=findQuestInstance(c,key);if(!q)return;if(!confirm(`Complete ${q.name} for ${c.name}?`))return;q.status='COMPLETE';(q.objectives||[]).forEach(o=>o.status='COMPLETE');await saveCrawlerNow(c);queueEvent({event_type:'quest_completed',title:q.name,body:q.reward||'Quest complete.',recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'quest',related_object_id:q.definition_id||q.id});feed(`${c.name} completed quest: ${q.name}.`);state=readState()||state;render()});
+ document.querySelectorAll('[data-qfail]').forEach(b=>b.onclick=async()=>{const [cid,key]=b.dataset.qfail.split('|'),c=crawler(cid),q=findQuestInstance(c,key);if(!q)return;if(!confirm(`Fail ${q.name} for ${c.name}?`))return;q.status='FAILED';await saveCrawlerNow(c);queueEvent({event_type:'quest_failed',title:q.name,body:'Quest failed.',recipient_id:c.id,recipient_name:c.name,priority:'high',presentation:'popup',related_object_type:'quest',related_object_id:q.definition_id||q.id});feed(`${c.name} failed quest: ${q.name}.`);state=readState()||state;render()});
+ document.querySelector('#quickDeploy')?.addEventListener('click',async()=>{const x=library().find(z=>z.id===document.querySelector('#quickReward').value);if(!x)return alert('Select a definition.');const who=document.querySelector('#quickRecipient').value,targets=who==='PARTY'?state.crawlers:[crawler(who)].filter(Boolean);await deployRewardToTargets(x,targets);render()});
+ document.querySelector('#resolveWorkflow')?.addEventListener('click',async()=>{const a=active();if(!a)return;const qid=document.querySelector('#resolveQuest').value,aid=document.querySelector('#resolveAch').value,qdef=library().find(x=>x.id===qid),ach=library().find(x=>x.id===aid);let summary=`Resolve ${a.name}?`;if(qdef)summary+=`\nComplete linked quest: ${qdef.name}`;if(ach)summary+=`\nAward achievement: ${ach.name}`;summary+='\n\nNothing is awarded until you confirm.';if(!confirm(summary))return;if(qdef){for(const c of state.crawlers){const q=(c.quests||[]).find(z=>z.definition_id===qdef.id||z.name===qdef.name);if(q&&String(q.status).toUpperCase()==='ACTIVE'){q.status='COMPLETE';(q.objectives||[]).forEach(o=>o.status='COMPLETE');await saveCrawlerNow(c);queueEvent({event_type:'quest_completed',title:q.name,body:q.reward||qdef.reward_notes||'Quest complete.',recipient_id:c.id,recipient_name:c.name,priority:'high',related_object_type:'quest',related_object_id:qdef.id});}}}if(ach)await deployRewardToTargets(ach,state.crawlers);feed(`Encounter resolved through Live Session Control: ${a.name}.`);saveActive(null);state=readState()||state;render()});
+ document.querySelector('#loadHomecomingPack')?.addEventListener('click',loadHomecomingPack);
+ document.querySelector('#loadDynamicHomecoming')?.addEventListener('click',loadDynamicHomecoming);
+ document.querySelector('#syncContentCloud')?.addEventListener('click',async()=>{try{for(const x of library())await cloudUpsertContent(x);alert('Content Engine sync complete.')}catch(e){alert('Sync failed: '+e.message)}});
+ document.querySelectorAll('[data-hslot]').forEach(b=>b.onclick=async()=>{const c=crawler(b.dataset.hslot);c.healthSlotsRemaining=Math.max(0,Math.min(10,Number(c.healthSlotsRemaining||0)+Number(b.dataset.d)));await saveC(c,`${c.name} Health Bar adjusted to ${c.healthSlotsRemaining}/10 slots by GM.`)});
+ document.querySelector('#nextPhase')?.addEventListener('click',()=>{const a=active();if(!a)return;if(a.phase==='mobs')a.phase='crawlers';else{a.phase='mobs';a.round++;a.actions_remaining=Object.fromEntries(state.crawlers.map(c=>[c.id,2]))}saveActive(a);feed(`Encounter ${a.name} advanced to Round ${a.round}, ${a.phase} phase.`);render()});
+ document.querySelectorAll('[data-mobslot]').forEach(b=>b.onclick=()=>{const a=active(),p=(a.participants||[]).find(x=>x.participant_id===b.dataset.mobslot);if(!p)return;p.health.slots_current=Math.max(0,Math.min(p.health.slots_max,Number(p.health.slots_current||0)+Number(b.dataset.d)));a.event_log.push({at:new Date().toISOString(),text:`${p.name} Health Bar: ${p.health.slots_current}/${p.health.slots_max}`});saveActive(a);render()});
+ document.querySelectorAll('[data-condition]').forEach(b=>b.onclick=()=>{const a=active(),p=(a.participants||[]).find(x=>x.participant_id===b.dataset.condition);if(!p)return;const v=prompt(`Conditions for ${p.name} (comma separated):`,(p.conditions||[]).join(', '));if(v===null)return;p.conditions=v.split(',').map(x=>x.trim()).filter(Boolean);saveActive(a);render()});
+ document.querySelectorAll('[data-mobattack]').forEach(b=>b.onclick=()=>{const a=active(),p=(a.participants||[]).find(x=>x.participant_id===b.dataset.mobattack);if(!p)return;const sel=document.querySelector(`[data-atkselect="${p.participant_id}"]`),atk=(p.attacks||[])[Number(sel?.value||0)]||{name:'Attack',to_hit:'—',damage:'—'},d20=rollDie(20);a.event_log.push({at:new Date().toISOString(),text:`${p.name} used ${atk.name}: d20 ${d20}; to-hit ${atk.to_hit||'—'}; damage ${atk.damage}.`});saveActive(a);feed(`${p.name} // ${atk.name}: d20 ${d20} // To-Hit ${atk.to_hit||'—'} // Damage ${atk.damage}.`);alert(`${p.name} — ${atk.name}\nD20: ${d20}\nTo-Hit: ${atk.to_hit||'—'}\nDamage: ${atk.damage} ${atk.damage_type||''}\nRange: ${atk.range||'—'}${atk.other_effects?.length?'\nEffect: '+atk.other_effects.map(x=>x.text||JSON.stringify(x)).join('; '):''}`);render()});
+ document.querySelectorAll('[data-spendaction]').forEach(b=>b.onclick=()=>{const a=active(),cid=b.dataset.spendaction;a.actions_remaining=a.actions_remaining||{};a.actions_remaining[cid]=Math.max(0,Number(a.actions_remaining[cid]??2)-1);saveActive(a);render()});
+ document.querySelectorAll('[data-resetaction]').forEach(b=>b.onclick=()=>{const a=active();a.actions_remaining=a.actions_remaining||{};a.actions_remaining[b.dataset.resetaction]=2;saveActive(a);render()});
+ document.querySelector('#resetRoundActions')?.addEventListener('click',()=>{const a=active();a.actions_remaining=Object.fromEntries(state.crawlers.map(c=>[c.id,2]));saveActive(a);render()});
+ document.querySelector('#endEncounter')?.addEventListener('click',()=>{const a=active();if(a&&confirm(`Resolve ${a.name}?`)){feed(`Encounter resolved: ${a.name}.`);saveActive(null);render()}});
+ document.querySelector('#deployAction')?.addEventListener('click',async()=>{const c=crawler(document.querySelector('#actionWho').value),type=document.querySelector('#actionType').value,title=document.querySelector('#actionTitle').value.trim(),body=document.querySelector('#actionBody').value.trim();if(!body&&!title)return alert('Enter event content.');if(type==='Private System Message'){await sendPrivateSystemMessage(c.id,body||title);queueEvent({event_type:'private_message',title:'SYSTEM MESSAGE',body:body||title,recipient_id:c.id,recipient_name:c.name});feed(`${c.name} received a private System message.`)}else if(type==='Achievement'){c.achievements.push({name:title||'Achievement',reward:body,claimStatus:'UNCLAIMED'});queueEvent({event_type:'achievement',title:title||'Achievement',body,recipient_id:c.id,recipient_name:c.name,priority:'high'});await saveC(c,`${c.name} received achievement: ${title||'Achievement'}.`);return}else if(type==='Quest'){c.quests.push({name:title||'Quest',detail:body,status:'ACTIVE'});queueEvent({event_type:'quest_received',title:title||'Quest',body,recipient_id:c.id,recipient_name:c.name});await saveC(c,`${c.name} received quest: ${title||'Quest'}.`);return}else if(type==='GM Notes'){c.notes=body;await saveC(c,`${c.name} GM Notes updated.`);return}else{for(const x of state.crawlers){await sendPrivateSystemMessage(x.id,`SYSTEM ANNOUNCEMENT${title?' // '+title:''}\n${body}`);queueEvent({event_type:'system_announcement',title:title||'SYSTEM ANNOUNCEMENT',body,recipient_id:x.id,recipient_name:x.name,priority:'high',presentation:'banner'});}feed(`System announcement deployed to the party: ${title||body.slice(0,40)}.`)}state=readState()||state;render()});
+ document.querySelector('#partyLevelUp')?.addEventListener('click',async()=>{if(!confirm('Advance every crawler +1 Level and bank +3 Stat Points?'))return;for(const c of state.crawlers){c.level=Number(c.level||1)+1;c.pendingStatPoints=Number(c.pendingStatPoints||0)+3;await saveCrawlerNow(c)}feed('Party advanced +1 Level. Each crawler banked 3 Stat Points.');state=readState()||state;render()});
+ document.querySelector('#partyFloorUp')?.addEventListener('click',async()=>{if(!confirm('Advance every crawler +1 Floor?'))return;for(const c of state.crawlers){c.floor=Number(c.floor||1)+1;await saveCrawlerNow(c)}feed('Party advanced +1 Floor.');state=readState()||state;render()});
+ document.querySelector('#stageLoot')?.addEventListener('click',async()=>{const c=crawler(document.querySelector('#lootWho').value),tier=document.querySelector('#lootTier').value,name=document.querySelector('#lootName').value.trim(),contents=document.querySelector('#lootContents').value.trim();if(!name)return alert('Enter a loot box name.');c.lootBoxes.push({id:id('loot'),name,tier,contents,opened:false,awardedAt:new Date().toISOString()});await saveC(c,`${c.name} received sealed ${tier} loot box: ${name}.`)});
+ document.querySelector('#saveQuestDef')?.addEventListener('click',()=>{const name=document.querySelector('#rwQuestName').value.trim();if(!name)return alert('Quest name required.');const x={schema_version:'1.0',content_type:'quest',id:id('quest'),name,scope:document.querySelector('#rwQuestScope').value,description:document.querySelector('#rwQuestDesc').value.trim(),objectives:document.querySelector('#rwQuestObj').value.split('\n').map(x=>x.trim()).filter(Boolean).map((text,i)=>({id:'obj_'+(i+1),text,required:true})),reward_notes:document.querySelector('#rwQuestReward').value.trim(),gm_end_goal:document.querySelector('#rwQuestEndGoal')?.value.trim()||'',retrieval_target:document.querySelector('#rwQuestTarget')?.value.trim()||'',triggered_encounter:document.querySelector('#rwQuestEncounter')?.value.trim()||'',source_authority:'THE_DESCENT',gm_approval_required:false};const lib=library();lib.push(x);saveLibrary(lib);queueEvent({event_type:'content_created',title:name,body:'Quest Definition saved.',related_object_type:'quest',related_object_id:x.id,status:'recorded'});render()});
+ document.querySelector('#saveAchievementDef')?.addEventListener('click',()=>{const name=document.querySelector('#rwAchName').value.trim();if(!name)return alert('Achievement name required.');const tier=document.querySelector('#rwAchBox').value;const x={schema_version:'1.0',content_type:'achievement',id:id('achievement'),name,description:document.querySelector('#rwAchDesc').value.trim(),reward:tier?{tier,box_name:document.querySelector('#rwAchBoxName').value.trim()||`${tier} Loot Box`}:null,contents:document.querySelector('#rwAchContents').value.trim(),source_authority:'THE_DESCENT',gm_approval_required:false};const lib=library();lib.push(x);saveLibrary(lib);queueEvent({event_type:'content_created',title:name,body:'Achievement Definition saved.',related_object_type:'achievement',related_object_id:x.id,status:'recorded'});render()});
+ document.querySelector('#saveBoxDef')?.addEventListener('click',()=>{const name=document.querySelector('#rwBoxName').value.trim();if(!name)return alert('Loot Box name required.');const x={schema_version:'1.0',content_type:'loot_box',id:id('lootboxdef'),name,tier:document.querySelector('#rwBoxTier').value,box_type:document.querySelector('#rwBoxType').value.trim()||'Adventurer',contents:document.querySelector('#rwBoxContents').value.trim(),source_authority:'THE_DESCENT',gm_approval_required:false};const lib=library();lib.push(x);saveLibrary(lib);queueEvent({event_type:'content_created',title:name,body:'Loot Box Definition saved.',related_object_type:'loot_box',related_object_id:x.id,status:'recorded'});render()});
+ document.querySelector('#rewardFilter')?.addEventListener('change',e=>document.querySelectorAll('#rewardList [data-rwtype]').forEach(r=>r.classList.toggle('hidden',e.target.value!=='all'&&r.dataset.rwtype!==e.target.value)));
+ document.querySelectorAll('[data-deployreward]').forEach(b=>b.onclick=()=>{const x=library().find(z=>z.id===b.dataset.deployreward);if(x)deployRewardDefinition(x)});
+ document.querySelector('#saveItem')?.addEventListener('click',()=>{const name=document.querySelector('#itemName').value.trim();if(!name)return alert('Item name required.');const x={schema_version:'1.0',content_type:'item',id:id('item'),name,category:document.querySelector('#itemCategory').value,gear_slot:document.querySelector('#itemSlot').value||null,loot_tier:document.querySelector('#itemTier').value,floor_min:Number(document.querySelector('#itemFloor').value||1),source_authority:document.querySelector('#itemSource').value,system_description:document.querySelector('#itemDesc').value.trim(),mechanics:{notes:document.querySelector('#itemEffect').value.trim()},gm_approval_required:['AI_GENERATED','HOMEBREW'].includes(document.querySelector('#itemSource').value)};const lib=library();lib.push(x);saveLibrary(lib);feed(`Content Library saved item: ${name}.`);render()});
+ document.querySelector('#itemSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#itemList [data-search]').forEach(r=>r.classList.toggle('hidden',!r.dataset.search.includes(q)))});
+ document.querySelectorAll('[data-awarditem]').forEach(b=>b.onclick=async()=>{const x=library().find(z=>z.id===b.dataset.awarditem);if(!x)return;const who=prompt('Award to crawler ID or exact crawler name:',state.crawlers[0]?.name||'');const c=state.crawlers.find(z=>String(z.id).toLowerCase()===String(who).toLowerCase()||String(z.name).toLowerCase()===String(who).toLowerCase());if(!c)return alert('Crawler not found.');c.inventory=c.inventory||[];c.inventory.push({id:id('owned'),definition_id:x.id,name:x.name,category:x.category==='gear'||x.category==='weapon'?'Equipment':x.category==='consumable'?'Consumable':'Other',type:x.category,gearSlot:x.gear_slot||'',qty:1,effect:x.mechanics?.notes||'',mechanics:JSON.parse(JSON.stringify(x.mechanics||{})),snapshot:JSON.parse(JSON.stringify(x)),sourceAuthority:x.source_authority});await saveC(c,`${c.name} received item: ${x.name}.`)});
+ document.querySelector('#saveNpc')?.addEventListener('click',()=>{const name=document.querySelector('#npcName').value.trim();if(!name)return alert('NPC name required.');const x={schema_version:'1.0',content_type:'npc',id:id('npc'),name,npc_type:document.querySelector('#npcType').value,floor:Number(document.querySelector('#npcFloor').value||1),status:document.querySelector('#npcStatus').value,location:document.querySelector('#npcLocation').value.trim(),faction:document.querySelector('#npcFaction').value.trim(),personality:document.querySelector('#npcPersonality').value.trim(),secrets:document.querySelector('#npcSecrets').value.trim().split('\n').filter(Boolean),source_authority:'THE_DESCENT',gm_approval_required:false};const lib=library();lib.push(x);saveLibrary(lib);feed(`Content Library saved NPC: ${name}.`);render()});
+ function hint(){const p=Number(document.querySelector('#encParty')?.value||0),band=document.querySelector('#encPower')?.value,el=document.querySelector('#powerHint');if(!el)return;el.innerHTML=POWER[p]?`RAW starting point for <b>${p}</b> crawlers at <b>${band}</b>: <b>${POWER[p][band]} Mobs</b>. This is guidance, not an automatic difficulty guarantee.`:'RAW Adversary Power reference covers party sizes 2–7.'}
+ document.querySelector('#encParty')?.addEventListener('input',hint);document.querySelector('#encPower')?.addEventListener('change',hint);hint();
+ document.querySelector('#saveAdversary')?.addEventListener('click',()=>{const name=document.querySelector('#advName').value.trim();if(!name)return alert('Adversary name required.');const src=document.querySelector('#advSource').value,effect=document.querySelector('#advAtkEffect').value.trim(),notes=document.querySelector('#advNotes').value.trim();const x={schema_version:'1.0',content_type:'adversary',id:id('adv'),name,species_type:document.querySelector('#advSpecies').value.trim()||null,classification:document.querySelector('#advClass').value,size:{name:document.querySelector('#advSize').value.trim()||'Medium',value:1},health_bar:{slots:Math.max(1,Number(document.querySelector('#advHealth').value||10))},level:Math.max(1,Number(document.querySelector('#advLevel').value||1)),surprise:document.querySelector('#advSurprise').value.trim()||'11+F',evade:document.querySelector('#advEvade').value.trim()||'11+F',move:document.querySelector('#advMove').value.trim()||'20+S',dr:Math.max(0,Number(document.querySelector('#advDR').value||0)),stats:Object.fromEntries(['STR','INT','CON','DEX','CHA'].map(s=>[s,Math.max(1,Number(document.querySelector('#adv'+s).value||1))])),attacks:[{name:document.querySelector('#advAtkName').value.trim()||'Attack',to_hit:document.querySelector('#advAtkHit').value.trim()||'11+F',damage:document.querySelector('#advAtkDamage').value.trim().toUpperCase()||'1D6',damage_type:document.querySelector('#advAtkType').value.trim()||'Physical',range:document.querySelector('#advAtkRange').value.trim()||'Melee',other_effects:effect?[{text:effect}]:[]}],special_rules:notes?[{text:notes}]:[],notes:[],ai_announcement:document.querySelector('#advAnnouncement').value.trim()||null,source_authority:src,gm_approval_required:['AI_GENERATED','HOMEBREW'].includes(src)};const lib=library();lib.push(x);saveLibrary(lib);feed(`Content Library saved adversary: ${name}.`);render()});
+ document.querySelector('#advSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#advList [data-search]').forEach(r=>r.classList.toggle('hidden',!r.dataset.search.includes(q)))});
+ document.querySelectorAll('[data-addadv]').forEach(b=>b.onclick=()=>{const x=library().find(z=>z.id===b.dataset.addadv);if(!x)return;workspace='encounters';render();const sel=document.querySelector('#encSavedAdv');if(sel){sel.value=x.id;document.querySelector('#encMobName').value=x.name;document.querySelector('#encMobHealth').value=x.health_bar?.slots||10;document.querySelector('#encMobEvade').value=x.evade||'11+F';document.querySelector('#encMobDr').value=x.dr||0;document.querySelector('#encMobAttack').value=x.attacks?.[0]?.name||'Attack';document.querySelector('#encMobDamage').value=x.attacks?.[0]?.damage||'1D6';}});
+ document.querySelector('#saveEncounter')?.addEventListener('click',()=>{const name=document.querySelector('#encName').value.trim();if(!name)return alert('Encounter name required.');const x={schema_version:'1.0',content_type:'encounter',id:id('enc'),name,encounter_type:document.querySelector('#encType').value,floor:Number(document.querySelector('#encFloor').value||1),power_band:document.querySelector('#encPower').value,party_size_reference:Number(document.querySelector('#encParty').value||state.crawlers.length),participants:[(()=>{const aid=document.querySelector('#encSavedAdv').value,a=library().find(z=>z.id===aid);return a?{kind:'adversary',definition_id:a.id,count:Number(document.querySelector('#encCount').value||0),role:'adversaries',template:{name:a.name,health_slots:Number(a.health_bar?.slots||10),evade:a.evade,dr:Number(a.dr||0),surprise:a.surprise,move:a.move,level:a.level,classification:a.classification,stats:a.stats,attacks:a.attacks||[],special_rules:a.special_rules||[]}}:{kind:'dynamic',definition_id:null,count:Number(document.querySelector('#encCount').value||0),role:'adversaries',template:{name:document.querySelector('#encMobName').value.trim()||'Dungeon Mob',health_slots:Math.max(1,Number(document.querySelector('#encMobHealth').value||10)),evade:document.querySelector('#encMobEvade').value.trim()||'11+F',dr:Math.max(0,Number(document.querySelector('#encMobDr').value||0)),attacks:[{name:document.querySelector('#encMobAttack').value.trim()||'Attack',to_hit:'11+F',damage:document.querySelector('#encMobDamage').value.trim().toUpperCase()||'1D6',damage_type:'Physical',range:'Melee'}]}}})()],system_announcement:document.querySelector('#encAnnouncement').value.trim(),objectives:document.querySelector('#encObjectives').value.split('\n').filter(Boolean).map((t,i)=>({id:'obj_'+(i+1),text:t,required:true,hidden:false})),environment:{special_rules:document.querySelector('#encNotes').value.trim()?[{text:document.querySelector('#encNotes').value.trim()}]:[]},source_authority:'THE_DESCENT',gm_approval_required:false};const lib=library();lib.push(x);saveLibrary(lib);feed(`Content Library saved encounter: ${name}.`);render()});
+ document.querySelectorAll('[data-deployenc]').forEach(b=>b.onclick=()=>{const x=library().find(z=>z.id===b.dataset.deployenc);if(!x)return;if(active()&&!confirm('Replace the currently active encounter?'))return;const crawlers=state.crawlers.map(c=>({participant_id:'crawler_'+c.id,kind:'crawler',crawler_id:c.id,name:c.name,health:{slots_max:10,slots_current:c.healthSlotsRemaining},conditions:[]}));const adversaries=[];(x.participants||[]).filter(p=>p.role==='adversaries').forEach(p=>{for(let i=0;i<Number(p.count||0);i++){const t=p.template||{};adversaries.push({participant_id:id('mob'),kind:'adversary',name:`${t.name||'Dungeon Mob'} ${i+1}`,health:{slots_max:Number(t.health_slots||10),slots_current:Number(t.health_slots||10)},dr:Number(t.dr||0),evade:t.evade||'11+F',surprise:t.surprise||'—',move:t.move||'—',level:t.level||x.floor,classification:t.classification||'Mob',stats:t.stats||{},attacks:t.attacks||[],special_rules:t.special_rules||[],conditions:[]})}});const runtime={instance_id:id('active'),definition_id:x.id,name:x.name,status:'active',round:1,phase:'mobs',floor:x.floor,party_size:state.crawlers.length,participants:[...crawlers,...adversaries],actions_remaining:Object.fromEntries(state.crawlers.map(c=>[c.id,2])),objective_state:Object.fromEntries((x.objectives||[]).map(o=>[o.id,'active'])),event_log:[],started_at:new Date().toISOString()};saveActive(runtime);feed(`Encounter deployed: ${x.name}. Round 1 begins with the Mob phase unless crawlers achieved surprise.`);render()});
+ document.querySelectorAll('[data-deletecontent]').forEach(b=>b.onclick=()=>{const lib=library(),x=lib.find(z=>z.id===b.dataset.deletecontent);if(x&&confirm(`Delete ${x.name} from local Content Library?`)){saveLibrary(lib.filter(z=>z.id!==x.id));render()}});
+
+
+ document.querySelector('#directorPulse')?.addEventListener('click',()=>{directorPulse();feed('Dungeon Director pulse generated for the current Homecoming state.');render()});
+ document.querySelectorAll('[data-director-table]').forEach(b=>b.onclick=()=>{const pack=dynamicState().pack,t=pack?.tables?.find(x=>x.id===b.dataset.directorTable),el=document.querySelector('#directorRoll');if(!t||!el)return;const roll=Math.floor(Math.random()*t.results.length)+1,r=t.results[roll-1];el.innerHTML=`<div class="tag">${escA(t.name)} // d${t.die} → ${roll}</div><h2>${escA(r.title)}</h2><p>${escA(r.text)}</p><div class="notice small"><b>GM</b> — ${escA(r.gm)}</div>`});
+ document.querySelectorAll('[data-director-open]').forEach(b=>b.onclick=()=>{const [dest,rid]=b.dataset.directorOpen.split('|');workspace=dest;render();setTimeout(()=>{const target=document.querySelector(`[data-deployenc="${rid}"],[data-search*="${rid.toLowerCase()}"]`);target?.scrollIntoView({behavior:'smooth',block:'center'})},0)});
+ document.querySelector('#escDown')?.addEventListener('click',()=>{const d=dynamicState();d.escalation=Math.max(0,Number(d.escalation||0)-1);saveDynamicState(d);feed(`Homecoming escalation changed to State ${d.escalation}.`);render()});
+ document.querySelector('#escUp')?.addEventListener('click',()=>{const d=dynamicState(),max=(d.pack?.escalation_states?.length||1)-1;d.escalation=Math.min(max,Number(d.escalation||0)+1);saveDynamicState(d);feed(`Homecoming escalation changed to State ${d.escalation}.`);render()});
+ function showDynamicResult(result,table,roll){const el=document.querySelector('#dynamicResult');if(!el)return;el.innerHTML=`<div class="tag">${escA(table.name)} // ${roll}</div><h2>${escA(result.title)}</h2><p>${escA(result.text)}</p><div class="notice small"><b>GM</b> — ${escA(result.gm)}</div>`}
+ document.querySelector('#dynamicRoll')?.addEventListener('click',()=>{const d=dynamicState(),tid=document.querySelector('#dynamicTable').value,t=d.pack?.tables?.find(x=>x.id===tid);if(!t)return;const roll=Math.floor(Math.random()*t.results.length)+1;showDynamicResult(t.results[roll-1],t,`d${t.die} → ${roll}`)});
+ document.querySelector('#dynamicBrowse')?.addEventListener('click',()=>{const d=dynamicState(),tid=document.querySelector('#dynamicTable').value,t=d.pack?.tables?.find(x=>x.id===tid),el=document.querySelector('#dynamicResult');if(!t||!el)return;el.innerHTML=t.results.map(r=>`<div class="feeditem"><b>${r.roll}. ${escA(r.title)}</b><br>${escA(r.text)}<br><span class="muted small">GM: ${escA(r.gm)}</span></div>`).join('')});
+
+ document.querySelectorAll('[data-die]').forEach(b=>b.onclick=()=>{const d=Number(b.dataset.die),r=Math.floor(Math.random()*d)+1;document.querySelector('#tableRoll').textContent=`d${d} → ${r}`});
+}
+document.querySelector('#workspaceNav').onclick=e=>{const b=e.target.closest('[data-workspace]');if(b){workspace=b.dataset.workspace;render()}};
+window.addEventListener('descent-crawler-update',e=>{const i=state.crawlers.findIndex(c=>String(c.id)===String(e.detail.id));if(i>=0){const msgs=state.crawlers[i].messages||[];state.crawlers[i]=e.detail.data;state.crawlers[i].messages=msgs}else state.crawlers.push(e.detail.data);render()});
+window.addEventListener('descent-feed-update',()=>{const s=readState();if(s?.feed)state.feed=s.feed;render()});
+window.addEventListener('descent-message-update',()=>{const s=readState();if(s?.crawlers)state.crawlers=s.crawlers;render()});
+await initContentCloud();setInterval(header,30000);render();
+})().catch(e=>document.querySelector('#workspace').innerHTML=`<div class="notice">${esc(e.message)}</div>`);

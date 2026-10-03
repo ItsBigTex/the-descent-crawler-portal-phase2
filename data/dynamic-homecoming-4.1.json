@@ -1,0 +1,1923 @@
+{
+  "schema_version": "1.0",
+  "pack_id": "F1_DYNAMIC_4_1",
+  "name": "Floor One: Dynamic Homecoming",
+  "version": "4.1",
+  "authority": {
+    "mechanics": "Core Rulebook + GM Toolkit",
+    "campaign_content": "THE_DESCENT"
+  },
+  "notes": [
+    "Campaign-authored content. RAW remains authoritative.",
+    "Tables are GM prompts, not automatic new mechanics.",
+    "Public crawler seeds intentionally exclude private intake and sensitive material."
+  ],
+  "tables": [
+    {
+      "id": "f1_table_street_encounters",
+      "name": "Street Encounters",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "PARADE DETOUR",
+          "text": "A homecoming float blocks the street. Its papier-m\u00e2ch\u00e9 mascot turns its head only when nobody is looking.",
+          "gm": "Offer a detour, investigation, or a Weak complication. If ignored, mark the route as increasingly unstable."
+        },
+        {
+          "roll": 2,
+          "title": "WRONG ADDRESS",
+          "text": "A mailbox bears a crawler's surname at an address that should not exist.",
+          "gm": "Harmless memory bleed. Searching reveals an anomaly clue; do not introduce private/off-limits material."
+        },
+        {
+          "roll": 3,
+          "title": "PEP RALLY OF ONE",
+          "text": "A lone NPC cheerleader performs to an empty intersection and refuses to acknowledge the empty crowd.",
+          "gm": "Social clue. Successful engagement points toward the school or stadium."
+        },
+        {
+          "roll": 4,
+          "title": "ROADWORK",
+          "text": "Orange barrels create a route that was open ten minutes ago.",
+          "gm": "Redirect the party toward an unused location or encounter without hard-locking them."
+        },
+        {
+          "roll": 5,
+          "title": "GARAGE SALE",
+          "text": "A suburban lawn is covered in low-value Misc. Junk with absurd price tags.",
+          "gm": "Mostly flavor and scavenging. Do not substitute this for a loot-box reward."
+        },
+        {
+          "roll": 6,
+          "title": "SIREN TEST",
+          "text": "The town siren sounds. Every NPC freezes for exactly six seconds.",
+          "gm": "Escalation clue. At State 2+, a Mob patrol changes direction toward the party."
+        },
+        {
+          "roll": 7,
+          "title": "LOST DOG POSTER",
+          "text": "Every utility pole suddenly carries the same missing-dog poster.",
+          "gm": "Foreshadow Home, Sweet Home? or Cerberuff without forcing the quest."
+        },
+        {
+          "roll": 8,
+          "title": "FRIDAY TRAFFIC",
+          "text": "Cars with no drivers idle at a four-way stop, each politely waiting forever.",
+          "gm": "Environmental puzzle or cover. Vehicles are scenery unless GM explicitly enables them."
+        },
+        {
+          "roll": 9,
+          "title": "TAILGATE",
+          "text": "An immaculate tailgate party appears behind a closed business.",
+          "gm": "NPC scene; food is suspicious but not automatically harmful."
+        },
+        {
+          "roll": 10,
+          "title": "POWER FLICKER",
+          "text": "The whole block loses power except one building.",
+          "gm": "Spotlight an optional location or clue."
+        },
+        {
+          "roll": 11,
+          "title": "MARCHING BAND",
+          "text": "A marching band crosses an alley too narrow to contain it.",
+          "gm": "Pure System weirdness unless the GM wants a Moderate complication."
+        },
+        {
+          "roll": 12,
+          "title": "EMPTY BUS",
+          "text": "A school bus stops, opens its doors, and displays the party's current destination.",
+          "gm": "The bus can shorten travel at the price of advancing the escalation meter by one scene."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_system_interruptions",
+      "name": "System Interruptions",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "SPONSOR BREAK",
+          "text": "The System pauses local ambience for an aggressively cheerful fake sponsor message.",
+          "gm": "Use as pacing relief; no mechanical effect."
+        },
+        {
+          "roll": 2,
+          "title": "PERFORMANCE REVIEW",
+          "text": "The System publicly summarizes one harmless party habit in the least flattering way possible.",
+          "gm": "Target table behavior only; never reveal private intake data."
+        },
+        {
+          "roll": 3,
+          "title": "SAFETY REMINDER",
+          "text": "The System announces a safety tip immediately after making the environment less safe.",
+          "gm": "Introduce a minor environmental complication."
+        },
+        {
+          "roll": 4,
+          "title": "AUDIENCE POLL",
+          "text": "The System claims viewers voted on what happens next.",
+          "gm": "GM chooses between two prepared complications; no actual external vote is required."
+        },
+        {
+          "roll": 5,
+          "title": "LOCAL COLOR",
+          "text": "The System attempts a Texas saying and gets it subtly wrong.",
+          "gm": "Flavor; an NPC may react as another clue the town is fabricated."
+        },
+        {
+          "roll": 6,
+          "title": "PATCH NOTES",
+          "text": "The System announces that a nearby feature has been 'fixed.'",
+          "gm": "Change one harmless environmental detail in plain sight."
+        },
+        {
+          "roll": 7,
+          "title": "ACHIEVEMENT TEASE",
+          "text": "The System says someone is one action away from an achievement but refuses to say who or what.",
+          "gm": "Use to encourage experimentation, not to force behavior."
+        },
+        {
+          "roll": 8,
+          "title": "WEATHER UPDATE",
+          "text": "The System predicts weather that exists only inside one building.",
+          "gm": "Point toward an optional location."
+        },
+        {
+          "roll": 9,
+          "title": "PUBLIC SERVICE ANNOUNCEMENT",
+          "text": "The System reminds crawlers that dying remains discouraged but permitted.",
+          "gm": "Flavor or pre-combat beat."
+        },
+        {
+          "roll": 10,
+          "title": "QUALITY ASSURANCE",
+          "text": "A floating error message appears over an NPC for three seconds.",
+          "gm": "The NPC is a memory reconstruction clue, not automatically hostile."
+        },
+        {
+          "roll": 11,
+          "title": "TERMS UPDATED",
+          "text": "The System announces updated terms nobody can read.",
+          "gm": "Escalation flavor."
+        },
+        {
+          "roll": 12,
+          "title": "COMMERCIAL BREAK",
+          "text": "The System gives the party ten seconds of suspicious silence.",
+          "gm": "At State 3+, use the silence to reposition a patrol or reveal a new route."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_environmental_weirdness",
+      "name": "Environmental Weirdness",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "LOOPING BLOCK",
+          "text": "The next intersection repeats once before allowing passage.",
+          "gm": "Investigation can reveal a seam in the reconstruction."
+        },
+        {
+          "roll": 2,
+          "title": "BACKWARDS CLOCK",
+          "text": "Every visible clock runs backward for one minute.",
+          "gm": "No mechanical penalty; anomaly clue."
+        },
+        {
+          "roll": 3,
+          "title": "WRONG SKY",
+          "text": "A rectangular patch of sky shows sunset while the rest is midday.",
+          "gm": "Visible memory/rendering fault."
+        },
+        {
+          "roll": 4,
+          "title": "DUPLICATE HOUSE",
+          "text": "Two identical houses occupy adjacent lots, including identical occupants.",
+          "gm": "Talking to both versions can reveal contradictory memories."
+        },
+        {
+          "roll": 5,
+          "title": "SIGN ERROR",
+          "text": "A street sign briefly displays a location from another part of town.",
+          "gm": "Foreshadow a future route."
+        },
+        {
+          "roll": 6,
+          "title": "TEXTURE POP",
+          "text": "A brick wall becomes flat gray for a heartbeat.",
+          "gm": "Pure clue unless touched during the glitch."
+        },
+        {
+          "roll": 7,
+          "title": "MISSING SOUND",
+          "text": "Footsteps stop making noise on one stretch of sidewalk.",
+          "gm": "Temporary environmental advantage or unease at GM discretion."
+        },
+        {
+          "roll": 8,
+          "title": "INFINITE AISLE",
+          "text": "A convenience-store aisle extends far beyond the building.",
+          "gm": "Optional exploration pocket; return path remains available."
+        },
+        {
+          "roll": 9,
+          "title": "SHADOW DELAY",
+          "text": "Shadows move a second after their owners.",
+          "gm": "Escalation clue."
+        },
+        {
+          "roll": 10,
+          "title": "RAIN LINE",
+          "text": "Rain falls on exactly one side of the street.",
+          "gm": "No damage; strong visual anomaly."
+        },
+        {
+          "roll": 11,
+          "title": "COPY-PASTE NPC",
+          "text": "Three pedestrians share the same face and outfit.",
+          "gm": "Social clue; they repeat different fragments of the same sentence."
+        },
+        {
+          "roll": 12,
+          "title": "LOADING DOOR",
+          "text": "A door shows a spinning loading icon instead of opening.",
+          "gm": "At State 2+, it may become a shortcut after another clue is found."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_memory_bleed",
+      "name": "Memory Bleed",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "FAMILIAR OBJECT",
+          "text": "A harmless object appears that one crawler recognizes from ordinary life.",
+          "gm": "Ask the player for a safe mundane detail if useful; never invent sensitive history."
+        },
+        {
+          "roll": 2,
+          "title": "WRONG SONG",
+          "text": "A tune sounds familiar but has incorrect lyrics.",
+          "gm": "Player may supply what feels familiar; no private-data assumption."
+        },
+        {
+          "roll": 3,
+          "title": "SCHOOL PHOTO",
+          "text": "A group photo contains one crawler in the background where they do not belong.",
+          "gm": "Clue that the System is compositing memories."
+        },
+        {
+          "roll": 4,
+          "title": "OLD RECEIPT",
+          "text": "A receipt lists a mundane purchase and a date that makes no sense.",
+          "gm": "Counts as anomaly evidence if the party keeps it."
+        },
+        {
+          "roll": 5,
+          "title": "FAMILIAR SMELL",
+          "text": "A location smells strongly of a safe familiar place.",
+          "gm": "Use sensory detail only; let the player define it."
+        },
+        {
+          "roll": 6,
+          "title": "VOICE MAIL",
+          "text": "A dead phone plays a generic message in a familiar cadence.",
+          "gm": "Do not imitate or name real relatives without player invitation."
+        },
+        {
+          "roll": 7,
+          "title": "ROOM LAYOUT",
+          "text": "A room uses the layout of somewhere familiar but the exterior does not match.",
+          "gm": "Investigation clue."
+        },
+        {
+          "roll": 8,
+          "title": "MISSING DETAIL",
+          "text": "A crawler knows something should be present, but the reconstruction omitted it.",
+          "gm": "Reward player-authored mundane detail with an anomaly clue."
+        },
+        {
+          "roll": 9,
+          "title": "COMPOSITE MEMORY",
+          "text": "Two unrelated places have been stitched together.",
+          "gm": "Strong clue toward the Homecoming reconstruction mystery."
+        },
+        {
+          "roll": 10,
+          "title": "NAME SWAP",
+          "text": "An NPC uses the right first name with the wrong face.",
+          "gm": "Keep identities fictional unless player volunteers otherwise."
+        },
+        {
+          "roll": 11,
+          "title": "OBJECT RESET",
+          "text": "A moved mundane object snaps back to its original position.",
+          "gm": "Can be exploited to test the simulation."
+        },
+        {
+          "roll": 12,
+          "title": "MEMORY ECHO",
+          "text": "The party hears a harmless phrase one crawler remembers saying before entering.",
+          "gm": "Let the player author the phrase; otherwise use generic chatter."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_loot_discovery",
+      "name": "Loot Discovery",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "UTILITY CACHE",
+          "text": "A maintenance cabinet contains rope, tape, basic tools, or other mundane utility gear.",
+          "gm": "Mundane discovery; not a loot box."
+        },
+        {
+          "roll": 2,
+          "title": "FIRST AID STATION",
+          "text": "A picked-over first-aid cabinet contains basic supplies.",
+          "gm": "Keep rewards modest unless tied to an achievement/quest."
+        },
+        {
+          "roll": 3,
+          "title": "LOST AND FOUND",
+          "text": "A bin contains odd clothing and Misc. Junk.",
+          "gm": "Mostly flavor; one item can become a future crafting prop."
+        },
+        {
+          "roll": 4,
+          "title": "VENDING ERROR",
+          "text": "A machine dispenses a mundane item instead of food.",
+          "gm": "Comedic utility item."
+        },
+        {
+          "roll": 5,
+          "title": "SPORTS CLOSET",
+          "text": "A storage room contains basic athletic equipment.",
+          "gm": "Potential improvised weapons/tools; quality remains mundane."
+        },
+        {
+          "roll": 6,
+          "title": "JANITOR CART",
+          "text": "Cleaning supplies create environmental options.",
+          "gm": "Do not silently create new RAW chemical mechanics."
+        },
+        {
+          "roll": 7,
+          "title": "PROPERTY TAG",
+          "text": "A tagged object points toward Brown County Lockup.",
+          "gm": "Clue plus mundane object."
+        },
+        {
+          "roll": 8,
+          "title": "PRO SHOP SAMPLE",
+          "text": "A promotional item points toward Memory Lanes.",
+          "gm": "Clue plus mundane gear."
+        },
+        {
+          "roll": 9,
+          "title": "RANGE FREEBIE",
+          "text": "Eye/ear protection or a utility sling points toward Last Stand.",
+          "gm": "No automatic firearm reward."
+        },
+        {
+          "roll": 10,
+          "title": "PARADE SUPPLY",
+          "text": "Zip ties, cord, paint, and signage sit behind a float.",
+          "gm": "Improvisation materials."
+        },
+        {
+          "roll": 11,
+          "title": "LOCKER STASH",
+          "text": "A school locker contains a mundane personal kit and an anomaly note.",
+          "gm": "Clue, not high-tier loot."
+        },
+        {
+          "roll": 12,
+          "title": "SYSTEM COUPON",
+          "text": "A digital coupon promises a loot box only if a real achievement condition is met.",
+          "gm": "Create/choose an achievement rather than handing out the box directly."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_npc_reactions",
+      "name": "NPC Reactions",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "OVERHELPFUL",
+          "text": "NPC gives too many directions and accidentally contradicts themselves.",
+          "gm": "Contradiction is a clue."
+        },
+        {
+          "roll": 2,
+          "title": "DEFENSIVE",
+          "text": "NPC insists everything is normal before anyone asks.",
+          "gm": "Social anomaly."
+        },
+        {
+          "roll": 3,
+          "title": "STARSTRUCK",
+          "text": "NPC treats a crawler like a local celebrity for no explained reason.",
+          "gm": "System/audience weirdness; no mechanical bonus by default."
+        },
+        {
+          "roll": 4,
+          "title": "SCRIPTED",
+          "text": "NPC repeats the same sentence after any unrelated question.",
+          "gm": "Clear reconstruction clue."
+        },
+        {
+          "roll": 5,
+          "title": "BARGAINING",
+          "text": "NPC wants a harmless favor before sharing information.",
+          "gm": "Create a short scene, not necessarily a formal Quest."
+        },
+        {
+          "roll": 6,
+          "title": "AVOIDANT",
+          "text": "NPC changes the subject whenever the stadium is mentioned.",
+          "gm": "Points toward escalation mystery."
+        },
+        {
+          "roll": 7,
+          "title": "MISTAKEN IDENTITY",
+          "text": "NPC confidently calls a crawler by the wrong name.",
+          "gm": "Memory-composite clue."
+        },
+        {
+          "roll": 8,
+          "title": "HOSTILE POLITE",
+          "text": "NPC is threatening while maintaining exaggerated customer-service manners.",
+          "gm": "Can become social or combat complication."
+        },
+        {
+          "roll": 9,
+          "title": "GLITCH PANIC",
+          "text": "NPC notices their own repeated line and briefly panics.",
+          "gm": "Humanizing clue; they may become an ally."
+        },
+        {
+          "roll": 10,
+          "title": "LOCAL GOSSIP",
+          "text": "NPC shares one true clue and one obviously ridiculous rumor.",
+          "gm": "GM decides which clue advances current route."
+        },
+        {
+          "roll": 11,
+          "title": "SYSTEM LOYALIST",
+          "text": "NPC praises the Dungeon System like a civic institution.",
+          "gm": "May report disruptive behavior at State 2+."
+        },
+        {
+          "roll": 12,
+          "title": "EXHAUSTED",
+          "text": "NPC quietly asks the party to stop making the town change.",
+          "gm": "Foreshadows escalation states."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_mob_complications",
+      "name": "Mob Complications",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "REINFORCEMENTS?",
+          "text": "A second group is heard approaching but may be friend, foe, or nothing.",
+          "gm": "Use RAW guidance that reinforcements can alter encounter numbers; avoid accidental Overwhelming scaling."
+        },
+        {
+          "roll": 2,
+          "title": "BAD FOOTING",
+          "text": "Part of the battlefield becomes awkward terrain or obstructed.",
+          "gm": "Adjudicate with existing RAW checks; do not invent a permanent condition."
+        },
+        {
+          "roll": 3,
+          "title": "LOST WEAPON",
+          "text": "A Mob tries to grab a dropped/accessible weapon and flee.",
+          "gm": "Core guidance explicitly supports a Mob stealing a fallen crawler's weapon as a complication."
+        },
+        {
+          "roll": 4,
+          "title": "CIVILIAN CROSSING",
+          "text": "An NPC wanders through the fight at the worst time.",
+          "gm": "Creates choice without changing Mob stats."
+        },
+        {
+          "roll": 5,
+          "title": "LIGHTS OUT",
+          "text": "Lighting fails for one beat.",
+          "gm": "Use narrative positioning; apply a mechanical modifier only if supported by an existing rule."
+        },
+        {
+          "roll": 6,
+          "title": "SYSTEM TAUNT",
+          "text": "The System announces an embarrassing combat statistic.",
+          "gm": "Flavor; may foreshadow an achievement."
+        },
+        {
+          "roll": 7,
+          "title": "OBJECTIVE MOVES",
+          "text": "The thing being protected/retrieved changes position.",
+          "gm": "Keep victory condition achievable."
+        },
+        {
+          "roll": 8,
+          "title": "DOOR LOCKS",
+          "text": "An exit closes until a visible local control is used.",
+          "gm": "Never trap crawlers in a stairwell room with a trap."
+        },
+        {
+          "roll": 9,
+          "title": "MOB PANIC",
+          "text": "One ordinary Mob tries to flee when allies fall.",
+          "gm": "Can shorten combat or create chase."
+        },
+        {
+          "roll": 10,
+          "title": "THIRD PARTY",
+          "text": "Another Mob faction briefly enters the area.",
+          "gm": "Use sparingly and scale total active threats."
+        },
+        {
+          "roll": 11,
+          "title": "ENVIRONMENTAL HAZARD",
+          "text": "A harmless-looking prop becomes dangerous.",
+          "gm": "Signal the hazard before serious damage."
+        },
+        {
+          "roll": 12,
+          "title": "AUDIENCE FAVOR",
+          "text": "The System theatrically highlights a risky opportunity.",
+          "gm": "Optional stunt; reward creativity rather than forcing it."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_rest_complications",
+      "name": "Rest Complications",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "TOO QUIET",
+          "text": "Nothing attacks; the lack of ambient noise becomes conspicuous.",
+          "gm": "Rest proceeds unless another rule prevents it."
+        },
+        {
+          "roll": 2,
+          "title": "NOSY NPC",
+          "text": "An NPC wants conversation, gossip, or reassurance.",
+          "gm": "Roleplay interruption only."
+        },
+        {
+          "roll": 3,
+          "title": "PATROL ROUTE",
+          "text": "A distant patrol passes nearby.",
+          "gm": "Party may hide, relocate, or allow the scene to develop."
+        },
+        {
+          "roll": 4,
+          "title": "SYSTEM CHECK-IN",
+          "text": "The System asks whether everyone is enjoying their break.",
+          "gm": "Flavor; can tease an achievement."
+        },
+        {
+          "roll": 5,
+          "title": "ROOM RESET",
+          "text": "Small objects reset while the party watches.",
+          "gm": "Anomaly clue."
+        },
+        {
+          "roll": 6,
+          "title": "BAD TV",
+          "text": "A television shows a delayed feed of the room.",
+          "gm": "Strong reconstruction clue."
+        },
+        {
+          "roll": 7,
+          "title": "FALSE ALARM",
+          "text": "A threatening sound resolves into something mundane.",
+          "gm": "Pacing tool."
+        },
+        {
+          "roll": 8,
+          "title": "NEIGHBOR COMPLAINT",
+          "text": "An NPC complains about noise as if this were normal suburbia.",
+          "gm": "Dark comedy."
+        },
+        {
+          "roll": 9,
+          "title": "SUPPLY OPPORTUNITY",
+          "text": "A mundane utility cache is noticed during downtime.",
+          "gm": "No automatic loot box."
+        },
+        {
+          "roll": 10,
+          "title": "MEMORY DREAM",
+          "text": "A resting crawler gets a harmless, surreal memory echo.",
+          "gm": "Player may author safe details; no forced personal revelation."
+        },
+        {
+          "roll": 11,
+          "title": "LOCKDOWN WARNING",
+          "text": "The System announces a future route closure.",
+          "gm": "At State 3+, make the warning real after the rest."
+        },
+        {
+          "roll": 12,
+          "title": "UNINTERRUPTED",
+          "text": "Against all expectations, the rest is uneventful.",
+          "gm": "Use this result! Not every table roll should punish resting."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_failure_consequences",
+      "name": "Failure Consequences",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "NOISY SUCCESS",
+          "text": "They fail quietly enough to avoid catastrophe but attract attention.",
+          "gm": "Advance a patrol or future complication."
+        },
+        {
+          "roll": 2,
+          "title": "LOST TIME",
+          "text": "The attempt costs meaningful time.",
+          "gm": "Advance scene/escalation clock rather than dealing arbitrary damage."
+        },
+        {
+          "roll": 3,
+          "title": "PARTIAL CLUE",
+          "text": "They learn something useful but incomplete.",
+          "gm": "Point toward another location or NPC."
+        },
+        {
+          "roll": 4,
+          "title": "RESOURCE COST",
+          "text": "A mundane tool breaks or supply is consumed.",
+          "gm": "Use only a resource actually present."
+        },
+        {
+          "roll": 5,
+          "title": "BAD POSITION",
+          "text": "They end up somewhere inconvenient but not trapped.",
+          "gm": "Offer a clear route forward."
+        },
+        {
+          "roll": 6,
+          "title": "SYSTEM NOTICES",
+          "text": "The System comments on the failure and tags the behavior for a possible achievement.",
+          "gm": "No immediate mechanical penalty required."
+        },
+        {
+          "roll": 7,
+          "title": "NPC DISTRUST",
+          "text": "An NPC becomes less cooperative.",
+          "gm": "Can be repaired through later action."
+        },
+        {
+          "roll": 8,
+          "title": "WRONG ANSWER",
+          "text": "They receive believable but contradictory information.",
+          "gm": "Make the contradiction discoverable."
+        },
+        {
+          "roll": 9,
+          "title": "COMPLICATION",
+          "text": "Success is possible, but a new problem enters the scene.",
+          "gm": "Classic fail-forward result."
+        },
+        {
+          "roll": 10,
+          "title": "CHOICE",
+          "text": "Offer two costs and let the party choose.",
+          "gm": "Keep both costs proportionate."
+        },
+        {
+          "roll": 11,
+          "title": "ESCALATION",
+          "text": "Increase Homecoming escalation by one scene/step if fiction supports it.",
+          "gm": "Do not skip mandatory clues."
+        },
+        {
+          "roll": 12,
+          "title": "SECOND CHANCE",
+          "text": "The failure reveals how to try again differently.",
+          "gm": "Avoid dead-end investigation."
+        }
+      ]
+    },
+    {
+      "id": "f1_table_rumors_clues",
+      "name": "Rumors & Clues",
+      "die": 12,
+      "results": [
+        {
+          "roll": 1,
+          "title": "PUMP SEVEN",
+          "text": "People say the gas station closes at the same time every night, even when the clocks disagree.",
+          "gm": "Points toward Pump Seven."
+        },
+        {
+          "roll": 2,
+          "title": "LOCKER 113",
+          "text": "Someone swears Locker 113 was removed years ago.",
+          "gm": "Points toward the school anomaly."
+        },
+        {
+          "roll": 3,
+          "title": "IMPOSSIBLE RECEIPTS",
+          "text": "Shoppers have receipts for stores that do not exist.",
+          "gm": "Points toward the retail anomaly quest."
+        },
+        {
+          "roll": 4,
+          "title": "BLACK DOOR",
+          "text": "A delivery driver refuses to use an alley because of a door that 'wasn't there yesterday.'",
+          "gm": "Points toward the Black Door chain."
+        },
+        {
+          "roll": 5,
+          "title": "STADIUM LIGHTS",
+          "text": "The stadium lights switch on even when the grid is down.",
+          "gm": "Points toward the late-floor stadium escalation."
+        },
+        {
+          "roll": 6,
+          "title": "MISSING PARTY",
+          "text": "An NPC remembers seeing another crawler group, but every detail changes on retelling.",
+          "gm": "Points toward Nadia/missing-party content."
+        },
+        {
+          "roll": 7,
+          "title": "COLISEUM",
+          "text": "People whisper about an arena where the crowd arrives before the fighters.",
+          "gm": "Points toward The Coliseum."
+        },
+        {
+          "roll": 8,
+          "title": "LOCKUP",
+          "text": "Confiscated property at the county lockup includes things that should not exist here.",
+          "gm": "Points toward Brown County Lockup."
+        },
+        {
+          "roll": 9,
+          "title": "GOOD BOY",
+          "text": "Neighbors disagree on whether the same dog has one head or three.",
+          "gm": "Points toward Home, Sweet Home?."
+        },
+        {
+          "roll": 10,
+          "title": "PERFECT GAME",
+          "text": "The bowling alley scoreboard sometimes shows names before players arrive.",
+          "gm": "Points toward Memory Lanes."
+        },
+        {
+          "roll": 11,
+          "title": "LAST STAND",
+          "text": "The gun shop has plenty of attitude and strangely little useful ammunition.",
+          "gm": "Points toward Last Stand without promising firearm upgrades."
+        },
+        {
+          "roll": 12,
+          "title": "THE MAP",
+          "text": "Someone claims Bosses always know the neighborhood better than crawlers do.",
+          "gm": "Foreshadows RAW boss map rewards without granting one early."
+        }
+      ]
+    }
+  ],
+  "escalation_states": [
+    {
+      "state": 0,
+      "name": "HOMECOMING",
+      "summary": "The false Brownwood mostly behaves. Weirdness is deniable.",
+      "unlock": "Street encounters, rumors, light memory bleed.",
+      "gm": "Keep anomalies small and let the players choose their first threads."
+    },
+    {
+      "state": 1,
+      "name": "SOMETHING'S WRONG",
+      "summary": "Contradictions accumulate. The reconstruction starts showing seams.",
+      "unlock": "Environmental Weirdness and stronger Memory Bleed become common.",
+      "gm": "Use repeated details and impossible geography. Do not force a single investigation path."
+    },
+    {
+      "state": 2,
+      "name": "THE SYSTEM NOTICES",
+      "summary": "The System reacts directly to the party's investigation.",
+      "unlock": "System Interruptions can target current behavior; patrols can redirect toward the party.",
+      "gm": "Make the town feel responsive, not omniscient. Player choices should still create openings."
+    },
+    {
+      "state": 3,
+      "name": "LOCKDOWN",
+      "summary": "Routes shift, Black Door activity rises, and stronger opposition appears.",
+      "unlock": "Route closures, stronger encounter variants, Black Door chain.",
+      "gm": "Telegraph closures and always leave at least one actionable route. Avoid accidental Overwhelming fights."
+    },
+    {
+      "state": 4,
+      "name": "FRIDAY NIGHT FOREVER",
+      "summary": "The stadium becomes the gravitational center of Floor One.",
+      "unlock": "Stadium finale, Home Side Advantage, route toward the next descent.",
+      "gm": "Pay off prior clues and recurring jokes. The floor should feel transformed by what the party uncovered."
+    }
+  ],
+  "crawler_seeds": [
+    {
+      "crawler": "Harold",
+      "archetype": "Instigator",
+      "hooks": [
+        "Reward reckless curiosity with attention, not automatic success.",
+        "Offer achievements for provoking obviously bad ideas that somehow reveal useful information."
+      ],
+      "running_joke": "The System keeps pretending Harold is an unpaid quality-assurance tester."
+    },
+    {
+      "crawler": "Marvin",
+      "archetype": "Horror Fan",
+      "hooks": [
+        "Let genre awareness identify patterns without making him automatically correct.",
+        "Occasionally make the obvious horror trope the safe option just to be rude."
+      ],
+      "running_joke": "The System critiques Marvin's horror literacy like a disappointed film professor."
+    },
+    {
+      "crawler": "Mike",
+      "archetype": "Believer",
+      "hooks": [
+        "Present impossible details that invite interpretation without confirming a supernatural explanation outside the Dungeon.",
+        "Let conviction create social moments with reconstructed NPCs."
+      ],
+      "running_joke": "The System keeps offering extremely unhelpful 'signs.'"
+    },
+    {
+      "crawler": "Phillip",
+      "archetype": "Genius",
+      "hooks": [
+        "Give pattern, map, and contradiction puzzles that reward careful synthesis.",
+        "Let over-analysis occasionally uncover a second, stranger layer."
+      ],
+      "running_joke": "The System grades explanations nobody asked for."
+    },
+    {
+      "crawler": "Jarod",
+      "archetype": "Soldier / non-gun experiment",
+      "hooks": [
+        "Notice disciplined positioning and deliberate refusal to default to firearms.",
+        "Use the Pool Cue reward line as a recurring independence theme."
+      ],
+      "running_joke": "The System tracks how many perfectly serviceable guns Jarod has declined to solve problems with."
+    },
+    {
+      "crawler": "Brad / Kord",
+      "archetype": "Troubleshooter",
+      "hooks": [
+        "Reward repair, improvisation, and practical workarounds.",
+        "Offer broken systems that can be made useful rather than simply bypassed."
+      ],
+      "running_joke": "The System files every successful repair as an unauthorized warranty claim.",
+      "safety": "Do not use family-death horror."
+    }
+  ],
+  "records": [
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_01",
+      "name": "TEXAS DIPLOMACY",
+      "description": "Attempt to solve a social problem with a firearm before the explanation is finished.",
+      "system_quip": "The System has logged Texas Diplomacy. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_02",
+      "name": "STICK TO YOUR GUNS",
+      "description": "Complete three combat scenes while deliberately choosing a non-firearm option despite having access to one.",
+      "system_quip": "The System has logged Stick To Your Guns. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Stick To Your Guns Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_03",
+      "name": "QUALITY ASSURANCE",
+      "description": "Intentionally test the same environmental glitch three different ways.",
+      "system_quip": "The System has logged Quality Assurance. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_04",
+      "name": "THAT'S NOT HOW ROADS WORK",
+      "description": "Prove a street or intersection violates the town's own geography.",
+      "system_quip": "The System has logged That'S Not How Roads Work. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_05",
+      "name": "LOCAL LEGEND",
+      "description": "Have three unrelated NPCs recognize you for three different reasons.",
+      "system_quip": "The System has logged Local Legend. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Local Legend Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_06",
+      "name": "READ THE ROOM",
+      "description": "Leave an obviously dangerous room before touching the obviously dangerous object.",
+      "system_quip": "The System has logged Read The Room. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_07",
+      "name": "TOUCH THE THING",
+      "description": "Touch the obviously dangerous object after everyone agrees not to.",
+      "system_quip": "The System has logged Touch The Thing. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_08",
+      "name": "WE HAVE A SYSTEM",
+      "description": "Create and successfully use a party procedure for handling unknown doors, loot, or NPCs.",
+      "system_quip": "The System has logged We Have A System. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "We Have A System Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_09",
+      "name": "HOME FIELD DISADVANTAGE",
+      "description": "Use knowledge of ordinary Brownwood to prove the reconstruction is wrong.",
+      "system_quip": "The System has logged Home Field Disadvantage. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Home Field Disadvantage Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_10",
+      "name": "CUSTOMER SERVICE NIGHTMARE",
+      "description": "Remain polite through an NPC's increasingly hostile customer-service routine.",
+      "system_quip": "The System has logged Customer Service Nightmare. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_11",
+      "name": "NOPE",
+      "description": "Encounter a horror setup and immediately leave without investigating.",
+      "system_quip": "The System has logged Nope. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_12",
+      "name": "FINE, ONE LOOK",
+      "description": "Return to the horror setup you previously refused to investigate.",
+      "system_quip": "The System has logged Fine, One Look. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_13",
+      "name": "PARKING ENFORCEMENT",
+      "description": "Use a vehicle, barricade, or traffic feature to control a battlefield.",
+      "system_quip": "The System has logged Parking Enforcement. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_14",
+      "name": "FOUND OBJECTS",
+      "description": "Turn Misc. Junk into a useful solution.",
+      "system_quip": "The System has logged Found Objects. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_15",
+      "name": "THIS IS EVIDENCE",
+      "description": "Keep three separate anomaly clues instead of discarding them.",
+      "system_quip": "The System has logged This Is Evidence. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "This Is Evidence Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_16",
+      "name": "CONSPIRACY BOARD",
+      "description": "Correctly connect clues from three different locations.",
+      "system_quip": "The System has logged Conspiracy Board. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Conspiracy Board Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_17",
+      "name": "WRONG HOUSE",
+      "description": "Enter a building because it looks familiar and prove that familiarity is artificial.",
+      "system_quip": "The System has logged Wrong House. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_18",
+      "name": "DEJA VIEW",
+      "description": "Notice a repeated NPC, object, phrase, or environmental asset before the System calls attention to it.",
+      "system_quip": "The System has logged Deja View. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_19",
+      "name": "UNPAID INTERN",
+      "description": "Fix a Dungeon malfunction that was actively inconveniencing the System.",
+      "system_quip": "The System has logged Unpaid Intern. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Unpaid Intern Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_20",
+      "name": "WARRANTY VOIDED",
+      "description": "Repair or repurpose a broken mechanism in a way the System clearly did not intend.",
+      "system_quip": "The System has logged Warranty Voided. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Warranty Voided Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_21",
+      "name": "FRIDAY NIGHT LIGHTS",
+      "description": "Reach the stadium after collecting at least three independent clues pointing there.",
+      "system_quip": "The System has logged Friday Night Lights. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Friday Night Lights Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_22",
+      "name": "PEP TALK",
+      "description": "Successfully rally an NPC or crawler after a frightening System event.",
+      "system_quip": "The System has logged Pep Talk. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_23",
+      "name": "BAD INFLUENCE",
+      "description": "Convince another crawler to participate in your obviously questionable plan.",
+      "system_quip": "The System has logged Bad Influence. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_24",
+      "name": "WORSE INFLUENCE",
+      "description": "Your questionable plan works well enough that the party tries it again later.",
+      "system_quip": "The System has logged Worse Influence. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Worse Influence Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_25",
+      "name": "THE LONG WAY",
+      "description": "Reach a destination after rejecting a suspicious shortcut.",
+      "system_quip": "The System has logged The Long Way. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_26",
+      "name": "FREE RIDE",
+      "description": "Take a suspicious shortcut offered by the Dungeon and survive the consequence.",
+      "system_quip": "The System has logged Free Ride. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_27",
+      "name": "BETA TESTER",
+      "description": "Trigger two different System reactions by deliberately repeating a behavior.",
+      "system_quip": "The System has logged Beta Tester. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Beta Tester Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_28",
+      "name": "DO NOT FEED",
+      "description": "Attempt to bribe, distract, or befriend a hostile creature with food.",
+      "system_quip": "The System has logged Do Not Feed. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_29",
+      "name": "GOOD DOG?",
+      "description": "Resolve a dog-related threat without making violence the first option.",
+      "system_quip": "The System has logged Good Dog?. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Good Dog? Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_30",
+      "name": "BAD DOG.",
+      "description": "Discover that the dog-related threat has exceeded the normal number of heads.",
+      "system_quip": "The System has logged Bad Dog.. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_31",
+      "name": "TEN FRAME PROBLEM",
+      "description": "Turn bowling equipment or lane machinery into a useful tactical solution.",
+      "system_quip": "The System has logged Ten Frame Problem. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_32",
+      "name": "GUTTER BALL",
+      "description": "Fail spectacularly at a bowling-related plan and still gain useful information.",
+      "system_quip": "The System has logged Gutter Ball. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_33",
+      "name": "LOCKED UP",
+      "description": "Enter Brown County Lockup voluntarily.",
+      "system_quip": "The System has logged Locked Up. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_34",
+      "name": "PROPERTY OF SOMEONE ELSE",
+      "description": "Recover useful confiscated property without treating ordinary Mob gear as premium loot.",
+      "system_quip": "The System has logged Property Of Someone Else. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Property Of Someone Else Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_35",
+      "name": "BREAD AND CIRCUSES",
+      "description": "Participate in The Coliseum's spectacle on your own terms.",
+      "system_quip": "The System has logged Bread And Circuses. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Bread And Circuses Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_36",
+      "name": "CROWD CONTROL",
+      "description": "Manipulate arena attention to create a tactical opening.",
+      "system_quip": "The System has logged Crowd Control. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Crowd Control Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_37",
+      "name": "RANGE SAFETY",
+      "description": "Demonstrate better weapon discipline than an NPC who claims to be the expert.",
+      "system_quip": "The System has logged Range Safety. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_38",
+      "name": "SECOND AMENDMENT TO YOUR EXPECTATIONS",
+      "description": "Visit Last Stand expecting guns and leave with something more useful than a gun upgrade.",
+      "system_quip": "The System has logged Second Amendment To Your Expectations. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Second Amendment To Your Expectations Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_39",
+      "name": "PUMPED",
+      "description": "Resolve Pump Seven's central problem.",
+      "system_quip": "The System has logged Pumped. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Pumped Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_40",
+      "name": "FINAL BELL",
+      "description": "Survive the school's main encounter and recover its anomaly evidence.",
+      "system_quip": "The System has logged Final Bell. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Final Bell Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_41",
+      "name": "EVERYTHING MUST GO",
+      "description": "Complete the retail anomaly thread.",
+      "system_quip": "The System has logged Everything Must Go. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Everything Must Go Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_42",
+      "name": "BLACK DOOR POLICY",
+      "description": "Find the Black Door and resist opening it until you have a reason.",
+      "system_quip": "The System has logged Black Door Policy. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Black Door Policy Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_43",
+      "name": "BLACK DOOR POLICY VIOLATION",
+      "description": "Open the Black Door because being told not to was apparently a challenge.",
+      "system_quip": "The System has logged Black Door Policy Violation. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_44",
+      "name": "MAP QUEST",
+      "description": "Defeat a Neighborhood Boss and receive the expected Neighborhood Map reward.",
+      "system_quip": "The System has logged Map Quest. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "gold",
+        "box_name": "Map Quest Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_45",
+      "name": "GRINDSET",
+      "description": "Use a Neighborhood Map to deliberately plan efficient grinding.",
+      "system_quip": "The System has logged Grindset. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Grindset Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_46",
+      "name": "NO GOLD?",
+      "description": "Search multiple First Floor ordinary Mobs for gold before accepting the pattern.",
+      "system_quip": "The System has logged No Gold?. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_47",
+      "name": "JUNK DRAWER HERO",
+      "description": "Carry a piece of Misc. Junk long enough for it to become useful.",
+      "system_quip": "The System has logged Junk Drawer Hero. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_48",
+      "name": "FAIL FORWARD",
+      "description": "Turn a failed attempt into a new route, clue, or advantage.",
+      "system_quip": "The System has logged Fail Forward. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_49",
+      "name": "THE TOWN IS LISTENING",
+      "description": "Cause the Homecoming escalation state to advance through investigation.",
+      "system_quip": "The System has logged The Town Is Listening. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "The Town Is Listening Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_50",
+      "name": "THE SYSTEM IS LISTENING",
+      "description": "Trigger a System interruption directly tied to repeated party behavior.",
+      "system_quip": "The System has logged The System Is Listening. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "The System Is Listening Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_51",
+      "name": "HOMEWORK",
+      "description": "Return to the Tutorial Guild or Guide with a specific rules or strategy question after field experience.",
+      "system_quip": "The System has logged Homework. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_52",
+      "name": "PARTY LINE",
+      "description": "Use party communication to coordinate a plan while separated.",
+      "system_quip": "The System has logged Party Line. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_53",
+      "name": "SIX BRAINS, ONE BAD IDEA",
+      "description": "Get the entire party to agree to an obviously risky plan.",
+      "system_quip": "The System has logged Six Brains, One Bad Idea. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Six Brains, One Bad Idea Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_54",
+      "name": "SIX BRAINS, TWO BAD IDEAS",
+      "description": "Abandon the first risky plan for a demonstrably worse one.",
+      "system_quip": "The System has logged Six Brains, Two Bad Ideas. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Six Brains, Two Bad Ideas Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_55",
+      "name": "WE MEANT TO DO THAT",
+      "description": "Benefit from an unintended consequence of the party's own action.",
+      "system_quip": "The System has logged We Meant To Do That. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_56",
+      "name": "LOCAL KNOWLEDGE",
+      "description": "Correctly predict a safe mundane feature of Brownwood that the reconstruction preserved.",
+      "system_quip": "The System has logged Local Knowledge. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_57",
+      "name": "NOT LOCAL ENOUGH",
+      "description": "Confidently predict a detail that the reconstruction gets wrong.",
+      "system_quip": "The System has logged Not Local Enough. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Bronze Adventurer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_58",
+      "name": "SYSTEM ERROR",
+      "description": "Force the reconstruction to visibly contradict itself in one scene.",
+      "system_quip": "The System has logged System Error. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "System Error Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_59",
+      "name": "HOME AWAY FROM HOME",
+      "description": "Establish a temporary safe-ish base and use it more than once.",
+      "system_quip": "The System has logged Home Away From Home. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Home Away From Home Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_dyn_a_60",
+      "name": "LAST CALL",
+      "description": "Complete a major location objective immediately before the floor enters Lockdown.",
+      "system_quip": "The System has logged Last Call. Your dignity was not part of the reward calculation.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Last Call Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_DYNAMIC_4_1",
+      "trigger_mode": "GM_REVIEW",
+      "raw_note": "Achievement trigger is campaign-authored. Loot-box rewards follow Core Rulebook achievement/loot-box framework."
+    }
+  ]
+}

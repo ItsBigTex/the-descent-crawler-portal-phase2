@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Achievement Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "description",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "achievement"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "reward": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "contents": {
+      "type": "string"
+    },
+    "source_authority": {
+      "type": "string"
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    }
+  }
+}

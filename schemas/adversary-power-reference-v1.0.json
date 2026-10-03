@@ -1,0 +1,59 @@
+{
+  "source": "RAW_CORE_AND_TOOLKIT",
+  "name": "Adversary Power",
+  "party_sizes": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "bands": {
+    "Weak": {
+      "percent": 50,
+      "counts": [
+        1,
+        2,
+        2,
+        3,
+        3,
+        4
+      ]
+    },
+    "Moderate": {
+      "percent": 100,
+      "counts": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "Strong": {
+      "percent": 150,
+      "counts": [
+        3,
+        5,
+        6,
+        8,
+        9,
+        11
+      ]
+    },
+    "Overwhelming": {
+      "percent": 200,
+      "counts": [
+        "4+",
+        "6+",
+        "8+",
+        "10+",
+        "12+",
+        "14+"
+      ]
+    }
+  },
+  "note": "Starting point only. RAW explicitly encourages GM adjustment for party tactics, loot, story choices, reinforcements and other circumstances."
+}

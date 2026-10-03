@@ -1,4 +1,4 @@
-const STORAGE_KEY='descentPortalStateV2_6';
+const STORAGE_KEY='descentPortalStateV3_1';
 let CLOUD={ready:false,profile:null,client:null,applying:false,channel:null};
 function modFor(stat){if(stat<=2)return 1;if(stat<=5)return 2;if(stat<=9)return 3;if(stat<=19)return 4;if(stat<=49)return 5;if(stat<=99)return 6;if(stat<=149)return 7;if(stat<=199)return 8;if(stat<=299)return 9;return 10}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}

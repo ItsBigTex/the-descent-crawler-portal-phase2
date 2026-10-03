@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Loot Box Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "tier",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "loot_box"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "tier": {
+      "enum": [
+        "bronze",
+        "silver",
+        "gold",
+        "platinum",
+        "legendary",
+        "celestial"
+      ]
+    },
+    "box_type": {
+      "type": "string"
+    },
+    "contents": {
+      "type": "string"
+    },
+    "source_authority": {
+      "type": "string"
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    }
+  }
+}
