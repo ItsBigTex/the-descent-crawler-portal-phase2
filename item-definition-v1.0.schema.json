@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/item-schema-v1.0",
+  "title": "The Descent Item Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "category",
+    "source_authority",
+    "mechanics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "item"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "enum": [
+        "gear",
+        "weapon",
+        "consumable",
+        "scroll",
+        "spellbook",
+        "quest_item",
+        "crafting",
+        "container",
+        "tool",
+        "misc"
+      ]
+    },
+    "subcategory": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "system_description": {
+      "type": "string"
+    },
+    "gear_slot": {
+      "enum": [
+        "Head",
+        "Torso",
+        "Arms",
+        "Hands/Holding",
+        "Legs",
+        "Feet",
+        "Accessories",
+        null
+      ]
+    },
+    "hands_required": {
+      "enum": [
+        0,
+        1,
+        2
+      ]
+    },
+    "hotlist_eligible": {
+      "type": "boolean"
+    },
+    "stackable": {
+      "type": "boolean"
+    },
+    "weight_lbs": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "loot_tier": {
+      "enum": [
+        "mundane",
+        "bronze",
+        "silver",
+        "gold",
+        "platinum",
+        "legendary",
+        "celestial",
+        null
+      ]
+    },
+    "floor_min": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "mechanics": {
+      "type": "object",
+      "properties": {
+        "stat_modifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "stat",
+              "mode",
+              "value"
+            ],
+            "properties": {
+              "stat": {
+                "enum": [
+                  "STR",
+                  "INT",
+                  "CON",
+                  "DEX",
+                  "CHA",
+                  "ALL"
+                ]
+              },
+              "mode": {
+                "enum": [
+                  "flat",
+                  "percent",
+                  "set",
+                  "max"
+                ]
+              },
+              "value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "skill_modifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "skill",
+              "mode",
+              "value"
+            ],
+            "properties": {
+              "skill": {
+                "type": "string"
+              },
+              "mode": {
+                "enum": [
+                  "flat",
+                  "set",
+                  "max"
+                ]
+              },
+              "value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "dr_modifier": {
+          "type": "number",
+          "default": 0
+        },
+        "evade_modifier": {
+          "type": "number",
+          "default": 0
+        },
+        "health_slot_modifier": {
+          "type": "integer",
+          "default": 0
+        },
+        "granted_skills": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "granted_spells": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "passives": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cooldown": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "consumable_effect": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source_authority": {
+      "enum": [
+        "RAW_CORE",
+        "RAW_TOOLKIT",
+        "THE_DESCENT",
+        "GM_CREATED",
+        "AI_GENERATED",
+        "HOMEBREW"
+      ]
+    },
+    "source_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/adversary-definition-v1.0",
+  "title": "The Descent Adversary Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "classification",
+    "size",
+    "health_bar",
+    "level",
+    "surprise",
+    "evade",
+    "move",
+    "dr",
+    "stats",
+    "attacks",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "adversary"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "species_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "Mob",
+        "Neighborhood Boss",
+        "Borough Boss",
+        "City Boss",
+        "Crawler",
+        "NPC",
+        "Other"
+      ]
+    },
+    "traits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "size": {
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "health_bar": {
+      "type": "object",
+      "required": [
+        "slots"
+      ],
+      "properties": {
+        "slots": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "slot_values": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "current_slots": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "level": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "surprise": {
+      "type": "string"
+    },
+    "evade": {
+      "type": "string"
+    },
+    "move": {
+      "type": "string"
+    },
+    "dr": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stats": {
+      "type": "object",
+      "required": [
+        "STR",
+        "INT",
+        "CON",
+        "DEX",
+        "CHA"
+      ],
+      "properties": {
+        "STR": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "INT": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "CON": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "DEX": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "CHA": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "attacks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "to_hit",
+          "damage",
+          "damage_type",
+          "range"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "to_hit": {
+            "type": "string",
+            "description": "Preserves expressions such as 14+F."
+          },
+          "damage": {
+            "type": "string"
+          },
+          "damage_type": {
+            "type": "string"
+          },
+          "range": {
+            "type": "string"
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "on_hit": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "on_evade_major_fail_or_worse": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "other_effects": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "special_rules": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "ai_announcement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_authority": {
+      "enum": [
+        "RAW_CORE",
+        "RAW_TOOLKIT",
+        "THE_DESCENT",
+        "GM_CREATED",
+        "AI_GENERATED",
+        "HOMEBREW"
+      ]
+    },
+    "source_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

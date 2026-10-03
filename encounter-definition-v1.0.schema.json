@@ -1,0 +1,418 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/encounter-definition-v1.0",
+  "title": "The Descent Encounter Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "encounter_type",
+    "floor",
+    "participants",
+    "objectives",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "encounter"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "encounter_type": {
+      "enum": [
+        "combat",
+        "boss",
+        "trap",
+        "social",
+        "exploration",
+        "chase",
+        "mixed",
+        "other"
+      ]
+    },
+    "floor": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "neighborhood": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "power_band": {
+      "enum": [
+        "Weak",
+        "Moderate",
+        "Strong",
+        "Overwhelming",
+        null
+      ]
+    },
+    "party_size_reference": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "system_announcement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_intro": {
+      "type": "string"
+    },
+    "player_visible_intro": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "count"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "adversary",
+              "npc",
+              "crawler",
+              "dynamic"
+            ]
+          },
+          "definition_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "crawler_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "spawn": {
+            "type": "object"
+          },
+          "gm_notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "cover": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "hazards": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "traps": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "interactables": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "special_rules": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          },
+          "success_condition": {
+            "type": "object"
+          },
+          "failure_condition": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "hidden": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "when",
+          "effects"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "when": {
+            "type": "object",
+            "description": "Structured condition; examples: round, health threshold, participant defeated, objective state, GM trigger."
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "once": {
+            "type": "boolean",
+            "default": true
+          },
+          "gm_only": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "escalation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "trigger_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "reinforcements": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "rule_changes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "object"
+        },
+        "failure": {
+          "type": "object"
+        },
+        "escape": {
+          "type": "object"
+        },
+        "alternate": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "rewards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "loot_box": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "Structured reward descriptor or future Loot Box definition reference."
+          },
+          "item_definition_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "achievement_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "quest_updates": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "other": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "quest_links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "achievement_links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires_gm_review": {
+          "type": "boolean"
+        },
+        "blocked_crawler_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source_authority": {
+      "enum": [
+        "RAW_CORE",
+        "RAW_TOOLKIT",
+        "THE_DESCENT",
+        "GM_CREATED",
+        "AI_GENERATED",
+        "HOMEBREW"
+      ]
+    },
+    "source_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}

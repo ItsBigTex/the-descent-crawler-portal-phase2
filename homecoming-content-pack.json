@@ -1,0 +1,4488 @@
+{
+  "pack_id": "F1_HOMECOMING_4_0",
+  "name": "Floor One: The Homecoming",
+  "version": "4.0",
+  "description": "Expanded Floor One: The Homecoming campaign pack with core route plus Coliseum, County Jail, Personal Home, Memory Lanes, and Last Stand Sporting & Arms optional locations.",
+  "record_count": 139,
+  "counts": {
+    "achievement": 20,
+    "adversary": 19,
+    "encounter": 19,
+    "item": 32,
+    "location": 5,
+    "loot_box": 20,
+    "npc": 12,
+    "quest": 12
+  },
+  "records": [
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_workgloves",
+      "name": "Reinforced Work Gloves",
+      "category": "gear",
+      "gear_slot": "Hands/Holding",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "Heavy work gloves with System-reinforced knuckles.",
+      "mechanics": {
+        "notes": "+1 STR while equipped. Built for lifting, prying, and hitting things that deserve it.",
+        "stat_modifiers": {
+          "STR": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_securityvest",
+      "name": "Mall Security Vest",
+      "category": "gear",
+      "gear_slot": "Torso",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A stab-resistant vest with an aggressively official SECURITY patch.",
+      "mechanics": {
+        "notes": "+1 CON while equipped.",
+        "stat_modifiers": {
+          "CON": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_trackshoes",
+      "name": "Wrong-Way Track Shoes",
+      "category": "gear",
+      "gear_slot": "Feet",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "Running shoes whose arrows point backward.",
+      "mechanics": {
+        "notes": "+1 DEX while equipped.",
+        "stat_modifiers": {
+          "DEX": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_readingglasses",
+      "name": "Inventory Reading Glasses",
+      "category": "gear",
+      "gear_slot": "Accessories",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "Cheap readers that sharpen details the System thinks you missed.",
+      "mechanics": {
+        "notes": "+1 INT while equipped.",
+        "stat_modifiers": {
+          "INT": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_smilepin",
+      "name": "Customer Service Smile Pin",
+      "category": "gear",
+      "gear_slot": "Accessories",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A red enamel smile that is somehow judging you.",
+      "mechanics": {
+        "notes": "+1 CHA while equipped.",
+        "stat_modifiers": {
+          "CHA": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_prybar",
+      "name": "Red Pry Bar",
+      "category": "weapon",
+      "gear_slot": null,
+      "loot_tier": "mundane",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A solid demolition bar.",
+      "mechanics": {
+        "notes": "Reliable improvised melee tool; also useful for forcing doors and crates."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_tireiron",
+      "name": "Roadside Tire Iron",
+      "category": "weapon",
+      "gear_slot": null,
+      "loot_tier": "mundane",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "Heavy, ugly, effective.",
+      "mechanics": {
+        "notes": "Melee weapon and leverage tool."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_flashlight",
+      "name": "Industrial Flashlight",
+      "category": "tool",
+      "gear_slot": null,
+      "loot_tier": "mundane",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A dented LED flashlight with a magnetic base.",
+      "mechanics": {
+        "notes": "Bright directional light; useful for signaling and searching."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_radio",
+      "name": "Handheld Radio Pair",
+      "category": "tool",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "Two rugged radios that still work inside most of the false town.",
+      "mechanics": {
+        "notes": "Campaign utility item; local short-range voice communication."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_medpouch",
+      "name": "Emergency Med Pouch",
+      "category": "consumable",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A compact pouch of dungeon-approved medical supplies.",
+      "mechanics": {
+        "notes": "Consumable narrative medical supplies; does not replace the Heal spell."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_dogwhistle",
+      "name": "Wrong Dog Whistle",
+      "category": "tool",
+      "gear_slot": null,
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A whistle audible to things that insist they are dogs.",
+      "mechanics": {
+        "notes": "Campaign key/tool. Can distract or attract Wrong Dogs when the GM determines it applies."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_blackkey",
+      "name": "The Black Key",
+      "category": "quest_item",
+      "gear_slot": null,
+      "loot_tier": "gold",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A matte-black key that refuses to reflect light.",
+      "mechanics": {
+        "notes": "Quest item. Opens the black service door on the Stadium route."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_coachwhistle",
+      "name": "Coach's Whistle",
+      "category": "gear",
+      "gear_slot": "Accessories",
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A shrill whistle recovered from the school anomaly.",
+      "mechanics": {
+        "notes": "+1 CHA while equipped; campaign hooks may react to it.",
+        "stat_modifiers": {
+          "CHA": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_batterybelt",
+      "name": "Battery Bandolier",
+      "category": "gear",
+      "gear_slot": "Accessories",
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A belt of mismatched batteries that are always the size you need.",
+      "mechanics": {
+        "notes": "+1 INT while equipped.",
+        "stat_modifiers": {
+          "INT": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_stadiumjacket",
+      "name": "Hometown Jacket",
+      "category": "gear",
+      "gear_slot": "Torso",
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A varsity jacket with the wrong year stitched into every patch.",
+      "mechanics": {
+        "notes": "+1 CON while equipped.",
+        "stat_modifiers": {
+          "CON": 1
+        }
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_gastoken",
+      "name": "Pump Seven Token",
+      "category": "quest_item",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A brass token stamped PUMP 7 / ONE USE ONLY.",
+      "mechanics": {
+        "notes": "Anomaly-site quest item."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_lockerkey",
+      "name": "Locker 113 Key",
+      "category": "quest_item",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A school locker key labeled 113 in fresh black marker.",
+      "mechanics": {
+        "notes": "Anomaly-site quest item."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_receipt",
+      "name": "Impossible Receipt",
+      "category": "quest_item",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "source_authority": "THE_DESCENT",
+      "system_description": "A receipt listing purchases one of the crawlers remembers but never made.",
+      "mechanics": {
+        "notes": "Anomaly evidence; no direct mechanical bonus."
+      },
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_msbell",
+      "name": "Ms. Bell",
+      "npc_type": "Game Guide / Saferoom Proprietor",
+      "floor": 1,
+      "status": "active",
+      "location": "Bell's Stop-N-Go Saferoom",
+      "faction": "Tutorial Guild",
+      "personality": "Dry, impatient, competent, and protective once the crawlers prove they listen.",
+      "secrets": [
+        "Knows the town is assembled from crawler memories, not copied perfectly.",
+        "Has seen the black door appear only after anomaly evidence is collected."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_deputyvale",
+      "name": "Deputy Vale",
+      "npc_type": "Town Official",
+      "floor": 1,
+      "status": "active",
+      "location": "Downtown Brownwood Replica",
+      "faction": "False Brownwood",
+      "personality": "Polite in the way a locked door is polite.",
+      "secrets": [
+        "Collects information on crawler movement for the local Borough authority.",
+        "Will trade directions for favors before resorting to threats."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_mrswren",
+      "name": "Mrs. Wren",
+      "npc_type": "Resident",
+      "floor": 1,
+      "status": "active",
+      "location": "Residential Loop",
+      "faction": "False Brownwood",
+      "personality": "Overly friendly neighbor who remembers everyone's childhood incorrectly.",
+      "secrets": [
+        "Her memories change when challenged.",
+        "She knows where the Wrong Dogs gather at dusk."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_coachdanner",
+      "name": "Coach Danner",
+      "npc_type": "School Custodian",
+      "floor": 1,
+      "status": "active",
+      "location": "Brownwood High Replica",
+      "faction": "School",
+      "personality": "Gruff, exhausted, speaks in clipped instructions.",
+      "secrets": [
+        "Not the real coach; knows he is a reconstruction.",
+        "Can identify Locker 113 as an anomaly anchor."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_nadiarook",
+      "name": "Nadia Rook",
+      "npc_type": "Crawler",
+      "floor": 1,
+      "status": "active",
+      "location": "Shopping District",
+      "faction": "Independent Crawler",
+      "personality": "Suspicious, funny under pressure, aggressively practical.",
+      "secrets": [
+        "Separated from her own party.",
+        "Saw a black service door near the Stadium road but could not open it."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_clerk7",
+      "name": "Clerk Seven",
+      "npc_type": "Gas Station Clerk",
+      "floor": 1,
+      "status": "active",
+      "location": "Pump Seven Gas & Go",
+      "faction": "System Construct",
+      "personality": "Emotionless retail cheerfulness with occasional terrified glitches.",
+      "secrets": [
+        "Resets every time the station lights go out.",
+        "Can hand over the Pump Seven Token if crawlers break the loop without destroying the store."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_mascot",
+      "name": "Bucky Brown",
+      "npc_type": "Mascot Performer",
+      "floor": 1,
+      "status": "active",
+      "location": "Stadium Concourse",
+      "faction": "Stadium",
+      "personality": "Enthusiastic to a medically concerning degree.",
+      "secrets": [
+        "The mascot suit is empty.",
+        "Can guide crawlers toward the Stadium service tunnel if treated like a real person."
+      ],
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_wrongdog",
+      "name": "Wrong Dog",
+      "species_type": "Mutated Animal",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 1,
+      "surprise": "10+F",
+      "evade": "11+F",
+      "move": "30+S",
+      "dr": 0,
+      "stats": {
+        "STR": 3,
+        "INT": 1,
+        "CON": 3,
+        "DEX": 5,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Bite",
+          "to_hit": "11+F",
+          "damage": "1D6+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "On a Major Fail or worse, the target is knocked down."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! WRONG DOG. It is absolutely a dog. Stop looking at the elbows.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_porchgoblin",
+      "name": "Porch Goblin",
+      "species_type": "Goblin",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 2
+      },
+      "level": 1,
+      "surprise": "11+F",
+      "evade": "12+F",
+      "move": "20+S",
+      "dr": 0,
+      "stats": {
+        "STR": 2,
+        "INT": 2,
+        "CON": 2,
+        "DEX": 4,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Rusty Tool",
+          "to_hit": "11+F",
+          "damage": "1D6",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "May disengage toward nearby houses after landing a hit."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! PORCH GOBLIN. Home ownership was already a trap.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_cartcrawler",
+      "name": "Cart Crawler",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 1,
+      "surprise": "10+F",
+      "evade": "12+F",
+      "move": "25+S",
+      "dr": 1,
+      "stats": {
+        "STR": 4,
+        "INT": 1,
+        "CON": 4,
+        "DEX": 3,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Cart Ram",
+          "to_hit": "11+F",
+          "damage": "1D8+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "If it moved before attacking, the GM may add environmental knockback."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! CART CRAWLER. Cleanup on aisle: you.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_hallmonitor",
+      "name": "Hall Monitor",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 4
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "12+F",
+      "move": "20+S",
+      "dr": 1,
+      "stats": {
+        "STR": 3,
+        "INT": 3,
+        "CON": 4,
+        "DEX": 3,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Citation Baton",
+          "to_hit": "11+F",
+          "damage": "1D8",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Marks targets as OUT OF HALL PASS for encounter flavor."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! HALL MONITOR. Running is prohibited. Screaming is merely discouraged.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_pumpthing",
+      "name": "Pump Seven Attendant",
+      "species_type": "Mutated Construct",
+      "classification": "Neighborhood Boss",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 8
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "13+F",
+      "move": "20+S",
+      "dr": 2,
+      "stats": {
+        "STR": 5,
+        "INT": 3,
+        "CON": 5,
+        "DEX": 4,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Fuel Hose Lash",
+          "to_hit": "11+F",
+          "damage": "1D10+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "On a Major Fail or worse, target is splashed with volatile fuel until cleaned."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEIGHBORHOOD BOSS! PUMP SEVEN ATTENDANT. Please prepay inside.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_mannequin",
+      "name": "Receipt Mannequin",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "11+F",
+      "evade": "13+F",
+      "move": "20+S",
+      "dr": 1,
+      "stats": {
+        "STR": 3,
+        "INT": 2,
+        "CON": 3,
+        "DEX": 5,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Plastic Grip",
+          "to_hit": "11+F",
+          "damage": "1D6+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Attempts to drag targets toward storefront displays."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! RECEIPT MANNEQUIN. It has a generous return policy. For your skin.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_wrongcoach",
+      "name": "The Wrong Coach",
+      "species_type": "System Replica",
+      "classification": "Neighborhood Boss",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 10
+      },
+      "level": 3,
+      "surprise": "13+F",
+      "evade": "13+F",
+      "move": "25+S",
+      "dr": 2,
+      "stats": {
+        "STR": 6,
+        "INT": 4,
+        "CON": 6,
+        "DEX": 4,
+        "CHA": 4
+      },
+      "attacks": [
+        {
+          "name": "Whistle Rush",
+          "to_hit": "11+F",
+          "damage": "1D10+3",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "May call one Hall Monitor reinforcement once per encounter."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEIGHBORHOOD BOSS! THE WRONG COACH. Everybody runs laps. Some people stop.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_keywarden",
+      "name": "Black Key Warden",
+      "species_type": "Dungeon Construct",
+      "classification": "Borough Boss",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 14
+      },
+      "level": 3,
+      "surprise": "14+F",
+      "evade": "14+F",
+      "move": "20+S",
+      "dr": 3,
+      "stats": {
+        "STR": 7,
+        "INT": 5,
+        "CON": 7,
+        "DEX": 5,
+        "CHA": 3
+      },
+      "attacks": [
+        {
+          "name": "Gatebreaker",
+          "to_hit": "11+F",
+          "damage": "1D12+3",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Protects the Black Key and prioritizes anyone carrying anomaly evidence."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "BOROUGH BOSS! BLACK KEY WARDEN. You wanted the key. The key has opinions.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_bleacherthing",
+      "name": "Bleacher Thing",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 4
+      },
+      "level": 2,
+      "surprise": "11+F",
+      "evade": "12+F",
+      "move": "25+S",
+      "dr": 1,
+      "stats": {
+        "STR": 4,
+        "INT": 1,
+        "CON": 4,
+        "DEX": 4,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Aluminum Snap",
+          "to_hit": "11+F",
+          "damage": "1D8",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Can emerge from adjacent stadium seating as a reinforcement."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! BLEACHER THING. Please remain seated during your dismemberment.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "floor_min": 1,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_home",
+      "name": "Who's a Good Boy?",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "scope": "Party",
+      "description": "Go home. Discover why that was a terrible idea.",
+      "objectives": [
+        {
+          "id": "f1_q_home_o1",
+          "text": "Reach the reconstructed home",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_home_o2",
+          "text": "Survive the Rottweiler pack",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_home_o3",
+          "text": "Learn what the System changed",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_home_o4",
+          "text": "Deal with Cerberuff",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Pet Owner's Regret reward; Neighborhood Map if Cerberuff is defeated.",
+      "gm_end_goal": "Force a personal confrontation with the reconstructed home, show how the System weaponizes familiar places, and resolve the Cerberuff threat.",
+      "retrieval_target": "The memory-anchor clue inside the reconstructed home; no fixed physical form required.",
+      "triggered_encounter": "Welcome Home (f1_e_rottpack) \u2192 Three Heads, One Collar (f1_e_cerberuff), boss Cerberuff."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_town",
+      "name": "The Town That Shouldn't Exist",
+      "scope": "Party",
+      "description": "Ms. Bell wants proof that the hometown replica is being assembled from corrupted personal data.",
+      "objectives": [
+        {
+          "id": "f1_q_town_o1",
+          "text": "Investigate Pump Seven Gas & Go",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_town_o2",
+          "text": "Investigate Brownwood High Replica",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_town_o3",
+          "text": "Investigate the Shopping District anomaly",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Unlocks the Black Key route and a Silver Adventurer Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Establish that False Brownwood is assembled from corrupted crawler memories and collect enough anomaly evidence to unlock the Black Door progression.",
+      "retrieval_target": "Three anomaly evidence pieces: Pump Seven Token / gas-station evidence, Locker 113 school evidence, and an Impossible Receipt from the shopping district.",
+      "triggered_encounter": "Pump Seven Closing Shift (f1_e_pumpboss), Final Bell (f1_e_coach), and Everything Must Go (f1_e_receipts) are the intended site encounters."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_pump7",
+      "name": "Pay at the Pump",
+      "scope": "Party",
+      "description": "Break the repeating gas-station loop without becoming part of the nightly inventory.",
+      "objectives": [
+        {
+          "id": "f1_q_pump7_o1",
+          "text": "Identify what resets the station",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_pump7_o2",
+          "text": "Acquire the Pump Seven Token",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_pump7_o3",
+          "text": "Survive or bypass the Pump Seven Attendant",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Pump Seven Token; Bronze Utility Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Break the Pump Seven reset loop and recover its anomaly token as one piece of proof for The Town That Shouldn't Exist.",
+      "retrieval_target": "Pump Seven Token (f1_item_gastoken).",
+      "triggered_encounter": "Pump Seven Closing Shift (f1_e_pumpboss) featuring the Pump Seven Attendant."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_school",
+      "name": "No Running in the Halls",
+      "scope": "Party",
+      "description": "Find the source of the school anomaly and get back out before the bell cycle completes.",
+      "objectives": [
+        {
+          "id": "f1_q_school_o1",
+          "text": "Reach Locker 113",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_school_o2",
+          "text": "Recover the locker key or bypass the lock",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_school_o3",
+          "text": "Confront the Wrong Coach or escape with the evidence",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Coach's Whistle; Silver Adventurer Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Reach Locker 113, recover the school anomaly evidence, and expose another corrupted memory anchor.",
+      "retrieval_target": "Locker 113 evidence; the Locker 113 Key (f1_item_lockerkey) is a route tool, not necessarily the final evidence itself.",
+      "triggered_encounter": "Final Bell (f1_e_coach) featuring The Wrong Coach; Passing Period (f1_e_halls) can precede it."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_receipt",
+      "name": "Proof of Purchase",
+      "scope": "Party",
+      "description": "The shopping district is printing receipts for memories. Find out whose.",
+      "objectives": [
+        {
+          "id": "f1_q_receipt_o1",
+          "text": "Recover three impossible receipts",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_receipt_o2",
+          "text": "Identify the repeating storefront",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_receipt_o3",
+          "text": "Escape the Receipt Mannequins",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Impossible Receipt evidence; Bronze Adventurer Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Prove the shopping district is manufacturing crawler memories and secure its anomaly evidence.",
+      "retrieval_target": "Three Impossible Receipts, with at least one tied to a real crawler memory.",
+      "triggered_encounter": "Everything Must Go (f1_e_receipts) featuring Receipt Mannequins."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_blackdoor",
+      "name": "The Black Door",
+      "scope": "Party",
+      "description": "Use the anomaly evidence to locate and open the service door leading toward the Stadium route.",
+      "objectives": [
+        {
+          "id": "f1_q_blackdoor_o1",
+          "text": "Bring anomaly evidence to Ms. Bell",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_blackdoor_o2",
+          "text": "Locate the black service door",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_blackdoor_o3",
+          "text": "Acquire the Black Key",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_blackdoor_o4",
+          "text": "Open the door",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Access to Stadium route; Gold-tier campaign milestone reward at GM discretion.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Convert the three anomaly investigations into concrete progression: reveal the Black Door, acquire its key, and open the Stadium route.",
+      "retrieval_target": "The Black Key (f1_item_blackkey), after presenting the anomaly evidence to Ms. Bell.",
+      "triggered_encounter": "The Key Has a Warden (f1_e_warden) featuring the Black Key Warden."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_stadium",
+      "name": "Friday Night Forever",
+      "scope": "Party",
+      "description": "Cross the Stadium district and locate the route deeper into Floor One.",
+      "objectives": [
+        {
+          "id": "f1_q_stadium_o1",
+          "text": "Enter the Stadium grounds",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_stadium_o2",
+          "text": "Survive the concourse",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_stadium_o3",
+          "text": "Locate the service tunnel",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_stadium_o4",
+          "text": "Reach the route marker beyond the field",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Floor One progression; Silver Adventurer Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Move the party through the Stadium district and reveal the route deeper into Floor One.",
+      "retrieval_target": "No retrieval target; the goal is reaching the service tunnel/route marker beyond the field.",
+      "triggered_encounter": "Home Side Advantage (f1_e_bleachers) is the intended Stadium combat."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_nadia",
+      "name": "Missing Party",
+      "scope": "Party",
+      "description": "Nadia Rook is looking for the crawlers she entered with.",
+      "objectives": [
+        {
+          "id": "f1_q_nadia_o1",
+          "text": "Find evidence of Nadia's party",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_nadia_o2",
+          "text": "Return the evidence to Nadia",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_nadia_o3",
+          "text": "Choose whether to help her continue the search",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Nadia becomes a friendly contact; Bronze Utility Box.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "gm_end_goal": "Turn Nadia Rook into a recurring friendly contact by resolving what happened to her separated party.",
+      "retrieval_target": "Evidence identifying the route or fate of Nadia's missing party; exact form is left for GM placement.",
+      "triggered_encounter": "No mandatory boss; use an appropriate local encounter if the search crosses a hostile district."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_firstblood",
+      "name": "FIRST BLOOD",
+      "description": "Deal the party's first confirmed kill inside The Homecoming.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "First Blood Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_ohhurts",
+      "name": "OH. THAT HURTS.",
+      "description": "Lose a Health Bar slot for the first time and remain standing.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Pain Management Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_wrongdog",
+      "name": "WHO'S A GOOD BOY? NOT THAT.",
+      "description": "Survive a Wrong Dog encounter after somebody insists it is probably friendly.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Pet Owner's Regret Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_homeowner",
+      "name": "PROPERTY VALUES",
+      "description": "Enter three false homes that definitely do not belong to you.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Home Inspection Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_pump",
+      "name": "PAY INSIDE",
+      "description": "Break the Pump Seven loop without destroying every fuel pump.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Responsible Consumer Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_hallpass",
+      "name": "HALL PASS DENIED",
+      "description": "Defeat or escape a Hall Monitor while carrying no valid hall pass.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Detention Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_receipt",
+      "name": "KEEP THE RECEIPT",
+      "description": "Recover an Impossible Receipt tied to a real crawler memory.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Proof of Purchase Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_key",
+      "name": "KEY PERFORMANCE INDICATOR",
+      "description": "Acquire the Black Key.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Key Performance Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_hometown",
+      "name": "HOMETOWN HERO",
+      "description": "Complete the major Homecoming route with every active crawler alive.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Hometown Hero Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_npc",
+      "name": "CUSTOMER SERVICE VOICE",
+      "description": "Resolve a hostile situation with a Floor One NPC without starting combat.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Conflict Resolution Box"
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_adventurer",
+      "name": "Homecoming Adventurer Box",
+      "tier": "bronze",
+      "box_type": "Adventurer",
+      "contents": "One useful low-floor tool or mundane gear item, one consumable, and one crawler-specific oddity selected by the GM.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_utility",
+      "name": "Homecoming Utility Box",
+      "tier": "bronze",
+      "box_type": "Utility",
+      "contents": "A practical tool drawn from the Floor One item library plus a small situational consumable.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_firstblood",
+      "name": "First Blood Box",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "A low-floor weapon/tool upgrade or combat-useful consumable.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_pain",
+      "name": "Pain Management Box",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Medical supplies, protective gear, or another survival-oriented item.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_pet",
+      "name": "Pet Owner's Regret Box",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "A Wrong Dog Whistle or another animal-control themed utility item.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_responsible",
+      "name": "Responsible Consumer Box",
+      "tier": "silver",
+      "box_type": "Achievement",
+      "contents": "A Silver utility/gear item associated with the Pump Seven anomaly.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_key",
+      "name": "Key Performance Box",
+      "tier": "silver",
+      "box_type": "Achievement",
+      "contents": "A Silver gear or utility reward themed around access, locks, or exploration.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_hero",
+      "name": "Hometown Hero Box",
+      "tier": "silver",
+      "box_type": "Achievement",
+      "contents": "A meaningful Silver item tailored to the crawler who receives it.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_detention",
+      "name": "Detention Box",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "A school-themed tool, consumable, or low-floor gear reward.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_receipt",
+      "name": "Proof of Purchase Box",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "A shopping-district utility item plus one unsettling personalized trinket.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_dogs",
+      "name": "Dusk on the Residential Loop",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_wrongdog",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Wrong Dog",
+            "health_slots": 3,
+            "evade": "11+F",
+            "dr": 0,
+            "surprise": "10+F",
+            "move": "30+S",
+            "level": 1,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 1,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Bite",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "On a Major Fail or worse, the target is knocked down."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "The porch lights turn on. The dogs do not look happier about it.",
+      "objectives": [
+        {
+          "id": "f1_e_dogs_o1",
+          "text": "Survive the Wrong Dog pack",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_dogs_o2",
+          "text": "Keep the route to the saferoom open",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Fences, parked cars, and porches provide changing lanes and obstacles."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_porches",
+      "name": "Neighborhood Welcome Committee",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Weak",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_porchgoblin",
+          "count": 3,
+          "role": "adversaries",
+          "template": {
+            "name": "Porch Goblin",
+            "health_slots": 2,
+            "evade": "12+F",
+            "dr": 0,
+            "surprise": "11+F",
+            "move": "20+S",
+            "level": 1,
+            "classification": "Mob",
+            "stats": {
+              "STR": 2,
+              "INT": 2,
+              "CON": 2,
+              "DEX": 4,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Rusty Tool",
+                "to_hit": "11+F",
+                "damage": "1D6",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "May disengage toward nearby houses after landing a hit."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "Several residents wave. The things under their porches wave too.",
+      "objectives": [
+        {
+          "id": "f1_e_porches_o1",
+          "text": "Drive off the Porch Goblins",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Useful as an early tutorial fight or grinding complication."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_carts",
+      "name": "Aisle Be Seeing You",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_cartcrawler",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Cart Crawler",
+            "health_slots": 3,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "10+F",
+            "move": "25+S",
+            "level": 1,
+            "classification": "Mob",
+            "stats": {
+              "STR": 4,
+              "INT": 1,
+              "CON": 4,
+              "DEX": 3,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Cart Ram",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "If it moved before attacking, the GM may add environmental knockback."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "Every shopping cart in the lot rotates toward the party at once.",
+      "objectives": [
+        {
+          "id": "f1_e_carts_o1",
+          "text": "Cross the parking lot",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_carts_o2",
+          "text": "Prevent the carts from isolating a crawler",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Moving carts can split the battlefield into lanes."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_halls",
+      "name": "Passing Period",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_hallmonitor",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Hall Monitor",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "12+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 3,
+              "CON": 4,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Citation Baton",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Marks targets as OUT OF HALL PASS for encounter flavor."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "The bell rings. Nobody has a hall pass.",
+      "objectives": [
+        {
+          "id": "f1_e_halls_o1",
+          "text": "Reach Locker 113",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_halls_o2",
+          "text": "Survive the passing period",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Doors lock and unlock as the bell cycle advances."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_pumpboss",
+      "name": "Pump Seven Closing Shift",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_pumpthing",
+          "count": 1,
+          "role": "adversaries",
+          "template": {
+            "name": "Pump Seven Attendant",
+            "health_slots": 8,
+            "evade": "13+F",
+            "dr": 2,
+            "surprise": "12+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Neighborhood Boss",
+            "stats": {
+              "STR": 5,
+              "INT": 3,
+              "CON": 5,
+              "DEX": 4,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Fuel Hose Lash",
+                "to_hit": "11+F",
+                "damage": "1D10+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "On a Major Fail or worse, target is splashed with volatile fuel until cleaned."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "PUMP SEVEN IS NOW CLOSED FOR MAINTENANCE. YOU ARE THE MAINTENANCE.",
+      "objectives": [
+        {
+          "id": "f1_e_pumpboss_o1",
+          "text": "Defeat or bypass the Pump Seven Attendant",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_pumpboss_o2",
+          "text": "Recover the Pump Seven Token",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Fuel hazards should be telegraphed before they become dangerous."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_receipts",
+      "name": "Everything Must Go",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_mannequin",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Receipt Mannequin",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Plastic Grip",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Attempts to drag targets toward storefront displays."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "The mannequins turn their heads. The sale is apparently final.",
+      "objectives": [
+        {
+          "id": "f1_e_receipts_o1",
+          "text": "Recover the anomaly evidence",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_receipts_o2",
+          "text": "Exit the storefront",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Store displays create cover and narrow aisles."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_coach",
+      "name": "Final Bell",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_wrongcoach",
+          "count": 1,
+          "role": "adversaries",
+          "template": {
+            "name": "The Wrong Coach",
+            "health_slots": 10,
+            "evade": "13+F",
+            "dr": 2,
+            "surprise": "13+F",
+            "move": "25+S",
+            "level": 3,
+            "classification": "Neighborhood Boss",
+            "stats": {
+              "STR": 6,
+              "INT": 4,
+              "CON": 6,
+              "DEX": 4,
+              "CHA": 4
+            },
+            "attacks": [
+              {
+                "name": "Whistle Rush",
+                "to_hit": "11+F",
+                "damage": "1D10+3",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "May call one Hall Monitor reinforcement once per encounter."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "COACH SAYS ONE MORE LAP. THE SYSTEM SAYS HE MEANS IT.",
+      "objectives": [
+        {
+          "id": "f1_e_coach_o1",
+          "text": "Survive the Wrong Coach",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_coach_o2",
+          "text": "Secure the school anomaly evidence",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "The Wrong Coach can call one Hall Monitor reinforcement if the fight needs escalation."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_warden",
+      "name": "The Key Has a Warden",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_keywarden",
+          "count": 1,
+          "role": "adversaries",
+          "template": {
+            "name": "Black Key Warden",
+            "health_slots": 14,
+            "evade": "14+F",
+            "dr": 3,
+            "surprise": "14+F",
+            "move": "20+S",
+            "level": 3,
+            "classification": "Borough Boss",
+            "stats": {
+              "STR": 7,
+              "INT": 5,
+              "CON": 7,
+              "DEX": 5,
+              "CHA": 3
+            },
+            "attacks": [
+              {
+                "name": "Gatebreaker",
+                "to_hit": "11+F",
+                "damage": "1D12+3",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Protects the Black Key and prioritizes anyone carrying anomaly evidence."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "The Black Key is hanging exactly where you can see it. Of course it is.",
+      "objectives": [
+        {
+          "id": "f1_e_warden_o1",
+          "text": "Defeat, trick, or bypass the Warden",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_warden_o2",
+          "text": "Acquire the Black Key",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Designed as a major route encounter; allow noncombat solutions if earned."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_bleachers",
+      "name": "Home Side Advantage",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_bleacherthing",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Bleacher Thing",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 4,
+              "INT": 1,
+              "CON": 4,
+              "DEX": 4,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Aluminum Snap",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Can emerge from adjacent stadium seating as a reinforcement."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "The home crowd rises. Unfortunately, the home crowd is made of bleachers.",
+      "objectives": [
+        {
+          "id": "f1_e_bleachers_o1",
+          "text": "Cross the Stadium seating",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_bleachers_o2",
+          "text": "Reach the concourse exit",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Reinforcements can emerge from unused seating sections."
+          }
+        ]
+      },
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING"
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "location",
+      "id": "f1_loc_coliseum",
+      "name": "The Coliseum",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "floor": 1,
+      "zone": "Civic District",
+      "status": "available",
+      "summary": "A familiar civic arena rebuilt as a torchlit Roman spectacle. The System treats voluntary combat as premium entertainment.",
+      "hooks": [
+        "Optional combat gauntlet",
+        "Bread and Circuses quest",
+        "Neighborhood Boss map opportunity"
+      ],
+      "hazards": [
+        "Arena gates",
+        "moving cover",
+        "hostile crowd effects at GM discretion"
+      ],
+      "reward_hooks": [
+        "Arena achievements",
+        "gladiator gear",
+        "Neighborhood Map from boss"
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "location",
+      "id": "f1_loc_jail",
+      "name": "Brown County Lockup",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "floor": 1,
+      "zone": "Civic District",
+      "status": "available",
+      "summary": "A county jail stretched into a compact dungeon of cellblocks, booking desks, property storage, medical rooms, and sealed control stations.",
+      "hooks": [
+        "Prison Break quest",
+        "lootable property room",
+        "inmate NPC contact"
+      ],
+      "hazards": [
+        "locking cell doors",
+        "riot-control constructs",
+        "blind corners"
+      ],
+      "reward_hooks": [
+        "utility gear",
+        "protective equipment",
+        "evidence-room clues"
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "location",
+      "id": "f1_loc_home",
+      "name": "Home, Sweet Home?",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "floor": 1,
+      "zone": "Residential District",
+      "status": "available",
+      "summary": "A nearly perfect reconstruction of a crawler's home, except the dogs are enormous and the System has decided mythology improves pet ownership.",
+      "hooks": [
+        "Personal-memory anchor",
+        "Rottweiler pack",
+        "Cerberuff Neighborhood Boss"
+      ],
+      "hazards": [
+        "familiar layout used against crawlers",
+        "dog pack flanking",
+        "yard and fence chokepoints"
+      ],
+      "reward_hooks": [
+        "Neighborhood Map",
+        "pet-themed achievement loot",
+        "personal clue"
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "location",
+      "id": "f1_loc_bowling",
+      "name": "Memory Lanes",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "floor": 1,
+      "zone": "Entertainment District",
+      "status": "available",
+      "summary": "A bowling alley reproduced with unnerving fidelity. The scoring system knows names, histories, and events it should not know.",
+      "hooks": [
+        "Perfect Game quest",
+        "memory-anchor clues",
+        "optional social scene"
+      ],
+      "hazards": [
+        "animated lane machinery",
+        "pinsetter constructs",
+        "rolling hazards"
+      ],
+      "reward_hooks": [
+        "bowling gear",
+        "memory evidence",
+        "achievement boxes"
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "location",
+      "id": "f1_loc_gunstore",
+      "name": "Last Stand Sporting & Arms",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "floor": 1,
+      "zone": "Commercial District",
+      "status": "available",
+      "summary": "A gun store that looks like an arsenal until the System explains that most Earth firearms are mundane duplicate-function equipment.",
+      "hooks": [
+        "False treasure-room expectation",
+        "resource-management encounter",
+        "gun-store clerk construct"
+      ],
+      "hazards": [
+        "limited ammunition",
+        "jammed security shutters",
+        "hostile target-system constructs"
+      ],
+      "reward_hooks": [
+        "firearm-adjacent utility gear",
+        "protective equipment",
+        "very limited ammunition at GM discretion"
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_lanista",
+      "name": "Cassius 'Cash' Mercer",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "npc_type": "Arena Master",
+      "floor": 1,
+      "status": "active",
+      "location": "The Coliseum",
+      "faction": "Coliseum",
+      "personality": "Showman, bookmaker, and relentless commentator who treats crawlers as both athletes and inventory.",
+      "secrets": [
+        "Knows the Champion's arena can be manipulated through its gate controls."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_inmate",
+      "name": "Leon Pike",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "npc_type": "Reconstructed Inmate",
+      "floor": 1,
+      "status": "active",
+      "location": "Brown County Lockup",
+      "faction": "False Brownwood",
+      "personality": "Watchful, sardonic, and willing to barter information for freedom.",
+      "secrets": [
+        "Remembers corridors that do not exist in the real jail.",
+        "Has seen System workers move anomaly evidence through booking."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_dispatch",
+      "name": "Control Officer M-12",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "npc_type": "Jail Control Construct",
+      "floor": 1,
+      "status": "active",
+      "location": "Brown County Lockup",
+      "faction": "System Construct",
+      "personality": "Speaks entirely in calm policy language while trying to contain everyone.",
+      "secrets": [
+        "Can be reasoned with if crawlers exploit contradictory detention rules."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_bowling",
+      "name": "Marlene 'Marty' Voss",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "npc_type": "League Manager Construct",
+      "floor": 1,
+      "status": "active",
+      "location": "Memory Lanes",
+      "faction": "Memory Lanes",
+      "personality": "Warm, nostalgic, and increasingly distressed whenever the alley recalls something she was not programmed to know.",
+      "secrets": [
+        "Knows the bowling alley is a memory anchor.",
+        "Can reveal a Homecoming clue after a completed game."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "npc",
+      "id": "f1_npc_rangeclerk",
+      "name": "Range Safety Randy",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "npc_type": "Store Clerk Construct",
+      "floor": 1,
+      "status": "active",
+      "location": "Last Stand Sporting & Arms",
+      "faction": "System Construct",
+      "personality": "Treats every sentence like a mandatory safety briefing and every crawler like a liability waiver.",
+      "secrets": [
+        "The System deliberately limits replacement firearms here.",
+        "Knows the security range contains a useful utility cache."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_legionnaire",
+      "name": "Cardboard Legionnaire",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "11+F",
+      "evade": "12+F",
+      "move": "20+S",
+      "dr": 1,
+      "stats": {
+        "STR": 4,
+        "INT": 2,
+        "CON": 3,
+        "DEX": 3,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Training Gladius",
+          "to_hit": "11+F",
+          "damage": "1D8",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Can form a shield line when adjacent to another Legionnaire."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! CARDBOARD LEGIONNAIRE. Rome wasn't built in a day. These were.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_retiarius",
+      "name": "Net Goblin",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Goblin",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "13+F",
+      "move": "25+S",
+      "dr": 0,
+      "stats": {
+        "STR": 3,
+        "INT": 2,
+        "CON": 3,
+        "DEX": 5,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Arena Trident",
+          "to_hit": "11+F",
+          "damage": "1D8",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Carries a capture net; entangling effects are GM adjudicated."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! NET GOBLIN. Finally, social networking with consequences.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_champion",
+      "name": "The Hometown Caesar",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "System Replica",
+      "classification": "Neighborhood Boss",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 12
+      },
+      "level": 3,
+      "surprise": "14+F",
+      "evade": "14+F",
+      "move": "25+S",
+      "dr": 2,
+      "stats": {
+        "STR": 7,
+        "INT": 4,
+        "CON": 7,
+        "DEX": 5,
+        "CHA": 6
+      },
+      "attacks": [
+        {
+          "name": "Champion's Blade",
+          "to_hit": "11+F",
+          "damage": "1D12+3",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Arena gates and hazards may change between rounds."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEIGHBORHOOD BOSS! THE HOMETOWN CAESAR. All roads lead to getting punched.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_cellblock",
+      "name": "Cellblock Trustee",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "11+F",
+      "evade": "12+F",
+      "move": "20+S",
+      "dr": 1,
+      "stats": {
+        "STR": 4,
+        "INT": 2,
+        "CON": 4,
+        "DEX": 3,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Meal Tray Shank",
+          "to_hit": "11+F",
+          "damage": "1D6+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Uses doors and cells to isolate targets."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! CELLBLOCK TRUSTEE. Time off for good behavior has been canceled.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_riotbot",
+      "name": "Riot Control Deputy",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 4
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "12+F",
+      "move": "20+S",
+      "dr": 2,
+      "stats": {
+        "STR": 5,
+        "INT": 3,
+        "CON": 5,
+        "DEX": 3,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Riot Baton",
+          "to_hit": "11+F",
+          "damage": "1D8+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "May shove targets away from control points."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! RIOT CONTROL DEPUTY. Please stop resisting the floor plan.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_rott",
+      "name": "Oversized Rottweiler",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Mutated Animal",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 4
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "13+F",
+      "move": "30+S",
+      "dr": 0,
+      "stats": {
+        "STR": 5,
+        "INT": 1,
+        "CON": 4,
+        "DEX": 5,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Bite",
+          "to_hit": "11+F",
+          "damage": "1D8+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Pack behavior rewards surrounding isolated crawlers."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! OVERSIZED ROTTWEILER. Still thinks it fits in your lap.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_cerberuff",
+      "name": "Cerberuff, The Very Good Boy",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Mythic Mutated Animal",
+      "classification": "Neighborhood Boss",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 12
+      },
+      "level": 3,
+      "surprise": "14+F",
+      "evade": "13+F",
+      "move": "30+S",
+      "dr": 2,
+      "stats": {
+        "STR": 7,
+        "INT": 2,
+        "CON": 7,
+        "DEX": 5,
+        "CHA": 4
+      },
+      "attacks": [
+        {
+          "name": "Three-Headed Bite",
+          "to_hit": "11+F",
+          "damage": "1D12+3",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Familiar commands, treats, gates, and household knowledge may create noncombat openings at GM discretion."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEIGHBORHOOD BOSS! CERBERUFF, THE VERY GOOD BOY. THREE TIMES THE DROOL. THREE TIMES THE TRAUMA.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_pinsetter",
+      "name": "Pinsetter Gremlin",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Gremlin",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "13+F",
+      "move": "25+S",
+      "dr": 0,
+      "stats": {
+        "STR": 3,
+        "INT": 3,
+        "CON": 3,
+        "DEX": 5,
+        "CHA": 2
+      },
+      "attacks": [
+        {
+          "name": "Pin Club",
+          "to_hit": "11+F",
+          "damage": "1D6+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Can retreat into lane machinery if not blocked."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! PINSETTER GREMLIN. Please keep hands clear of moving machinery.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_bowlingball",
+      "name": "Return-Rack Horror",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 4
+      },
+      "level": 2,
+      "surprise": "11+F",
+      "evade": "12+F",
+      "move": "30+S",
+      "dr": 1,
+      "stats": {
+        "STR": 5,
+        "INT": 1,
+        "CON": 4,
+        "DEX": 4,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Rolling Strike",
+          "to_hit": "11+F",
+          "damage": "1D8+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Deals its best damage after moving in a straight lane."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! RETURN-RACK HORROR. Your ball has returned. It brought friends.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "adversary",
+      "id": "f1_adv_target",
+      "name": "Range Target Stalker",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "species_type": "Construct",
+      "classification": "Mob",
+      "size": {
+        "name": "Medium",
+        "value": 1
+      },
+      "health_bar": {
+        "slots": 3
+      },
+      "level": 2,
+      "surprise": "12+F",
+      "evade": "13+F",
+      "move": "25+S",
+      "dr": 0,
+      "stats": {
+        "STR": 3,
+        "INT": 2,
+        "CON": 3,
+        "DEX": 5,
+        "CHA": 1
+      },
+      "attacks": [
+        {
+          "name": "Target Frame",
+          "to_hit": "11+F",
+          "damage": "1D6+2",
+          "damage_type": "Physical",
+          "range": "Melee",
+          "other_effects": [
+            {
+              "text": "Uses store aisles and range partitions as cover."
+            }
+          ]
+        }
+      ],
+      "special_rules": [],
+      "notes": [],
+      "ai_announcement": "NEW MOB! RANGE TARGET STALKER. Center mass is offended.",
+      "floor_min": 1
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_gladiatorbracer",
+      "name": "Arena Bracer",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Arms",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "Leather-and-brass bracer stamped with a tiny thumbs-down icon.",
+      "mechanics": {
+        "notes": "+1 STR while equipped.",
+        "stat_modifiers": {
+          "STR": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_laurels",
+      "name": "Plastic Victor's Laurels",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Head",
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "system_description": "Cheap plastic leaves with surprisingly real System authority.",
+      "mechanics": {
+        "notes": "+1 CHA while equipped.",
+        "stat_modifiers": {
+          "CHA": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_riotvest",
+      "name": "County Riot Vest",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Torso",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "Heavy protective vest recovered from jail storage.",
+      "mechanics": {
+        "notes": "Campaign protective gear; +1 CON while equipped.",
+        "stat_modifiers": {
+          "CON": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_cuffkey",
+      "name": "Universal-ish Cuff Key",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "tool",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "A tiny key labeled UNIVERSAL-ISH.",
+      "mechanics": {
+        "notes": "Useful against mundane restraints; does not override magical/System locks."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_propertybag",
+      "name": "Sealed Property Bag",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "container",
+      "gear_slot": null,
+      "loot_tier": "mundane",
+      "floor_min": 1,
+      "system_description": "A clear county property bag with somebody else's inventory number.",
+      "mechanics": {
+        "notes": "Container and clue prop; contents chosen by GM."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_dogtreats",
+      "name": "Dungeon-Grade Dog Treats",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "consumable",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "A pouch of treats that smell distressingly good even to humans.",
+      "mechanics": {
+        "notes": "Campaign consumable that can influence canine encounters when fictionally appropriate."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_collar",
+      "name": "Cerberuff's Spare Collar",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Accessories",
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "system_description": "A huge three-loop collar somehow resized by Inventory.",
+      "mechanics": {
+        "notes": "+1 CON while equipped.",
+        "stat_modifiers": {
+          "CON": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_bowlingshoes",
+      "name": "League-Night Bowling Shoes",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Feet",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "Rental shoes that never quite match but grip dungeon floors beautifully.",
+      "mechanics": {
+        "notes": "+1 DEX while equipped.",
+        "stat_modifiers": {
+          "DEX": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_ball",
+      "name": "The House Ball",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "weapon",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "A sixteen-pound bowling ball with three finger holes and zero respect for toes.",
+      "mechanics": {
+        "notes": "Campaign thrown/improvised weapon; GM adjudicates unusual lane interactions."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_wristguard",
+      "name": "Pro-Shop Wrist Guard",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Arms",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "A stiff wrist brace from the pro shop.",
+      "mechanics": {
+        "notes": "+1 DEX while equipped.",
+        "stat_modifiers": {
+          "DEX": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_eyepro",
+      "name": "Range Eye Protection",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Head",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "Impact-rated glasses with a faint System overlay.",
+      "mechanics": {
+        "notes": "+1 INT while equipped.",
+        "stat_modifiers": {
+          "INT": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_sling",
+      "name": "Reinforced Utility Sling",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "tool",
+      "gear_slot": null,
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "A rugged adjustable sling.",
+      "mechanics": {
+        "notes": "Firearm-adjacent utility gear. Does not improve firearm damage by itself."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_rangebag",
+      "name": "Bottomless-ish Range Bag",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "container",
+      "gear_slot": null,
+      "loot_tier": "silver",
+      "floor_min": 1,
+      "system_description": "A range bag that is much roomier inside than its zipper suggests.",
+      "mechanics": {
+        "notes": "Campaign container; no extra firearm granted."
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "item",
+      "id": "f1_item_earpro",
+      "name": "Electronic Hearing Protection",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "category": "gear",
+      "gear_slot": "Head",
+      "loot_tier": "bronze",
+      "floor_min": 1,
+      "system_description": "Amplifies quiet sounds and cuts harsh reports.",
+      "mechanics": {
+        "notes": "Campaign sensory utility; +1 INT while equipped.",
+        "stat_modifiers": {
+          "INT": 1
+        }
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_coliseum",
+      "name": "Bread and Circuses",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "scope": "Party",
+      "description": "The Coliseum wants volunteers. The definition of volunteer is deteriorating rapidly.",
+      "objectives": [
+        {
+          "id": "f1_q_coliseum_o1",
+          "text": "Register for the games",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_coliseum_o2",
+          "text": "Survive the opening bout",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_coliseum_o3",
+          "text": "Survive the arena escalation",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_coliseum_o4",
+          "text": "Defeat or outwit the Hometown Caesar",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Silver Gladiator Box; Neighborhood Map if the Neighborhood Boss is defeated.",
+      "gm_end_goal": "Give combat-hungry crawlers an optional arena gauntlet and a legitimate Neighborhood Boss/map reward path.",
+      "retrieval_target": "No retrieval target.",
+      "triggered_encounter": "Opening Ceremonies (f1_e_arena1) \u2192 The Crowd Wants Blood (f1_e_arena2) \u2192 Hometown Caesar (f1_e_caesar), boss The Hometown Caesar."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_jail",
+      "name": "Prison Break-In",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "scope": "Party",
+      "description": "Something useful is locked inside the county jail. Unfortunately, so is everything else.",
+      "objectives": [
+        {
+          "id": "f1_q_jail_o1",
+          "text": "Enter booking",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_jail_o2",
+          "text": "Reach property storage",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_jail_o3",
+          "text": "Find the control-room route",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_jail_o4",
+          "text": "Escape the lockup",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "County Utility Box and recovered jail property.",
+      "gm_end_goal": "Turn the jail into a compact exploration dungeon where the party raids property storage and learns the System is moving anomaly material through civic infrastructure.",
+      "retrieval_target": "Useful/confiscated property from secured storage; optional anomaly-transfer evidence in booking.",
+      "triggered_encounter": "Booking Procedure (f1_e_booking) and Facility Lockdown (f1_e_lockdown)."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_bowling",
+      "name": "Perfect Game",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "scope": "Party",
+      "description": "Memory Lanes is offering one free game. The scoreboard has added several rules nobody remembers agreeing to.",
+      "objectives": [
+        {
+          "id": "f1_q_bowling_o1",
+          "text": "Start a game",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_bowling_o2",
+          "text": "Complete the early frames",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_bowling_o3",
+          "text": "Survive the pinsetter interruption",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_bowling_o4",
+          "text": "Finish the final frame",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "League Night Box and a memory-anchor clue.",
+      "gm_end_goal": "Reveal Memory Lanes as a strong memory anchor by making the party finish the System's corrupted bowling game and earn a clue about how Homecoming is built.",
+      "retrieval_target": "A memory-anchor clue revealed by the scoreboard after the final frame.",
+      "triggered_encounter": "League Night (f1_e_lanes) \u2192 Tenth Frame (f1_e_finalframe)."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "quest",
+      "id": "f1_q_gunstore",
+      "name": "Second Amendment to Your Expectations",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "scope": "Party",
+      "description": "Search the gun store for useful supplies after the System informs you that owning another mundane firearm would be redundant.",
+      "objectives": [
+        {
+          "id": "f1_q_gunstore_o1",
+          "text": "Enter Last Stand Sporting & Arms",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_gunstore_o2",
+          "text": "Search the sales floor",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_gunstore_o3",
+          "text": "Open the security range cache",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_q_gunstore_o4",
+          "text": "Leave with something actually useful",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "reward_notes": "Range Utility Box; firearm-adjacent equipment; limited ammunition only if GM awards it.",
+      "gm_end_goal": "Subvert the expectation that the gun store is a firearm upgrade cache; reward careful resource use with utility equipment instead.",
+      "retrieval_target": "The security-range utility cache; contents are firearm-adjacent gear and only limited ammunition if the GM chooses.",
+      "triggered_encounter": "Downrange (f1_e_range) featuring Range Target Stalkers."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_gladiator",
+      "name": "ARE YOU NOT MILDLY ENTERTAINED?",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Win a Coliseum bout while the System is actively scoring style.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Gladiator Participation Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_caesar",
+      "name": "ET TU, CRAWLER?",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Defeat the Hometown Caesar.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Victor's Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_jail",
+      "name": "TIME SERVED",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Enter jail voluntarily and still manage to get locked in.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "County Property Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_riot",
+      "name": "COMPLIANCE ISSUE",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Defeat a Riot Control Deputy after being ordered to comply.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Compliance Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_home",
+      "name": "THERE'S NO PLACE LIKE HOME",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Return to a reconstructed personal home and immediately regret it.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Homeowner's Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_cerberuff",
+      "name": "SIT. STAY. PLEASE.",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Survive Cerberuff, The Very Good Boy.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "silver",
+        "box_name": "Obedience School Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_bowling",
+      "name": "TURKEY DINNER",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Complete three consecutive successful bowling objectives during Perfect Game.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "League Night Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_split",
+      "name": "UNNECESSARY SPLIT",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Use the bowling alley environment to defeat two threats in one sequence.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Pro Shop Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_gunstore",
+      "name": "YOU ALREADY HAVE ONE",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Enter the gun store expecting a better gun and leave without acquiring another firearm.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Responsible Gun Owner Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "achievement",
+      "id": "f1_a_ammo",
+      "name": "AMMO ECONOMY",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "description": "Resolve a gun-store encounter without spending firearm ammunition.",
+      "system_quip": "The System noticed. Unfortunately.",
+      "reward": {
+        "tier": "bronze",
+        "box_name": "Resource Management Box"
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_gladiator",
+      "name": "Gladiator Participation Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Arena-themed low-floor gear or consumables."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_victor",
+      "name": "Victor's Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "silver",
+      "box_type": "Boss",
+      "contents": "A meaningful Silver arena reward; defeating the Neighborhood Boss also awards its RAW map reward."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_county",
+      "name": "County Property Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Utility gear, medical supplies, protective equipment, or weird confiscated property."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_compliance",
+      "name": "Compliance Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Protective or control-themed utility gear."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_homeowner",
+      "name": "Homeowner's Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Household-survival gear plus one unsettling personalized item."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_obedience",
+      "name": "Obedience School Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "silver",
+      "box_type": "Boss",
+      "contents": "Canine-themed Silver gear or utility reward; defeating the Neighborhood Boss also awards its RAW map reward."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_league",
+      "name": "League Night Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Quest",
+      "contents": "Bowling-themed gear, consumables, or memory-anchor oddities."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_proshop",
+      "name": "Pro Shop Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Bowling shoes, wrist gear, or another alley-themed utility item."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_range",
+      "name": "Range Utility Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Quest",
+      "contents": "Eye/ear protection, sling, range bag, flashlight, maintenance tools, or limited ammunition at GM discretion. No automatic firearm."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "loot_box",
+      "id": "f1_box_resource",
+      "name": "Resource Management Box",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "tier": "bronze",
+      "box_type": "Achievement",
+      "contents": "Utility equipment that rewards solving problems without simply spending ammunition."
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_arena1",
+      "name": "Opening Ceremonies",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_legionnaire",
+          "count": 4,
+          "role": "adversaries",
+          "template": {
+            "name": "Cardboard Legionnaire",
+            "health_slots": 3,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 4,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Training Gladius",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Can form a shield line when adjacent to another Legionnaire."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        },
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_retiarius",
+          "count": 2,
+          "role": "adversaries",
+          "template": {
+            "name": "Net Goblin",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Arena Trident",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Carries a capture net; entangling effects are GM adjudicated."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "WELCOME TO THE GAMES. LIABILITY WAIVERS WERE IMPLIED.",
+      "objectives": [
+        {
+          "id": "f1_e_arena1_o1",
+          "text": "Survive the opening bout",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Arena gates create changing entry points."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_arena2",
+      "name": "The Crowd Wants Blood",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_legionnaire",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Cardboard Legionnaire",
+            "health_slots": 3,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 4,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Training Gladius",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Can form a shield line when adjacent to another Legionnaire."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        },
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_retiarius",
+          "count": 3,
+          "role": "adversaries",
+          "template": {
+            "name": "Net Goblin",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Arena Trident",
+                "to_hit": "11+F",
+                "damage": "1D8",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Carries a capture net; entangling effects are GM adjudicated."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "THE AUDIENCE HAS VOTED. THEY WOULD LIKE YOU TO TRY HARDER.",
+      "objectives": [
+        {
+          "id": "f1_e_arena2_o1",
+          "text": "Clear the arena",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_arena2_o2",
+          "text": "Keep the party from being divided",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Moving barriers split the arena into temporary zones."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_caesar",
+      "name": "Hometown Caesar",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_champion",
+          "count": 1,
+          "role": "adversaries",
+          "template": {
+            "name": "The Hometown Caesar",
+            "health_slots": 12,
+            "evade": "14+F",
+            "dr": 2,
+            "surprise": "14+F",
+            "move": "25+S",
+            "level": 3,
+            "classification": "Neighborhood Boss",
+            "stats": {
+              "STR": 7,
+              "INT": 4,
+              "CON": 7,
+              "DEX": 5,
+              "CHA": 6
+            },
+            "attacks": [
+              {
+                "name": "Champion's Blade",
+                "to_hit": "11+F",
+                "damage": "1D12+3",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Arena gates and hazards may change between rounds."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "CHAMPION EVENT! PLEASE APPLAUD UNTIL SOMEONE STOPS MOVING.",
+      "objectives": [
+        {
+          "id": "f1_e_caesar_o1",
+          "text": "Defeat or outwit the Hometown Caesar",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Gate controls can be discovered and exploited."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_booking",
+      "name": "Booking Procedure",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_cellblock",
+          "count": 4,
+          "role": "adversaries",
+          "template": {
+            "name": "Cellblock Trustee",
+            "health_slots": 3,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 4,
+              "INT": 2,
+              "CON": 4,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Meal Tray Shank",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Uses doors and cells to isolate targets."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        },
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_riotbot",
+          "count": 2,
+          "role": "adversaries",
+          "template": {
+            "name": "Riot Control Deputy",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 2,
+            "surprise": "12+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 5,
+              "INT": 3,
+              "CON": 5,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Riot Baton",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "May shove targets away from control points."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "WELCOME TO COUNTY. PERSONAL EFFECTS WILL BE RETURNED NEVER.",
+      "objectives": [
+        {
+          "id": "f1_e_booking_o1",
+          "text": "Reach property storage",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_booking_o2",
+          "text": "Keep access to booking open",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Cell doors can isolate combatants."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_lockdown",
+      "name": "Facility Lockdown",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_riotbot",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Riot Control Deputy",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 2,
+            "surprise": "12+F",
+            "move": "20+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 5,
+              "INT": 3,
+              "CON": 5,
+              "DEX": 3,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Riot Baton",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "May shove targets away from control points."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "LOCKDOWN IN EFFECT. THIS INCLUDES YOUR OPTIONS.",
+      "objectives": [
+        {
+          "id": "f1_e_lockdown_o1",
+          "text": "Reach the control room",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_lockdown_o2",
+          "text": "End or escape lockdown",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Security doors change the battlefield each round at GM discretion."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_rottpack",
+      "name": "Welcome Home",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_rott",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Oversized Rottweiler",
+            "health_slots": 4,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "30+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 5,
+              "INT": 1,
+              "CON": 4,
+              "DEX": 5,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Bite",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Pack behavior rewards surrounding isolated crawlers."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "THE DOGS REMEMBER YOU. MOSTLY.",
+      "objectives": [
+        {
+          "id": "f1_e_rottpack_o1",
+          "text": "Reach the house",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_rottpack_o2",
+          "text": "Survive the pack",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Fences, gates, vehicles, and familiar yard features matter."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_cerberuff",
+      "name": "Three Heads, One Collar",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_cerberuff",
+          "count": 1,
+          "role": "adversaries",
+          "template": {
+            "name": "Cerberuff, The Very Good Boy",
+            "health_slots": 12,
+            "evade": "13+F",
+            "dr": 2,
+            "surprise": "14+F",
+            "move": "30+S",
+            "level": 3,
+            "classification": "Neighborhood Boss",
+            "stats": {
+              "STR": 7,
+              "INT": 2,
+              "CON": 7,
+              "DEX": 5,
+              "CHA": 4
+            },
+            "attacks": [
+              {
+                "name": "Three-Headed Bite",
+                "to_hit": "11+F",
+                "damage": "1D12+3",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Familiar commands, treats, gates, and household knowledge may create noncombat openings at GM discretion."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "NEIGHBORHOOD BOSS! CERBERUFF WOULD LIKE BELLY RUBS. THIS IS A TRAP. PROBABLY.",
+      "objectives": [
+        {
+          "id": "f1_e_cerberuff_o1",
+          "text": "Deal with Cerberuff",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_cerberuff_o2",
+          "text": "Reach the memory anchor inside the home",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Allow earned noncombat solutions using personal familiarity."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_lanes",
+      "name": "League Night",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_pinsetter",
+          "count": 4,
+          "role": "adversaries",
+          "template": {
+            "name": "Pinsetter Gremlin",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 3,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Pin Club",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Can retreat into lane machinery if not blocked."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        },
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_bowlingball",
+          "count": 2,
+          "role": "adversaries",
+          "template": {
+            "name": "Return-Rack Horror",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "30+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 5,
+              "INT": 1,
+              "CON": 4,
+              "DEX": 4,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Rolling Strike",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Deals its best damage after moving in a straight lane."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "LANE COURTESY REMINDER: DO NOT CROSS THE FOUL LINE. THE FOUL LINE BITES.",
+      "objectives": [
+        {
+          "id": "f1_e_lanes_o1",
+          "text": "Complete the current frame",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_lanes_o2",
+          "text": "Clear the lanes",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Bowling lanes create straight-line rolling hazards."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_finalframe",
+      "name": "Tenth Frame",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Strong",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_pinsetter",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Pinsetter Gremlin",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 3,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 2
+            },
+            "attacks": [
+              {
+                "name": "Pin Club",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Can retreat into lane machinery if not blocked."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        },
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_bowlingball",
+          "count": 3,
+          "role": "adversaries",
+          "template": {
+            "name": "Return-Rack Horror",
+            "health_slots": 4,
+            "evade": "12+F",
+            "dr": 1,
+            "surprise": "11+F",
+            "move": "30+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 5,
+              "INT": 1,
+              "CON": 4,
+              "DEX": 4,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Rolling Strike",
+                "to_hit": "11+F",
+                "damage": "1D8+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Deals its best damage after moving in a straight lane."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "FINAL FRAME. PLEASE BOWL RESPONSIBLY.",
+      "objectives": [
+        {
+          "id": "f1_e_finalframe_o1",
+          "text": "Finish the game",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_finalframe_o2",
+          "text": "Recover the memory clue",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "The scoreboard can reveal clues when objectives are completed."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "content_type": "encounter",
+      "id": "f1_e_range",
+      "name": "Downrange",
+      "source_authority": "THE_DESCENT",
+      "gm_approval_required": false,
+      "campaign_pack": "F1_HOMECOMING",
+      "encounter_type": "combat",
+      "floor": 1,
+      "power_band": "Moderate",
+      "party_size_reference": 6,
+      "participants": [
+        {
+          "kind": "adversary",
+          "definition_id": "f1_adv_target",
+          "count": 6,
+          "role": "adversaries",
+          "template": {
+            "name": "Range Target Stalker",
+            "health_slots": 3,
+            "evade": "13+F",
+            "dr": 0,
+            "surprise": "12+F",
+            "move": "25+S",
+            "level": 2,
+            "classification": "Mob",
+            "stats": {
+              "STR": 3,
+              "INT": 2,
+              "CON": 3,
+              "DEX": 5,
+              "CHA": 1
+            },
+            "attacks": [
+              {
+                "name": "Target Frame",
+                "to_hit": "11+F",
+                "damage": "1D6+2",
+                "damage_type": "Physical",
+                "range": "Melee",
+                "other_effects": [
+                  {
+                    "text": "Uses store aisles and range partitions as cover."
+                  }
+                ]
+              }
+            ],
+            "special_rules": []
+          }
+        }
+      ],
+      "system_announcement": "RANGE IS HOT. SO ARE THE TARGETS. THIS IS NOT STANDARD RANGE PROCEDURE.",
+      "objectives": [
+        {
+          "id": "f1_e_range_o1",
+          "text": "Reach the security cache",
+          "required": true,
+          "hidden": false
+        },
+        {
+          "id": "f1_e_range_o2",
+          "text": "Exit the range",
+          "required": true,
+          "hidden": false
+        }
+      ],
+      "environment": {
+        "special_rules": [
+          {
+            "text": "Partitions and firing booths create cover; ammunition scarcity is part of the scene."
+          }
+        ]
+      }
+    }
+  ]
+}

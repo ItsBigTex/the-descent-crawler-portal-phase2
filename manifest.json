@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "authority": [
+    "Dungeon Crawler Carl RPG Core Rulebook",
+    "Game Master's Campaign Toolkit"
+  ],
+  "schemas": [
+    "item-definition-v1.0.schema.json",
+    "crawler-item-instance-v1.0.schema.json",
+    "adversary-definition-v1.0.schema.json",
+    "npc-definition-v1.0.schema.json",
+    "encounter-participant-v1.0.schema.json",
+    "encounter-definition-v1.0.schema.json",
+    "active-encounter-v1.0.schema.json",
+    "adversary-power-reference-v1.0.json",
+    "quest-definition-v1.0.schema.json",
+    "achievement-definition-v1.0.schema.json",
+    "loot-box-definition-v1.0.schema.json",
+    "system-event-v1.0.schema.json"
+  ]
+}

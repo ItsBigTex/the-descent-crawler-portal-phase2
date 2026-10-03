@@ -1,0 +1,28 @@
+{
+  "note": "Phase 1 uses crawler-specific starting skill lists. Expand this catalog as skills are unlocked.",
+  "skills": [
+    "Aiming",
+    "Animal Handling",
+    "Climbing",
+    "Detect Lies",
+    "Determine Value",
+    "Endurance",
+    "Engineering",
+    "Fabricate",
+    "Good First Impression",
+    "Investigation",
+    "Negotiation",
+    "Perception",
+    "Performance",
+    "Repair",
+    "Salvage",
+    "Starting Weapon Skill",
+    "Stealth",
+    "Streetwise",
+    "Survival",
+    "Tactics",
+    "Throwing",
+    "Tracking",
+    "Unarmed Combat"
+  ]
+}

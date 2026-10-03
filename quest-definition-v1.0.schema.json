@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quest Definition v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "content_type",
+    "id",
+    "name",
+    "scope",
+    "objectives",
+    "source_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "content_type": {
+      "const": "quest"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "scope": {
+      "enum": [
+        "Individual",
+        "Group"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "reward_notes": {
+      "type": "string"
+    },
+    "source_authority": {
+      "type": "string"
+    },
+    "gm_approval_required": {
+      "type": "boolean"
+    }
+  }
+}

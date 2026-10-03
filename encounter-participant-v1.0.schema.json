@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/encounter-participant-v1.0",
+  "title": "Encounter Participant Runtime v1.0",
+  "type": "object",
+  "required": [
+    "participant_id",
+    "definition_id",
+    "name",
+    "initiative_order",
+    "health"
+  ],
+  "properties": {
+    "participant_id": {
+      "type": "string"
+    },
+    "definition_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "crawler_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "initiative_order": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "health": {
+      "type": "object",
+      "properties": {
+        "slots_max": {
+          "type": "number"
+        },
+        "slots_current": {
+          "type": "number"
+        }
+      }
+    },
+    "mana_current": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "temporary_modifiers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

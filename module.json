@@ -1,0 +1,22 @@
+{
+  "id": "the-descent-bridge",
+  "title": "The Descent Bridge",
+  "description": "Local bridge between The Descent Crawler Portal and Foundry VTT. GM-controlled scene, playlist, announcement, and encounter presentation commands.",
+  "version": "0.4.4.1",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "The Descent Campaign"
+    }
+  ],
+  "esmodules": [
+    "scripts/the-descent-bridge.js"
+  ],
+  "styles": [
+    "styles/the-descent-bridge.css"
+  ],
+  "socket": true
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "the-descent/active-encounter-v1.0",
+  "title": "Active Encounter Runtime v1.0",
+  "type": "object",
+  "required": [
+    "instance_id",
+    "definition_id",
+    "status",
+    "round",
+    "phase",
+    "participants",
+    "actions_remaining"
+  ],
+  "properties": {
+    "instance_id": {
+      "type": "string"
+    },
+    "definition_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "staged",
+        "active",
+        "paused",
+        "resolved",
+        "abandoned"
+      ]
+    },
+    "round": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "phase": {
+      "enum": [
+        "setup",
+        "mobs",
+        "crawlers",
+        "resolution",
+        "freeform"
+      ]
+    },
+    "floor": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "party_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "actions_remaining": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "trigger_state": {
+      "type": "object"
+    },
+    "objective_state": {
+      "type": "object"
+    },
+    "environment_state": {
+      "type": "object"
+    },
+    "event_log": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resolved_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

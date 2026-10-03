@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "name": "Standard Healing Potion",
+      "type": "Consumable"
+    },
+    {
+      "name": "Pocket Flashlight",
+      "type": "Gear"
+    },
+    {
+      "name": "Radio",
+      "type": "Gear"
+    },
+    {
+      "name": "Small Electronic Tools",
+      "type": "Gear"
+    }
+  ]
+}
